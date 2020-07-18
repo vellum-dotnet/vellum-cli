@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
-    <metadata>
-        <id>Vellum.Cli.Cloudinary</id>
-        <!-- This is overridden by the automatic build. It is present here to avoid validation failures. -->
-        <version>0.1.0</version>
-        <description>CLoudinary Plugin for uploading media assets to Cloudinary CDN</description>
-        <authors>endjin</authors>
-        <license type="expression">Apache-2.0</license>
-    </metadata>
-    <files>
-        <file src="bin\Release\netstandard2.1\publish\CloudinaryDotNet.dll" target="content\" />
-        <file src="bin\Release\netstandard2.1\publish\NDepend.Path.dll" target="content\" />
-        <file src="bin\Release\netstandard2.1\publish\Vellum.Cli.Cloudinary.dll" target="content\" />
-    </files>
+  <metadata>
+    <id>Vellum.Cli.Cloudinary</id>
+    <!-- This is overridden by the automatic build. It is present here to avoid validation failures. -->
+    <version>0.0.0</version>
+    <description>CLoudinary Plugin for uploading media assets to Cloudinary CDN</description>
+    <authors>endjin</authors>
+    <license type="expression">Apache-2.0</license>
+    <tags>vellum static cms vellum-cli vellum-cli-plugin cloudinary endjin</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\netstandard2.1\publish\CloudinaryDotNet.dll" target="content\" />
+    <file src="bin\Release\netstandard2.1\publish\NDepend.Path.dll" target="content\" />
+    <file src="bin\Release\netstandard2.1\publish\Vellum.Cli.Cloudinary.dll" target="content\" />
+  </files>
 </package>
