@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
-    <id>Vellum.Cli.Cloudinary</id>
+    <id>Vellum.Cli.Tinify</id>
     <!-- This is overridden by the automatic build. It is present here to avoid validation failures. -->
     <version>0.0.0</version>
-    <description>Cloudinary Plugin for uploading media assets to Cloudinary CDN</description>
+    <description>Tinify plugin for optimizing images before uploading to a CDN</description>
     <authors>endjin</authors>
     <license type="expression">Apache-2.0</license>
-    <tags>vellum static cms vellum-cli vellum-cli-plugin cloudinary endjin</tags>
+    <tags>vellum static cms vellum-cli vellum-cli-plugin tinify endjin</tags>
   </metadata>
   <files>
-    <file src="bin\Release\netstandard2.1\publish\CloudinaryDotNet.dll" target="content\" />
+    <file src="bin\Release\netstandard2.1\publish\Vellum.Cli.Tinify.dll" target="content\" />
     <file src="bin\Release\netstandard2.1\publish\Tinify.dll" target="content\" />
   </files>
 </package>
