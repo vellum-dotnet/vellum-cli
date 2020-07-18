@@ -24,8 +24,9 @@ jobs:
     netSdkVersion: '3.x'
     postPack:
       - task: NuGetCommand@2
+        displayName: 'Creat Nuget Packages from .nuspec files.'
         inputs:
           command: 'pack'
-          packagesToPack: '/Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec'
+          packagesToPack: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec'
           versioningScheme: 'byEnvVar'
           versionEnvVar: 'GitVersion.SemVer'
