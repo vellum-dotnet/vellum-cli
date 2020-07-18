@@ -29,6 +29,7 @@ jobs:
         command: 'publish'
         projects: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj'
         arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer)'
+        publishWebProjects: False
         versioningScheme: byBuildNumber
         buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
     postPack:
