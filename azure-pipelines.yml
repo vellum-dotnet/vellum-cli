@@ -41,3 +41,9 @@ jobs:
           packagesToPack: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec'
           versioningScheme: 'byEnvVar'
           versionEnvVar: 'GitVersion.SemVer'
+      - task: CopyFiles@2
+        displayName: 'Copy .nuspec Generated NuGet Packages To Release Folder'
+        inputs:
+          SourceFolder: '$(Build.ArtifactStagingDirectory)'
+          Contents: '*.nupkg'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/Release/NuGet'
