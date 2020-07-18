@@ -4,7 +4,7 @@
     <id>Vellum.Cli.Cloudinary</id>
     <!-- This is overridden by the automatic build. It is present here to avoid validation failures. -->
     <version>0.0.0</version>
-    <description>CLoudinary Plugin for uploading media assets to Cloudinary CDN</description>
+    <description>Cloudinary Plugin for uploading media assets to Cloudinary CDN</description>
     <authors>endjin</authors>
     <license type="expression">Apache-2.0</license>
     <tags>vellum static cms vellum-cli vellum-cli-plugin cloudinary endjin</tags>
