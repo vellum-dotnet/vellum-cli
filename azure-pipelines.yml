@@ -22,3 +22,10 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     netSdkVersion: '3.x'
+    postPack:
+      - task: NuGetCommand@2
+        inputs:
+          command: 'pack'
+          packagesToPack: '/Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec'
+          versioningScheme: 'byEnvVar'
+          versionEnvVar: 'GitVersion.SemVer'
