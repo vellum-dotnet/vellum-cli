@@ -27,7 +27,7 @@ jobs:
       displayName: 'Publish Assets for .nuspec Packages'
       inputs:
         command: 'publish'
-        projects: $(SolutionToBuild)
+        projects: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj'
         arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer)'
         versioningScheme: byBuildNumber
         buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
