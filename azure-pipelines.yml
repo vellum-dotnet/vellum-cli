@@ -46,4 +46,4 @@ jobs:
         inputs:
           SourceFolder: '$(Build.ArtifactStagingDirectory)'
           Contents: '*.nupkg'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/Release/NuGet'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/Release/NuGet/Packages/$(BuildID)'
