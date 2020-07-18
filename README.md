@@ -3,6 +3,77 @@
 [![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/vellum-dotnet/vellum-cli/master/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum.cli/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/total?cache=false)
 
+`Vellum` is a Static Content Management System, available as a .NET Global Tool, and is built using Microsoft's `System.CommandLine` [libraries](https://github.com/dotnet/command-line-api). These packages, while still marked as experimental, are seeing lots of real-world usage, including tools such as [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet) and [].NET Interactive](https://github.com/dotnet/interactive). A useful blog post for understanding `System.CommandLine` is [Radu Matei's](https://twitter.com/matei_radu) blog post "[Building self-contained, single executable .NET Core 3 CLI tools](https://radu-matei.com/blog/self-contained-dotnet-cli/)".
+
+## dotnet global tools
+
+`vellum-cli` is a [.NET global tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools), which means once installed, it's available on the PATH of your machine. 
+
+To list all the global tools installed on your machine, open a command prompt and type:
+
+`dotnet tool list -g`
+
+To install the `vellum-cli` global tool use the following command:
+
+`dotnet tool install -g vellum-cli`
+
+To install a specific version, use:
+
+`dotnet tool install -g vellum-cli --version <version-number>`
+
+To update to the latest version of the tool, use:
+
+`dotnet tool update -g vellum-cli`
+
+To uninstall the tool, use:
+
+`dotnet tool uninstall -g vellum-cli`
+
+## dotnet-suggest
+
+`vellum-cli` supports [dotnet suggest](https://github.com/dotnet/command-line-api/wiki/dotnet-suggest), for tab based auto completion.
+
+To install dotnet suggest:
+
+`dotnet tool install -g dotnet-suggest`
+
+Next check if you have a PowerShell profile configured, by opening a PowerShell prompt and typing the following:
+
+`echo $profile`
+
+You should see something like:
+
+`$ENV:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
+
+If you don't see such a file run the following command:
+
+`Invoke-WebRequest -Uri https://raw.githubusercontent.com/dotnet/command-line-api/master/src/System.CommandLine.Suggest/dotnet-suggest-shim.ps1 -OutFile $profile`
+
+Otherwise, copy the contents of the file above and paste it into your pre-existing profile.
+
+## Commands
+
+Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to explore the available commands. Here is a detailed list of the available commands:
+
+`vellum-cli environment` - Manipulate the vellum-cli environment & settings. Will list available sub-commands.
+
+`vellum-cli environment init` - Initialize the environment & settings.
+
+`vellum-cli plugins install --package-id <PACKAGE ID>` - Install a vellum-cli plugin.
+
+`vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
+
+`vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
+
+## Plugins
+
+`vellum-cli` supports external plugins.
+
+### Cloudinary
+
+[Cloudinary](https://cloudinary.com/) is a Content Delivery Network that also offers sophiticated APIs for manipulating media. 
+
+`vellum cloudinary upload --file <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
 
 ## Licenses
 

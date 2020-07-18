@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Vellum.Cli": {
+      "commandName": "Project"
+    }
+  }
+}
