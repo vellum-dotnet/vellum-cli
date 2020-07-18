@@ -89,9 +89,9 @@ namespace Vellum.Cli.Tinify.Commands
 
             Command Upload()
             {
-                var cmd = new Command("upload", "Upload media assets in Cloudinary")
+                var cmd = new Command("optimize", "Optimise images using tinify")
                 {
-                    new Option("--file-path", "Where should the demo project be written to?")
+                    new Option("--file-path", "Which image file (jpg|png) are you going to optimize?")
                     {
                         Argument = new Argument<FileInfo>(),
                     },
