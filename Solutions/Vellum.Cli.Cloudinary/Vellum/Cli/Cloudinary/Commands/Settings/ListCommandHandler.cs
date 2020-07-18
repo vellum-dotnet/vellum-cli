@@ -2,15 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Settings
+namespace Vellum.Cli.Cloudinary.Commands.Settings
 {
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
     using System.Threading.Tasks;
-    using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Cloudinary.Environment;
-    using Vellum.Cli.Cloudinary.Upload;
+    using Vellum.Cli.Cloudinary.Settings;
 
     public static class ListCommandHandler
     {
@@ -33,7 +33,7 @@ namespace Vellum.Cli.Cloudinary.Settings
                 console.Out.WriteLine($"vellum cloudinary setting update --cloud <VALUE> --key <VALUE> --secret <VALUE>");
             }
 
-            return Task.FromResult(0);
+            return Task.FromResult(ReturnCodes.Ok);
         }
     }
 }

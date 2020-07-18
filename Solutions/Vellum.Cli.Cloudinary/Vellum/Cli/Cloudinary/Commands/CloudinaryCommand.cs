@@ -2,15 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary
+namespace Vellum.Cli.Cloudinary.Commands
 {
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.IO;
     using System.Threading.Tasks;
     using Vellum.Cli.Abstractions.Commands;
-    using Vellum.Cli.Cloudinary.Settings;
-    using Vellum.Cli.Cloudinary.Upload;
+    using Vellum.Cli.Cloudinary.Commands.Settings;
+    using Vellum.Cli.Cloudinary.Commands.Upload;
 
     public class CloudinaryCommand : ICommandPlugin
     {

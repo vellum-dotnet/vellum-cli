@@ -7,6 +7,7 @@ namespace Vellum.Cli.Commands.Plugins
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.Threading.Tasks;
+    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Packages;
 
@@ -21,7 +22,7 @@ namespace Vellum.Cli.Commands.Plugins
             var packageManager = new NuGetPluginPackageManager(appEnvironment);
             var result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
 
-            return 0;
+            return ReturnCodes.Ok;
         }
     }
 }

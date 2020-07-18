@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Upload
+namespace Vellum.Cli.Cloudinary.Commands.Upload
 {
     using System;
     using System.CommandLine;
@@ -11,6 +11,7 @@ namespace Vellum.Cli.Cloudinary.Upload
     using System.Threading.Tasks;
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Cloudinary.Environment;
     using Vellum.Cli.Cloudinary.Settings;
 
@@ -21,7 +22,7 @@ namespace Vellum.Cli.Cloudinary.Upload
             if (options == null)
             {
                 console.Error.WriteLine("Invalid File Path");
-                return 1;
+                return ReturnCodes.Error;
             }
 
             var settingsManager = new CloudinarySettingsManager(new FileSystemRoamingProfileAppEnvironment());
@@ -49,10 +50,10 @@ namespace Vellum.Cli.Cloudinary.Upload
             {
                 console.Error.WriteLine(exception.Message);
 
-                return 1;
+                return ReturnCodes.Error;
             }
 
-            return 0;
+            return ReturnCodes.Ok;
         }
     }
 }

@@ -28,7 +28,7 @@ jobs:
       inputs:
         command: 'publish'
         zipAfterPublish: False
-        projects: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj'
+        projects: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj;Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.csproj'
         arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer) --no-build --no-restore'
         publishWebProjects: False
         versioningScheme: byBuildNumber
@@ -38,7 +38,7 @@ jobs:
         displayName: 'Create .nuspec based NuGet Packages'
         inputs:
           command: 'pack'
-          packagesToPack: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec'
+          packagesToPack: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec;Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.nuspec'
           versioningScheme: 'byEnvVar'
           versionEnvVar: 'GitVersion.SemVer'
       - task: CopyFiles@2

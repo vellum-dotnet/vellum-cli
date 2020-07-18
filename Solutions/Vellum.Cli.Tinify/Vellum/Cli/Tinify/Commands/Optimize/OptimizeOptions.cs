@@ -1,14 +1,14 @@
-﻿// <copyright file="UploadOptions.cs" company="Endjin Limited">
+﻿// <copyright file="OptimizeOptions.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Upload
+namespace Vellum.Cli.Tinify.Commands.Optimize
 {
     using System.IO;
 
-    public class UploadOptions
+    public class OptimizeOptions
     {
-        public UploadOptions(FileInfo filePath)
+        public OptimizeOptions(FileInfo filePath)
         {
             this.FilePath = filePath;
         }

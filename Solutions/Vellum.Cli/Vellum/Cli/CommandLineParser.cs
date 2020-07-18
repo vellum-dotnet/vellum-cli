@@ -13,6 +13,7 @@ namespace Vellum.Cli
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Commands.Environment;
     using Vellum.Cli.Commands.Plugins;
@@ -69,7 +70,7 @@ namespace Vellum.Cli
 
                 int result = parser.Invoke("environment init");
 
-                if (result == 0)
+                if (result == ReturnCodes.Ok)
                 {
                     // Now the environment has been re-initialized, try to discover the plugins again.
                     foreach (Command command in this.commandPluginHost.Discover(this.appEnvironment.PluginPaths))

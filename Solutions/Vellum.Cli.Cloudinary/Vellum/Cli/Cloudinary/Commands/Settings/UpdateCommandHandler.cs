@@ -2,13 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Settings
+namespace Vellum.Cli.Cloudinary.Commands.Settings
 {
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
     using System.Threading.Tasks;
+    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Cloudinary.Environment;
+    using Vellum.Cli.Cloudinary.Settings;
 
     public static class UpdateCommandHandler
     {
@@ -32,7 +34,7 @@ namespace Vellum.Cli.Cloudinary.Settings
                 console.Error.WriteLine($"Settings could not be updated.");
             }
 
-            return Task.FromResult(0);
+            return Task.FromResult(ReturnCodes.Ok);
         }
     }
 }
