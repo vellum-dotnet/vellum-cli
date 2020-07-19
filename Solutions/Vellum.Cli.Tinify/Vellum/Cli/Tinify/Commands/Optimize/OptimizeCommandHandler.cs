@@ -29,6 +29,8 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
 
             try
             {
+                console.Out.WriteLine("Validating Tinify API Key");
+
                 Tinify.Key = settings.Key;
                 bool validKey = await Tinify.Validate().ConfigureAwait(false);
 
@@ -40,11 +42,16 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
 
                 long originalSizeInBytes = options.FilePath.Length;
 
+                console.Out.WriteLine($"Original size: {originalSizeInBytes / 1024}KB");
+
                 Source source = await Tinify.FromFile(options.FilePath.FullName).ConfigureAwait(false);
                 await source.ToFile(options.FilePath.FullName);
 
                 long newSizeInBytes = options.FilePath.Length;
                 double percentChange = (newSizeInBytes - originalSizeInBytes) * 100.0 / originalSizeInBytes;
+
+                console.Out.WriteLine($"New size: {newSizeInBytes / 1024}KB");
+                console.Out.WriteLine($"{percentChange}% Reduction");
             }
             catch (Exception exception)
             {
