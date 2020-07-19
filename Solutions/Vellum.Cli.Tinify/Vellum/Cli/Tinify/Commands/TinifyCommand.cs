@@ -75,7 +75,10 @@ namespace Vellum.Cli.Tinify.Commands
                 {
                     new Option("--key", "Tinify API Key")
                     {
-                        Argument = new Argument<string>(),
+                        Argument = new Argument<string>
+                        {
+                            Arity = ArgumentArity.ExactlyOne,
+                        },
                     },
                 };
 
