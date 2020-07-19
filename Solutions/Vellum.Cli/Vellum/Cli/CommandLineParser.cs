@@ -118,9 +118,11 @@ namespace Vellum.Cli
 
                 var installCmd = new Command("install", "Install a vellum-cli plugin.")
                 {
-                    new Option("--package-id", "NuGet Package Id")
+                    new Argument<string>
                     {
-                        Argument = new Argument<string>(),
+                        Name = "PackageId",
+                        Description = "NuGet Package Id",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
                 };
 
