@@ -25,10 +25,18 @@ namespace Vellum.Cli.Commands.Plugins
 
             var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
-            PluginPackageMetaData result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
+            try
+            {
+                PluginPackageMetaData result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
 
-            console.Out.WriteLine($"Using plugin version {result.Version}");
-            console.Out.WriteLine($"Installed plugin {result.Name} to {result.PluginPath}");
+                console.Out.WriteLine($"Using plugin version {result.Version}");
+                console.Out.WriteLine($"Installed plugin {result.Name} to {result.PluginPath}");
+            }
+            catch (System.IO.IOException)
+            {
+                console.Out.WriteLine("The latest version of this plugin is already installed.");
+                return ReturnCodes.Error;
+            }
 
             return ReturnCodes.Ok;
         }

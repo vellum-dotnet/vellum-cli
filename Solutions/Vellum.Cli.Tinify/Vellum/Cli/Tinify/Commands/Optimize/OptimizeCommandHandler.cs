@@ -7,6 +7,7 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
+    using System.IO;
     using System.Threading.Tasks;
     using TinifyAPI;
     using Vellum.Cli.Abstractions;
@@ -47,11 +48,11 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
                 Source source = await Tinify.FromFile(options.FilePath.FullName).ConfigureAwait(false);
                 await source.ToFile(options.FilePath.FullName);
 
-                long newSizeInBytes = options.FilePath.Length;
+                long newSizeInBytes =  new FileInfo(options.FilePath.FullName).Length;
                 double percentChange = (newSizeInBytes - originalSizeInBytes) * 100.0 / originalSizeInBytes;
 
                 console.Out.WriteLine($"New size: {newSizeInBytes / 1024}KB");
-                console.Out.WriteLine($"{percentChange}% Reduction");
+                console.Out.WriteLine($"-{percentChange}% Reduction");
             }
             catch (Exception exception)
             {

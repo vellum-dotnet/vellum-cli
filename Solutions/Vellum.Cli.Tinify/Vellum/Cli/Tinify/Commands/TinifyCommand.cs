@@ -73,12 +73,11 @@ namespace Vellum.Cli.Tinify.Commands
             {
                 var command = new Command("update", "Update Tinify settings.")
                 {
-                    new Option("--key", "Tinify API Key")
+                    new Argument<string>
                     {
-                        Argument = new Argument<string>
-                        {
-                            Arity = ArgumentArity.ExactlyOne,
-                        },
+                        Name = "Key",
+                        Description = "Tinify API Key",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
                 };
 
@@ -92,11 +91,13 @@ namespace Vellum.Cli.Tinify.Commands
 
             Command Upload()
             {
-                var cmd = new Command("optimize", "Optimise images using tinify")
+                var cmd = new Command("optimize", "Optimise images using Tinify")
                 {
-                    new Option("--file-path", "Which image file (jpg|png) are you going to optimize?")
+                    new Argument<FileInfo>
                     {
-                        Argument = new Argument<FileInfo>(),
+                        Name = "FilePath",
+                        Description = "Which image file (jpg|png) are you going to optimize?",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
                 };
 

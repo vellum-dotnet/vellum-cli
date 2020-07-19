@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Vellum.Cli": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "plugins install"
     }
   }
 }
