@@ -59,11 +59,13 @@ Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to e
 
 `vellum-cli environment init` - Initialize the environment & settings.
 
-`vellum-cli plugins install --package-id <PACKAGE ID>` - Install a vellum-cli plugin.
+`vellum-cli plugins install <PACKAGE ID>` - Install a vellum-cli plugin.
 
-`vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
+`vellum-cli plugins uninstall <PACKAGE ID>` - Uninstall a vellum-cli plugin.
 
-`vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
+NOT IMPLEMENTED `vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
+
+NOT IMPLEMENTED `vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
 
 ## Plugins
 
@@ -73,7 +75,21 @@ Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to e
 
 [Cloudinary](https://cloudinary.com/) is a Content Delivery Network that also offers sophiticated APIs for manipulating media. 
 
-`vellum cloudinary upload --file <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
+`vellum cloudinary settings list` - lists the current settings.
+
+`vellum cloudinary settings update <CLOUD> <KEY> <SECRET>` - update the settings for Cloudinary authentication.
+
+`vellum cloudinary upload <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
+
+### Tinify
+
+[Tinify](https://tinypng.com/) is an API for optimising PNG and JPG image formats.
+
+To use, first you need to register for an [API Key](https://tinypng.com/developers), this will allow you to process 500 images per month.
+
+`vellum tinify settings update <KEY>` - updates tinify setting with your API Key.
+
+`vellum tinify settings list ` - lists your tinify settings.
 
 ## Licenses
 
