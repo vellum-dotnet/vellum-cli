@@ -31,6 +31,18 @@ namespace Vellum.Cli.Packages
             this.appEnvironment = appEnvironment;
         }
 
+        public Task UninstallAsync(string packageId)
+        {
+            var pluginPath = Path.Join(this.appEnvironment.PluginPath.ToString(), packageId);
+
+            if (Directory.Exists(pluginPath))
+            {
+                Directory.Delete(pluginPath, recursive: true);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task<PluginPackageMetaData> InstallLatestAsync(string packageId)
         {
             var packageMetaData = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);

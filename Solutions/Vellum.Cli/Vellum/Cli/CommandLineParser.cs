@@ -36,22 +36,27 @@ namespace Vellum.Cli
 
         public delegate Task PluginInstall(PluginOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
+        public delegate Task PluginUninstall(PluginOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
         public delegate Task PluginList(IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public Parser Create(
             EnvironmentInit environmentInit = null,
             PluginInstall pluginInstall = null,
+            PluginUninstall pluginUninstall = null,
             PluginList pluginList = null)
         {
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
             environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
+            pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
             pluginList ??= PluginListHandler.ExecuteAsync;
 
             // Set up intrinsic commands that will always be available.
             RootCommand rootCommand = Root();
             rootCommand.AddCommand(Environment());
             rootCommand.AddCommand(Plugins());
+            rootCommand.AddCommand(Templates());
 
             CommandLineBuilder commandBuilder = new CommandLineBuilder(rootCommand).UseDefaults();
 
@@ -131,6 +136,21 @@ namespace Vellum.Cli
                     await pluginInstall(options, context.Console, this.appEnvironment, context);
                 });
 
+                var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli plugin.")
+                {
+                    new Argument<string>
+                    {
+                        Name = "PackageId",
+                        Description = "NuGet Package Id",
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                };
+
+                uninstallCmd.Handler = CommandHandler.Create<PluginOptions, InvocationContext>(async (options, context) =>
+                {
+                    await pluginUninstall(options, context.Console, this.appEnvironment, context);
+                });
+
                 var listCmd = new Command("list", "List installed vellum-cli plugins.")
                 {
                     Handler = CommandHandler.Create<InvocationContext>(async (context) =>
@@ -140,9 +160,17 @@ namespace Vellum.Cli
                 };
 
                 pluginsCmd.AddCommand(installCmd);
+                pluginsCmd.AddCommand(uninstallCmd);
                 pluginsCmd.AddCommand(listCmd);
 
                 return pluginsCmd;
+            }
+
+            Command Templates()
+            {
+                var cmd = new Command("templates", "Perform operations on Vellum templates.");
+
+                return cmd;
             }
         }
     }
