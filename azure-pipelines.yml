@@ -28,17 +28,7 @@ jobs:
       inputs:
         command: 'publish'
         zipAfterPublish: False
-        projects: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj'
-        arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer) --no-build --no-restore'
-        publishWebProjects: False
-        versioningScheme: byBuildNumber
-        buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
-    - task: DotNetCoreCLI@2
-      displayName: 'Publish Assets for .nuspec Packages'
-      inputs:
-        command: 'publish'
-        zipAfterPublish: False
-        projects: 'Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.csproj'
+        projects: '**/*/*.csproj'
         arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer) --no-build --no-restore'
         publishWebProjects: False
         versioningScheme: byBuildNumber
@@ -48,14 +38,7 @@ jobs:
         displayName: 'Create .nuspec based NuGet Packages'
         inputs:
           command: 'pack'
-          packagesToPack: 'Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec'
-          versioningScheme: 'byEnvVar'
-          versionEnvVar: 'GitVersion.SemVer'
-      - task: NuGetCommand@2
-        displayName: 'Create .nuspec based NuGet Packages'
-        inputs:
-          command: 'pack'
-          packagesToPack: 'Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.nuspec'
+          packagesToPack: '**/*/*.nuspec'
           versioningScheme: 'byEnvVar'
           versionEnvVar: 'GitVersion.SemVer'
       - task: CopyFiles@2
