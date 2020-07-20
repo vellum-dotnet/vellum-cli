@@ -73,17 +73,23 @@ namespace Vellum.Cli.Cloudinary.Commands
             {
                 var command = new Command("update", "Update Cloudinary settings.")
                 {
-                    new Option("--cloud", "Cloudinary Cloud Account Name")
+                    new Argument<string>
                     {
-                        Argument = new Argument<string>(),
+                        Name = "cloud",
+                        Description = "Cloudinary Cloud Account Name",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
-                    new Option("--key", "Cloudinary API Key")
+                    new Argument<string>
                     {
-                        Argument = new Argument<string>(),
+                        Name = "key",
+                        Description = "Cloudinary API Key",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
-                    new Option("--secret", "Cloudinary API Secret")
+                    new Argument<string>
                     {
-                        Argument = new Argument<string>(),
+                        Name = "secret",
+                        Description = "Cloudinary API Secret",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
                 };
 
@@ -99,9 +105,11 @@ namespace Vellum.Cli.Cloudinary.Commands
             {
                 var cmd = new Command("upload", "Upload media assets in Cloudinary")
                 {
-                    new Option("--file-path", "Where should the demo project be written to?")
+                    new Argument<FileInfo>
                     {
-                        Argument = new Argument<FileInfo>(),
+                        Name = "file-path",
+                        Description = "Which file should be uploaded to Cloudinary?",
+                        Arity = ArgumentArity.ExactlyOne,
                     },
                 };
 
