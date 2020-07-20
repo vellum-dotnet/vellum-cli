@@ -8,6 +8,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
+    using System.IO;
     using System.Threading.Tasks;
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
@@ -34,7 +35,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
             var fileToUpload = new ImageUploadParams
             {
                 File = new FileDescription(options.FilePath.FullName),
-                PublicId = $"assets/images/blog/{DateTime.Now.Year}/{DateTime.Now.Month:00}/{options.FilePath.Name.ToLowerInvariant()}",
+                PublicId = $"assets/images/blog/{DateTime.Now.Year}/{DateTime.Now.Month:00}/{Path.GetFileNameWithoutExtension(options.FilePath.Name.ToLowerInvariant())}",
                 UniqueFilename = false,
                 UseFilename = false,
             };
@@ -44,7 +45,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
                 ImageUploadResult uploadResult = await cloudinary.UploadAsync(fileToUpload).ConfigureAwait(false);
 
                 console.Out.WriteLine("Image uploaded.");
-                console.Out.WriteLine($"Use following path in your blog post: /{uploadResult.PublicId}");
+                console.Out.WriteLine($"Use following path in your blog post: /{uploadResult.PublicId}{Path.GetExtension(options.FilePath.Name)}");
             }
             catch (Exception exception)
             {
