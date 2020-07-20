@@ -26,7 +26,7 @@ namespace Vellum.Cli.Tinify.Commands.Settings
             else
             {
                 console.Out.WriteLine($"Tinify Settings cannot be found. Please Run:");
-                console.Out.WriteLine($"vellum-cli tinify setting update --key <VALUE>");
+                console.Out.WriteLine($"vellum-cli tinify setting update <VALUE>");
             }
 
             return Task.FromResult(0);
