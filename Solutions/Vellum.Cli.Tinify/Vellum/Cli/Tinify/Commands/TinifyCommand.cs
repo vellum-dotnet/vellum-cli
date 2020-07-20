@@ -16,22 +16,22 @@ namespace Vellum.Cli.Tinify.Commands
     {
         private List list;
         private Update update;
-        private Upload uploadAsync;
+        private Optimize optimizeAsync;
 
         public TinifyCommand()
         {
         }
 
-        public TinifyCommand(List list, Update update, Upload uploadAsync)
+        public TinifyCommand(List list, Update update, Optimize optimizeAsync)
         {
             this.list = list;
             this.update = update;
-            this.uploadAsync = uploadAsync;
+            this.optimizeAsync = optimizeAsync;
         }
 
         public delegate Task List(IConsole console, InvocationContext invocationContext = null);
 
-        public delegate Task Upload(OptimizeOptions options, IConsole console, InvocationContext invocationContext = null);
+        public delegate Task Optimize(OptimizeOptions options, IConsole console, InvocationContext invocationContext = null);
 
         public delegate Task Update(UpdateOptions options, IConsole console, InvocationContext invocationContext = null);
 
@@ -39,12 +39,12 @@ namespace Vellum.Cli.Tinify.Commands
         {
             this.list ??= ListCommandHandler.Execute;
             this.update ??= UpdateCommandHandler.Execute;
-            this.uploadAsync ??= OptimizeCommandHandler.Execute;
+            this.optimizeAsync ??= OptimizeCommandHandler.Execute;
 
             var rootCmd = new Command("tinify", "Optimize media assets with Tinify.");
 
             rootCmd.AddCommand(Settings());
-            rootCmd.AddCommand(Upload());
+            rootCmd.AddCommand(Optimize());
 
             return rootCmd;
 
@@ -89,7 +89,7 @@ namespace Vellum.Cli.Tinify.Commands
                 return command;
             }
 
-            Command Upload()
+            Command Optimize()
             {
                 var cmd = new Command("optimize", "Optimise images using Tinify")
                 {
@@ -103,7 +103,7 @@ namespace Vellum.Cli.Tinify.Commands
 
                 cmd.Handler = CommandHandler.Create<OptimizeOptions, InvocationContext>(async (options, context) =>
                 {
-                    await this.uploadAsync(options, context.Console, context).ConfigureAwait(false);
+                    await this.optimizeAsync(options, context.Console, context).ConfigureAwait(false);
                 });
 
                 return cmd;
