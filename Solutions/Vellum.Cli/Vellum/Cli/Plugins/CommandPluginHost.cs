@@ -22,7 +22,11 @@ namespace Vellum.Cli.Plugins
             {
                 foreach (IAbsoluteFilePath child in dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
                 {
-                    var pluginLoader = PluginLoader.CreateFromAssemblyFile(child.FileInfo.FullName, sharedTypes: new[] { typeof(ICommandPlugin) }, config => config.EnableHotReload = true);
+                    // Enable Hot Reload so that we can delete plugins, otherwise you get an access denied exception
+                    var pluginLoader = PluginLoader.CreateFromAssemblyFile(
+                        child.FileInfo.FullName,
+                        sharedTypes: new[] { typeof(ICommandPlugin) },
+                        config => config.EnableHotReload = true);
 
                     loaders.Add(pluginLoader);
                 }
