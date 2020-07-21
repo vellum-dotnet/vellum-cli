@@ -17,6 +17,7 @@ namespace Vellum.Cli
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Commands.Environment;
     using Vellum.Cli.Commands.Plugins;
+    using Vellum.Cli.Commands.Templates;
     using Vellum.Cli.Plugins;
 
     public class CommandLineParser
@@ -40,17 +41,25 @@ namespace Vellum.Cli
 
         public delegate Task PluginList(IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
+        public delegate Task TemplateInstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
+        public delegate Task TemplateUninstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
         public Parser Create(
             EnvironmentInit environmentInit = null,
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
-            PluginList pluginList = null)
+            PluginList pluginList = null,
+            TemplateInstall templateInstall = null,
+            TemplateUninstall templateUninstall = null)
         {
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
             environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
             pluginList ??= PluginListHandler.ExecuteAsync;
+            templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
+            templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
 
             // Set up intrinsic commands that will always be available.
             RootCommand rootCommand = Root();
@@ -169,6 +178,43 @@ namespace Vellum.Cli
             Command Templates()
             {
                 var cmd = new Command("templates", "Perform operations on Vellum templates.");
+
+                var packagesCmd = new Command("packages", "Perform operations on Vellum template packages.");
+
+                var installCmd = new Command("install", "Install a vellum-cli template package.")
+                {
+                    new Argument<string>
+                    {
+                        Name = "PackageId",
+                        Description = "NuGet Package Id",
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                };
+
+                installCmd.Handler = CommandHandler.Create<TemplateOptions, InvocationContext>(async (options, context) =>
+                {
+                    await templateInstall(options, context.Console, this.appEnvironment, context);
+                });
+
+                var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli template package.")
+                {
+                    new Argument<string>
+                    {
+                        Name = "PackageId",
+                        Description = "NuGet Package Id",
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                };
+
+                uninstallCmd.Handler = CommandHandler.Create<TemplateOptions, InvocationContext>(async (options, context) =>
+                {
+                    await templateUninstall(options, context.Console, this.appEnvironment, context);
+                });
+
+                packagesCmd.AddCommand(installCmd);
+                packagesCmd.AddCommand(uninstallCmd);
+
+                cmd.AddCommand(packagesCmd);
 
                 return cmd;
             }

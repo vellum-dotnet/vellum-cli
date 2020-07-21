@@ -43,20 +43,20 @@ namespace Vellum.Cli.Packages
             return Task.CompletedTask;
         }
 
-        public async Task<PluginPackageMetaData> InstallLatestAsync(string packageId)
+        public async Task<PluginPackage> InstallLatestAsync(string packageId)
         {
             var packageMetaData = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
 
             return packageMetaData;
         }
 
-        private async Task<PluginPackageMetaData> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath pluginRepositoryPath)
+        private async Task<PluginPackage> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath pluginRepositoryPath)
         {
             var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
             var settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
             var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
-            var packageMetaDataList = new List<PluginPackageMetaData>();
+            var packageMetaDataList = new List<PluginPackage>();
 
             using (var cacheContext = new SourceCacheContext())
             {
@@ -141,7 +141,7 @@ namespace Vellum.Cli.Packages
 
                     PackageIdentity identity = await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
 
-                    var packageMetaData = new PluginPackageMetaData
+                    var packageMetaData = new PluginPackage
                     {
                         Name = identity.Id,
                         Version = identity.Version.OriginalVersion,

@@ -95,7 +95,7 @@ namespace Vellum.Cli.Tinify.Commands
                 {
                     new Argument<FileInfo>
                     {
-                        Name = "FilePath",
+                        Name = "NestedFilePath",
                         Description = "Which image file (jpg|png) are you going to optimize?",
                         Arity = ArgumentArity.ExactlyOne,
                     },

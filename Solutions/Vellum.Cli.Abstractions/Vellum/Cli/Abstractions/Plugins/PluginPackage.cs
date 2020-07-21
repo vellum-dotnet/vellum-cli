@@ -1,4 +1,4 @@
-﻿// <copyright file="PluginPackageMetaData.cs" company="Endjin Limited">
+﻿// <copyright file="PluginPackage.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace Vellum.Cli.Abstractions.Plugins
     using Newtonsoft.Json;
     using Vellum.Cli.Abstractions.Packages;
 
-    public class PluginPackageMetaData
+    public class PluginPackage
     {
         public string Name { get; set; }
 

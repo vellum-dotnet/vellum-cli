@@ -26,6 +26,6 @@ namespace Vellum.Cli.Abstractions.Packages
 
         public string FullPath { get; set; }
 
-        public string Id { get; set; }
+        public string ContentType { get; set; }
     }
 }

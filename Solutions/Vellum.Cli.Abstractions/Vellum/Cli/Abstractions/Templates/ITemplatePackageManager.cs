@@ -8,6 +8,6 @@ namespace Vellum.Cli.Abstractions.Templates
 
     public interface ITemplatePackageManager
     {
-        Task<TemplatePackageMetaData> InstallLatestAsync(string packageId);
+        Task<TemplatePackage> InstallLatestAsync(string packageId);
     }
 }

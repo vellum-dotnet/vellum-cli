@@ -22,7 +22,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
         {
             if (options == null)
             {
-                console.Error.WriteLine("Invalid File Path");
+                console.Error.WriteLine("Invalid File TemplateRepositoryPath");
                 return ReturnCodes.Error;
             }
 

@@ -7,7 +7,7 @@ namespace Vellum.Cli.Abstractions.Templates
     using Vellum.Cli.Abstractions.Configuration;
     using Vellum.Cli.Abstractions.Environment;
 
-    public class TemplateSettingsManager : SettingsManager<TemplateSettings>, ITemplateSettingsManager
+    public class TemplateSettingsManager : SettingsManager<TemplatesSettings>
     {
         public TemplateSettingsManager(IAppEnvironment appEnvironment)
             : base(appEnvironment)

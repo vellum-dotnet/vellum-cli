@@ -27,7 +27,7 @@ namespace Vellum.Cli.Commands.Plugins
 
             try
             {
-                PluginPackageMetaData result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
+                PluginPackage result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
 
                 console.Out.WriteLine($"Using plugin version {result.Version}");
                 console.Out.WriteLine($"Installed plugin {result.Name} to {result.PluginPath}");

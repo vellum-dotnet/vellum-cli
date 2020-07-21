@@ -16,17 +16,17 @@ namespace Vellum.Cli.Cloudinary.Commands
     {
         private List list;
         private Update update;
-        private Upload uploadAsync;
+        private Upload upload;
 
         public CloudinaryCommand()
         {
         }
 
-        public CloudinaryCommand(List list, Update update, Upload uploadAsync)
+        public CloudinaryCommand(List list, Update update, Upload upload)
         {
             this.list = list;
             this.update = update;
-            this.uploadAsync = uploadAsync;
+            this.upload = upload;
         }
 
         public delegate Task List(IConsole console, InvocationContext invocationContext = null);
@@ -39,7 +39,7 @@ namespace Vellum.Cli.Cloudinary.Commands
         {
             this.list ??= ListCommandHandler.Execute;
             this.update ??= UpdateCommandHandler.Execute;
-            this.uploadAsync ??= UploadCommandHandler.Execute;
+            this.upload ??= UploadCommandHandler.Execute;
 
             var rootCmd = new Command("cloudinary", "Manage media assets in Cloudinary.");
 
@@ -76,7 +76,7 @@ namespace Vellum.Cli.Cloudinary.Commands
                     new Argument<string>
                     {
                         Name = "cloud",
-                        Description = "Cloudinary Cloud Account Name",
+                        Description = "Cloudinary Cloud Account PackageId",
                         Arity = ArgumentArity.ExactlyOne,
                     },
                     new Argument<string>
@@ -115,7 +115,7 @@ namespace Vellum.Cli.Cloudinary.Commands
 
                 cmd.Handler = CommandHandler.Create<UploadOptions, InvocationContext>(async (options, context) =>
                 {
-                    await this.uploadAsync(options, context.Console, context).ConfigureAwait(false);
+                    await this.upload(options, context.Console, context).ConfigureAwait(false);
                 });
 
                 return cmd;

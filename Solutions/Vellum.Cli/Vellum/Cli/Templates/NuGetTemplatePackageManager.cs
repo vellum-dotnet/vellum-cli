@@ -6,11 +6,13 @@ namespace Vellum.Cli.Templates
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Markdig;
+    using Markdig.Extensions.Yaml;
+    using Markdig.Syntax;
     using NDepend.Path;
     using NuGet.Common;
     using NuGet.Configuration;
@@ -21,8 +23,8 @@ namespace Vellum.Cli.Templates
     using NuGet.Protocol.Core.Types;
     using NuGet.Resolver;
     using Vellum.Cli.Abstractions.Environment;
-    using Vellum.Cli.Abstractions.Packages;
     using Vellum.Cli.Abstractions.Templates;
+    using YamlDotNet.Serialization;
 
     public class NuGetTemplatePackageManager : ITemplatePackageManager
     {
@@ -33,97 +35,67 @@ namespace Vellum.Cli.Templates
             this.appEnvironment = appEnvironment;
         }
 
-        public async Task<TemplatePackageMetaData> InstallLatestAsync(string packageId)
+        public async Task<TemplatePackage> InstallLatestAsync(string packageId)
         {
-            TemplatePackageMetaData templateMetaData = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.TemplatesPath).ConfigureAwait(false);
+            TemplatePackage template = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.TemplatesPath).ConfigureAwait(false);
 
-            templateMetaData.Details.AddRange(await this.GetTemplatePackageDetails(templateMetaData.TemplatePath, templateMetaData.Templates).ConfigureAwait(false));
+            await this.EnrichTemplatePackage(template).ConfigureAwait(false);
 
-            return templateMetaData;
+            return template;
         }
 
-        private Task<List<PackageDetail>> GetTemplatePackageDetails(IAbsoluteDirectoryPath templatePackagePath, List<string> templates)
+        public Task UnnstallAsync(TemplatePackage templatePackage)
         {
-            var packageDetails = new List<PackageDetail>();
+            Directory.Delete(templatePackage.TemplateRepositoryPath, recursive: true);
 
-            /*MarkdownDocument document = new MarkdownDocument();
+            return Task.CompletedTask;
+        }
 
-            foreach (var template in templates)
+        private async Task EnrichTemplatePackage(TemplatePackage templatePackage)
+        {
+            IDeserializer deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().IgnoreFields().Build();
+            MarkdownPipeline pipeline = new MarkdownPipelineBuilder()
+                .UseYamlFrontMatter()
+                .Build();
+
+            foreach (Template template in templatePackage.Templates)
             {
-                var details = new PackageDetail
+                string filePath = Path.GetFullPath(Path.Combine(templatePackage.InstalltionPath, template.NestedFilePath));
+                string content = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+
+                MarkdownDocument doc = Markdown.Parse(content, pipeline);
+                YamlFrontMatterBlock yamlBlock = doc.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
+
+                if (yamlBlock != null)
                 {
-                    Id = template.Split('/')[1],
-                    FullPath = Path.GetFullPath(Path.Combine(templatePackagePath, template)),
-                };
+                    string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(stringLine => stringLine.ToString()).Where(value => !string.IsNullOrEmpty(value)));
+                    Dictionary<string, dynamic> frontMatter = deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
 
-                document.Parse(await File.ReadAllTextAsync(details.FullPath).ConfigureAwait(false));
-
-                YamlHeaderBlock metadata = document.Blocks.FirstOrDefault(x => x.Type == MarkdownBlockType.YamlHeader) as YamlHeaderBlock;
-
-                if (metadata != null && metadata.Children.TryGetValue("Authors", out string authors))
-                {
-                    details.Authors = authors;
+                    if (frontMatter.TryGetValue("ContentType", out dynamic contentType))
+                    {
+                        template.ContentType = contentType;
+                    }
                 }
-
-                if (metadata != null && metadata.Children.TryGetValue("Description", out string description))
-                {
-                    details.Description = description;
-                }
-
-                if (metadata != null && metadata.Children.TryGetValue("Effort", out string effort))
-                {
-                    details.Effort = effort;
-                }
-
-                if (metadata != null && metadata.Children.TryGetValue("Default", out string @default))
-                {
-                    details.IsDefault = bool.Parse(@default);
-                }
-
-                if (metadata != null && metadata.Children.TryGetValue("Last Modified", out string lastModified))
-                {
-                    details.LastModified = DateTime.Parse(lastModified, CultureInfo.InvariantCulture);
-                }
-
-                if (metadata.Children.TryGetValue("More Info", out string moreInfo))
-                {
-                    details.MoreInfo = moreInfo;
-                }
-
-                if (metadata.Children.TryGetValue("Title", out string title))
-                {
-                    details.Title = title;
-                }
-
-                if (metadata.Children.TryGetValue("Version", out string version))
-                {
-                    details.Version = Version.Parse(version);
-                }
-
-                packageDetails.Add(details);
-            }*/
-
-            return Task.FromResult(packageDetails);
+            }
         }
 
-        private async Task<TemplatePackageMetaData> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath templateRepositoryPath)
+        private async Task<TemplatePackage> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath templateRepositoryPath)
         {
-            var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
-            var settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
-            var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
+            ISettings settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
 
-            var templatePackageMetaDataList = new List<TemplatePackageMetaData>();
+            var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
+            var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
             using (var cacheContext = new SourceCacheContext())
             {
-                var repositories = sourceRepositoryProvider.GetRepositories();
+                IEnumerable<SourceRepository> repositories = sourceRepositoryProvider.GetRepositories();
                 var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
 
-                foreach (var sourceRepository in repositories)
+                foreach (SourceRepository sourceRepository in repositories)
                 {
-                    var dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>().ConfigureAwait(false);
+                    DependencyInfoResource dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>().ConfigureAwait(false);
 
-                    var dependencyInfo = await dependencyInfoResource.ResolvePackages(
+                    IEnumerable<SourcePackageDependencyInfo> dependencyInfo = await dependencyInfoResource.ResolvePackages(
                         packageId,
                         nugetFramework,
                         cacheContext,
@@ -150,7 +122,10 @@ namespace Vellum.Cli.Templates
 
                 var resolver = new PackageResolver();
 
-                var packageToInstall = resolver.Resolve(resolverContext, CancellationToken.None).Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p))).FirstOrDefault();
+                SourcePackageDependencyInfo packageToInstall = resolver.Resolve(resolverContext, CancellationToken.None)
+                                                                       .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
+                                                                       .FirstOrDefault();
+
                 var packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
 
                 var packageExtractionContext = new PackageExtractionContext(
@@ -159,15 +134,14 @@ namespace Vellum.Cli.Templates
                     ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
                     NullLogger.Instance);
 
-                var frameworkReducer = new FrameworkReducer();
-                var installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
+                string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
                 PackageReaderBase packageReader;
 
-                if (installedPath == null)
+                if (installedPath == null && packageToInstall != null)
                 {
-                    var downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
+                    DownloadResource downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
 
-                    var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
+                    DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                         packageToInstall,
                         new PackageDownloadContext(cacheContext),
                         SettingsUtility.GetGlobalPackagesFolder(settings),
@@ -188,34 +162,36 @@ namespace Vellum.Cli.Templates
                     packageReader = new PackageFolderReader(installedPath);
                 }
 
-                var identity = await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
-                var templatePackageMetaData = new TemplatePackageMetaData
+                PackageIdentity identity = await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
+
+                var templatePackageMetaData = new TemplatePackage
                 {
-                    Name = identity.Id,
+                    PackageId = identity.Id,
                     Version = identity.Version.OriginalVersion,
-                    RepositoryPath = templateRepositoryPath,
+                    TemplateRepositoryPath = templateRepositoryPath.ToString(),
                 };
 
-                foreach (var contentItem in packageReader.GetContentItems())
+                foreach (FrameworkSpecificGroup contentItem in packageReader.GetContentItems())
                 {
-                    templatePackageMetaData.Templates.AddRange(contentItem.Items);
+                    foreach (string item in contentItem.Items)
+                    {
+                        templatePackageMetaData.Templates.Add(new Template { NestedFilePath = item });
+                    }
                 }
 
                 var packageFileExtractor = new PackageFileExtractor(
-                    templatePackageMetaData.Templates,
+                    templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
                     XmlDocFileSaveMode.None);
 
-                packageReader.CopyFiles(
-                    Path.Join(templatePackageMetaData.RepositoryPath.ToString(), templatePackageMetaData.Version),
-                    templatePackageMetaData.Templates,
+                await packageReader.CopyFilesAsync(
+                    templatePackageMetaData.InstalltionPath,
+                    templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
                     packageFileExtractor.ExtractPackageFile,
                     NullLogger.Instance,
-                    CancellationToken.None);
+                    CancellationToken.None).ConfigureAwait(false);
 
-                templatePackageMetaDataList.Add(templatePackageMetaData);
+                return templatePackageMetaData;
             }
-
-            return templatePackageMetaDataList.FirstOrDefault();
         }
     }
 }
