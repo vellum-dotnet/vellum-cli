@@ -2,10 +2,9 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Environment
+namespace Vellum.Cli.Abstractions.Environment
 {
     using Vellum.Cli.Abstractions.Configuration;
-    using Vellum.Cli.Abstractions.Environment;
 
     public class EnvironmentSettingsManager : SettingsManager<EnvironmentSettings>
     {
