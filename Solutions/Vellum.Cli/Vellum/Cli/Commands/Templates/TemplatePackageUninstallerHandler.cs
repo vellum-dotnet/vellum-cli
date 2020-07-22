@@ -28,9 +28,9 @@ namespace Vellum.Cli.Commands.Templates
 
             var packageManager = new NuGetTemplatePackageManager(appEnvironment);
 
-            if (currentSettings.Packages.Exists(x => x.PackageId == options.PackageId))
+            if (currentSettings.Packages.Exists(templatePackage => templatePackage.PackageId == options.PackageId))
             {
-                TemplatePackage package = currentSettings.Packages.Find(x => x.Id == options.PackageId);
+                TemplatePackage package = currentSettings.Packages.Find(templatePackage => templatePackage.Id == options.PackageId);
 
                 if (package != null)
                 {

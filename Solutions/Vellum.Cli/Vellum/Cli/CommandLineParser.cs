@@ -41,6 +41,8 @@ namespace Vellum.Cli
 
         public delegate Task PluginList(IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
+        public delegate Task SetUsername(UsernameOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
         public delegate Task TemplateInstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task TemplateUninstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
@@ -50,6 +52,7 @@ namespace Vellum.Cli
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
             PluginList pluginList = null,
+            SetUsername setUsername = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
         {
@@ -58,6 +61,7 @@ namespace Vellum.Cli
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
             pluginList ??= PluginListHandler.ExecuteAsync;
+            setUsername ??= SetUsernameHandler.ExecuteAsync;
             templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
             templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
 
@@ -100,7 +104,7 @@ namespace Vellum.Cli
             {
                 return new RootCommand
                 {
-                    Name = "vellum",
+                    Name = "vellum-cli",
                     Description = "Static Content Management System.",
                 };
             }
@@ -119,7 +123,31 @@ namespace Vellum.Cli
                     }),
                 };
 
+                var setCommand = new Command(
+                    "set",
+                    "Set vellum-cli environment configuration.");
+
+                var setUserNameCommand = new Command(
+                    "username",
+                    "Sets the username for the current user.")
+                {
+                    new Argument<string>
+                    {
+                        Name = "username",
+                        Description = "Username for the current user",
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                };
+
+                setUserNameCommand.Handler = CommandHandler.Create<UsernameOptions, InvocationContext>(async (options, context) =>
+                {
+                    await setUsername(options, context.Console, this.appEnvironment, context);
+                });
+
+                setCommand.AddCommand(setUserNameCommand);
+
                 environmentCommand.AddCommand(initCommand);
+                environmentCommand.AddCommand(setCommand);
 
                 return environmentCommand;
             }
@@ -134,7 +162,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "PackageId",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -149,7 +177,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "PackageId",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -185,7 +213,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "PackageId",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -200,7 +228,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "PackageId",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },

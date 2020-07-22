@@ -59,6 +59,8 @@ Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to e
 
 `vellum-cli environment init` - Initialize the environment & settings.
 
+`vellum-cli environment set user <USER.NAME>` - Sets the current User's username.
+
 `vellum-cli plugins install <PACKAGE ID>` - Install a vellum-cli plugin.
 
 `vellum-cli plugins uninstall <PACKAGE ID>` - Uninstall a vellum-cli plugin.
