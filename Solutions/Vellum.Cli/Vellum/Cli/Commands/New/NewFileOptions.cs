@@ -8,11 +8,14 @@ namespace Vellum.Cli.Commands.New
 
     public class NewFileOptions
     {
-        public NewFileOptions(DirectoryInfo output)
+        public NewFileOptions(string templateName, FileInfo filePath)
         {
-            this.Output = output;
+            this.TemplateName = templateName;
+            this.FilePath = filePath;
         }
 
-        public DirectoryInfo Output { get; }
+        public string TemplateName { get; }
+
+        public FileInfo FilePath { get; }
     }
 }

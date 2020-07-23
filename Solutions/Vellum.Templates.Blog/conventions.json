@@ -1,0 +1,17 @@
+{
+  "Conventions": [
+    {
+      "ContentType": "application/vnd.endjin.ssg.blogs+md",
+      "Conventions": [
+        {
+          "ContentType": "application/vnd.vellum.conventions.templates.shortcut.command-name",
+          "Value": "blog"
+        },
+        {
+          "ContentType": "application/vnd.vellum.conventions.file-path.blog.posts",
+          "Value": "\\content\\authors\\%username%\\"
+        }
+      ]
+    }
+  ]
+}

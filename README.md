@@ -59,15 +59,23 @@ Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to e
 
 `vellum-cli environment init` - Initialize the environment & settings.
 
-`vellum-cli environment set user <USER.NAME>` - Sets the current User's username.
+`vellum-cli environment set --username <USER.NAME>` - Sets the current User's username.
+
+`vellum-cli environment set --workspace-path <PATH>` - Sets the path to your vellum workspace.
+
+`vellum-cli environment set --publish-path <PATH>` - Sets the path to where your artefacts are generated.
+
+`vellum-cli environment set --key <KEY> --value <VALUE>` - Store key value pairs in configuration.
 
 `vellum-cli plugins install <PACKAGE ID>` - Install a vellum-cli plugin.
 
 `vellum-cli plugins uninstall <PACKAGE ID>` - Uninstall a vellum-cli plugin.
 
-NOT IMPLEMENTED `vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
+NOT IMPLEMENTED YET `vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
 
-NOT IMPLEMENTED `vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
+NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
+
+`vellum-cli new <TEMPLATE NAME> --path <PATH>` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
 
 ## Plugins
 

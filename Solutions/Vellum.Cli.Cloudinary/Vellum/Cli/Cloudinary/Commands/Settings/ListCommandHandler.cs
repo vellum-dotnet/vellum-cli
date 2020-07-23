@@ -22,14 +22,14 @@ namespace Vellum.Cli.Cloudinary.Commands.Settings
 
             if (settings != null)
             {
-                console.Out.WriteLine($"Cloudinary Settings:");
+                console.Out.WriteLine($"Cloudinary Value:");
                 console.Out.WriteLine($"cloud: {settings.Cloud}");
                 console.Out.WriteLine($"key: {settings.Key}");
                 console.Out.WriteLine($"secret: {settings.Secret}");
             }
             else
             {
-                console.Out.WriteLine($"Cloudinary Settings cannot be found. Please Run:");
+                console.Out.WriteLine($"Cloudinary Value cannot be found. Please Run:");
                 console.Out.WriteLine($"vellum cloudinary setting update --cloud <VALUE> --key <VALUE> --secret <VALUE>");
             }
 

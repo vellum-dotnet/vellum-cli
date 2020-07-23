@@ -18,6 +18,28 @@ namespace Vellum.Cli.Commands.Environment
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
+            /*var conventionManager = new ConventionsManager();
+
+            var cn = new ContentTypeConventions
+            {
+                Conventions = new List<ContentTypeConvention>
+                {
+                    new ContentTypeConvention
+                    {
+                        ContentType = "application/vnd.endjin.ssg.blogs+md",
+                        Conventions = new List<Convention>
+                        {
+                            new Convention
+                            {
+                                ContentType = "application/vnd.vellum.conventions.templates.shortcut.command-name",
+                                Value = "blog",
+                            },
+                        },
+                    },
+                },
+            };
+            await conventionManager.SaveAsync(@"c:\temp\conventions.json".ToAbsoluteFilePath(), cn).ConfigureAwait(false);*/
+
             var settingsManager = new EnvironmentSettingsManager(appEnvironment);
 
             EnvironmentSettings settings = settingsManager.LoadSettings() ?? new EnvironmentSettings();

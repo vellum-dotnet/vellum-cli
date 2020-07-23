@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Configuration
+namespace Vellum.Cli.Abstractions.Conventions
 {
     using System.Collections.Generic;
 

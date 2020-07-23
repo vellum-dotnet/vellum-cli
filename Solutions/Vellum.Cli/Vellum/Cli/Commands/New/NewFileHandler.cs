@@ -1,4 +1,4 @@
-﻿// <copyright file="NewHandler.cs" company="Endjin Limited">
+﻿// <copyright file="NewFileHandler.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -11,17 +11,17 @@ namespace Vellum.Cli.Commands.New
     using Vellum.Cli.Abstractions.Conventions;
     using Vellum.Cli.Abstractions.Environment;
 
-    public static class NewHandler
+    public static class NewFileHandler
     {
         public static async Task<int> ExecuteAsync(
-            NewOptions options,
+            NewFileOptions fileOptions,
             IConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
             var conventionsManager = new ConventionsManager();
 
-            foreach (var pluginPath in appEnvironment.PluginPaths)
+            foreach (var pluginPath in appEnvironment.TemplatesPath.ChildrenDirectoriesPath)
             {
                 var conventions = await conventionsManager.LoadAsync(pluginPath.GetChildFileWithName("conventions.json")).ConfigureAwait(false);
             }

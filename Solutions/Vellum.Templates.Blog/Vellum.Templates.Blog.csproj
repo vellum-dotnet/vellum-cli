@@ -1,6 +1,6 @@
 ﻿ <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
-  
+
   <PropertyGroup>
     <AssemblyName>vellum.templates.blog</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -18,6 +18,10 @@
   <ItemGroup>
     <Content Include="post\template.md">
       <PackagePath>content\blog\post</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="conventions.json">
+      <PackagePath>content\</PackagePath>
       <Pack>true</Pack>
     </Content>
   </ItemGroup>

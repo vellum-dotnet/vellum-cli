@@ -17,6 +17,7 @@ namespace Vellum.Cli
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Commands.Environment;
+    using Vellum.Cli.Commands.New;
     using Vellum.Cli.Commands.Plugins;
     using Vellum.Cli.Commands.Templates;
     using Vellum.Cli.Plugins;
@@ -36,6 +37,8 @@ namespace Vellum.Cli
 
         public delegate Task EnvironmentInit(EnvironmentOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
+        public delegate Task NewFile(NewFileOptions fileOptions, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
         public delegate Task PluginInstall(PluginOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task PluginUninstall(PluginOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
@@ -50,6 +53,7 @@ namespace Vellum.Cli
 
         public Parser Create(
             EnvironmentInit environmentInit = null,
+            NewFile newFile = null,
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
             PluginList pluginList = null,
@@ -59,6 +63,7 @@ namespace Vellum.Cli
         {
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
             environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
+            newFile ??= NewFileHandler.ExecuteAsync;
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
             pluginList ??= PluginListHandler.ExecuteAsync;
@@ -69,6 +74,7 @@ namespace Vellum.Cli
             // Set up intrinsic commands that will always be available.
             RootCommand rootCommand = Root();
             rootCommand.AddCommand(Environment());
+            rootCommand.AddCommand(NewFile());
             rootCommand.AddCommand(Plugins());
             rootCommand.AddCommand(Templates());
 
@@ -112,23 +118,23 @@ namespace Vellum.Cli
 
             Command Environment()
             {
-                var environmentCommand = new Command(
+                var cmd = new Command(
                     "environment",
                     "Manipulate the vellum-cli environment & settings.");
 
-                var initCommand = new Command("init", "Initialize the environment & settings.")
+                var initCmd = new Command("init", "Initialize the environment & settings.")
                 {
                     Handler = CommandHandler.Create<EnvironmentOptions, InvocationContext>(async (options, context) =>
                     {
-                        await environmentInit(options, context.Console, this.appEnvironment, context);
+                        await environmentInit(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                     }),
                 };
 
-                var setCommand = new Command(
+                var setCmd = new Command(
                     "set",
                     "Set vellum-cli environment configuration.");
 
-                setCommand.AddOption(new Option("--username", "Username for the current user.")
+                setCmd.AddOption(new Option("--username", "Username for the current user.")
                 {
                     Argument =  new Argument<string>
                     {
@@ -136,7 +142,7 @@ namespace Vellum.Cli
                     },
                 });
 
-                setCommand.AddOption(new Option("--workspace-path", "The location of your vellum workspace.")
+                setCmd.AddOption(new Option("--workspace-path", "The location of your vellum workspace.")
                 {
                     Argument =  new Argument<DirectoryInfo>
                     {
@@ -144,7 +150,7 @@ namespace Vellum.Cli
                     },
                 });
 
-                setCommand.AddOption(new Option("--publish-path", "The location for generated output.")
+                setCmd.AddOption(new Option("--publish-path", "The location for generated output.")
                 {
                     Argument =  new Argument<DirectoryInfo>
                     {
@@ -152,7 +158,7 @@ namespace Vellum.Cli
                     },
                 });
 
-                setCommand.AddOption(new Option("--key", "A user-defined setting key.")
+                setCmd.AddOption(new Option("--key", "A user-defined setting key.")
                 {
                     Argument =  new Argument<string>
                     {
@@ -160,7 +166,7 @@ namespace Vellum.Cli
                     },
                 });
 
-                setCommand.AddOption(new Option("--value", "A user-defined setting value for the specified key.")
+                setCmd.AddOption(new Option("--value", "A user-defined setting value for the specified key.")
                 {
                     Argument =  new Argument<string>
                     {
@@ -168,8 +174,8 @@ namespace Vellum.Cli
                     },
                 });
 
-                // System.CommandLine doesn't support mutually inclusive options, so you need to enforce this behaviour with a validator.
-                setCommand.AddValidator(commandResult =>
+                // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
+                setCmd.AddValidator(commandResult =>
                 {
                     var workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
                     var publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
@@ -190,20 +196,46 @@ namespace Vellum.Cli
                     return null;
                 });
 
-                setCommand.Handler = CommandHandler.Create<SetOptions, InvocationContext>(async (options, context) =>
+                setCmd.Handler = CommandHandler.Create<SetOptions, InvocationContext>(async (options, context) =>
                 {
-                    await setEnvironmentSetting(options, context.Console, this.appEnvironment, context);
+                    await setEnvironmentSetting(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
-                environmentCommand.AddCommand(initCommand);
-                environmentCommand.AddCommand(setCommand);
+                cmd.AddCommand(initCmd);
+                cmd.AddCommand(setCmd);
 
-                return environmentCommand;
+                return cmd;
+            }
+
+            Command NewFile()
+            {
+                var cmd = new Command(
+                    "new",
+                    "Create new files based on templates.")
+                {
+                    new Argument<string>("--template-name")
+                    {
+                        Description = "Name of the template, as defined by the template convention",
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                    new Argument<FileInfo>("--file-path")
+                    {
+                        Description = "Where do you want the new file to be created?",
+                        Arity = ArgumentArity.ZeroOrOne,
+                    },
+                };
+
+                cmd.Handler = CommandHandler.Create<NewFileOptions, InvocationContext>(async (options, context) =>
+                {
+                    await newFile(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                });
+
+                return cmd;
             }
 
             Command Plugins()
             {
-                var pluginsCmd = new Command(
+                var cmd = new Command(
                     "plugins",
                     "Manage vellum-cli plugins.");
 
@@ -219,7 +251,7 @@ namespace Vellum.Cli
 
                 installCmd.Handler = CommandHandler.Create<PluginOptions, InvocationContext>(async (options, context) =>
                 {
-                    await pluginInstall(options, context.Console, this.appEnvironment, context);
+                    await pluginInstall(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
                 var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli plugin.")
@@ -234,22 +266,22 @@ namespace Vellum.Cli
 
                 uninstallCmd.Handler = CommandHandler.Create<PluginOptions, InvocationContext>(async (options, context) =>
                 {
-                    await pluginUninstall(options, context.Console, this.appEnvironment, context);
+                    await pluginUninstall(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
                 var listCmd = new Command("list", "List installed vellum-cli plugins.")
                 {
                     Handler = CommandHandler.Create<InvocationContext>(async (context) =>
                     {
-                        await pluginList(context.Console, this.appEnvironment, context);
+                        await pluginList(context.Console, this.appEnvironment, context).ConfigureAwait(false);
                     }),
                 };
 
-                pluginsCmd.AddCommand(installCmd);
-                pluginsCmd.AddCommand(uninstallCmd);
-                pluginsCmd.AddCommand(listCmd);
+                cmd.AddCommand(installCmd);
+                cmd.AddCommand(uninstallCmd);
+                cmd.AddCommand(listCmd);
 
-                return pluginsCmd;
+                return cmd;
             }
 
             Command Templates()
@@ -270,7 +302,7 @@ namespace Vellum.Cli
 
                 installCmd.Handler = CommandHandler.Create<TemplateOptions, InvocationContext>(async (options, context) =>
                 {
-                    await templateInstall(options, context.Console, this.appEnvironment, context);
+                    await templateInstall(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
                 var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli template package.")
@@ -285,7 +317,7 @@ namespace Vellum.Cli
 
                 uninstallCmd.Handler = CommandHandler.Create<TemplateOptions, InvocationContext>(async (options, context) =>
                 {
-                    await templateUninstall(options, context.Console, this.appEnvironment, context);
+                    await templateUninstall(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
                 packagesCmd.AddCommand(installCmd);

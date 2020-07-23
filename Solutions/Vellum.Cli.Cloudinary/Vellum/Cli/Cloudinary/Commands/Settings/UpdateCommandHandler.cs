@@ -27,11 +27,11 @@ namespace Vellum.Cli.Cloudinary.Commands.Settings
             try
             {
                 settingsManager.SaveSettings(settings);
-                console.Out.WriteLine($"Settings updated.");
+                console.Out.WriteLine($"Value updated.");
             }
             catch
             {
-                console.Error.WriteLine($"Settings could not be updated.");
+                console.Error.WriteLine($"Value could not be updated.");
             }
 
             return Task.FromResult(ReturnCodes.Ok);

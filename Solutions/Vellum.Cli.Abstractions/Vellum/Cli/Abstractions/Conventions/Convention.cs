@@ -2,12 +2,12 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Configuration
+namespace Vellum.Cli.Abstractions.Conventions
 {
     public class Convention
     {
         public string ContentType { get; set; }
 
-        public string Settings { get; set; }
+        public string Value { get; set; }
     }
 }
