@@ -11,5 +11,9 @@ namespace Vellum.Cli.Abstractions.Environment
         public Dictionary<string, dynamic> Configuration { get; set; } = new Dictionary<string, dynamic>();
 
         public string Username { get; set; }
+
+        public string PublishPath { get; set; }
+
+        public string WorkspacePath { get; set; }
     }
 }

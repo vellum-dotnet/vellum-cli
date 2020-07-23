@@ -2,7 +2,7 @@
   "profiles": {
     "Vellum.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "environment set username Howard.vanRooijen"
+      "commandLineArgs": "environment set --key random --value number"
     }
   }
 }

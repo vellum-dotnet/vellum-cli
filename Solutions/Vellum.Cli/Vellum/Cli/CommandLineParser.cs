@@ -8,6 +8,7 @@ namespace Vellum.Cli
     using System.CommandLine;
     using System.CommandLine.Builder;
     using System.CommandLine.Invocation;
+    using System.CommandLine.IO;
     using System.CommandLine.Parsing;
     using System.IO;
     using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace Vellum.Cli
 
         public delegate Task PluginList(IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task SetUsername(UsernameOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task SetUsername(SetOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task TemplateInstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
@@ -52,7 +53,7 @@ namespace Vellum.Cli
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
             PluginList pluginList = null,
-            SetUsername setUsername = null,
+            SetUsername setEnvironmentSetting = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
         {
@@ -61,7 +62,7 @@ namespace Vellum.Cli
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
             pluginList ??= PluginListHandler.ExecuteAsync;
-            setUsername ??= SetUsernameHandler.ExecuteAsync;
+            setEnvironmentSetting ??= SetEnvironmentSettingHandler.ExecuteAsync;
             templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
             templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
 
@@ -127,24 +128,72 @@ namespace Vellum.Cli
                     "set",
                     "Set vellum-cli environment configuration.");
 
-                var setUserNameCommand = new Command(
-                    "username",
-                    "Sets the username for the current user.")
+                setCommand.AddOption(new Option("--username", "Username for the current user.")
                 {
-                    new Argument<string>
+                    Argument =  new Argument<string>
                     {
-                        Name = "username",
-                        Description = "Username for the current user",
                         Arity = ArgumentArity.ExactlyOne,
                     },
-                };
-
-                setUserNameCommand.Handler = CommandHandler.Create<UsernameOptions, InvocationContext>(async (options, context) =>
-                {
-                    await setUsername(options, context.Console, this.appEnvironment, context);
                 });
 
-                setCommand.AddCommand(setUserNameCommand);
+                setCommand.AddOption(new Option("--workspace-path", "The location of your vellum workspace.")
+                {
+                    Argument =  new Argument<DirectoryInfo>
+                    {
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                });
+
+                setCommand.AddOption(new Option("--publish-path", "The location for generated output.")
+                {
+                    Argument =  new Argument<DirectoryInfo>
+                    {
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                });
+
+                setCommand.AddOption(new Option("--key", "A user-defined setting key.")
+                {
+                    Argument =  new Argument<string>
+                    {
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                });
+
+                setCommand.AddOption(new Option("--value", "A user-defined setting value for the specified key.")
+                {
+                    Argument =  new Argument<string>
+                    {
+                        Arity = ArgumentArity.ExactlyOne,
+                    },
+                });
+
+                // System.CommandLine doesn't support mutually inclusive options, so you need to enforce this behaviour with a validator.
+                setCommand.AddValidator(commandResult =>
+                {
+                    var workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
+                    var publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
+                    var username = commandResult.ValueForOption<string>("username");
+                    var key = commandResult.ValueForOption<string>("key");
+                    var value = commandResult.ValueForOption<string>("value");
+
+                    if (workspace == null && publish == null && username == null && key == null && value == null)
+                    {
+                        return "Please specify at least one option.";
+                    }
+
+                    if ((key != null && value == null) || (key == null && value != null))
+                    {
+                        return "--key & --value are mutually inclusive. Please specify a value for --key AND --value";
+                    }
+
+                    return null;
+                });
+
+                setCommand.Handler = CommandHandler.Create<SetOptions, InvocationContext>(async (options, context) =>
+                {
+                    await setEnvironmentSetting(options, context.Console, this.appEnvironment, context);
+                });
 
                 environmentCommand.AddCommand(initCommand);
                 environmentCommand.AddCommand(setCommand);
