@@ -1,0 +1,37 @@
+﻿ <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
+
+  <PropertyGroup>
+    <AssemblyName>vellum.templates.blog</AssemblyName>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageDescription>Blog Post Template for Vellum Static CMS.</PackageDescription>
+    <PackageTags>vellum static cms vellum-cli-template endjin</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="post\template.md">
+      <PackagePath>content\blog\post</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="conventions.json">
+      <PackagePath>content\</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
+  </PropertyGroup>
+
+</Project>

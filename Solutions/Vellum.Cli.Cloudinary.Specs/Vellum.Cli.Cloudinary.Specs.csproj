@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.csproj" />
     <ProjectReference Include="..\Vellum.Cli\Vellum.Cli.csproj" />
   </ItemGroup>
 

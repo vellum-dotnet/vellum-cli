@@ -7,6 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli", "Vellum.Cli\Ve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli.Specs", "Vellum.Cli.Specs\Vellum.Cli.Specs.csproj", "{8F4F2283-A74F-4FEA-AFA2-A501B1D52EF8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli.Cloudinary", "Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.csproj", "{BF36CB30-C9D3-4C6B-BA28-50B60D61DAA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli.Abstractions", "Vellum.Cli.Abstractions\Vellum.Cli.Abstractions.csproj", "{5137E14C-30D4-4FB8-A8AD-56D4F4C2EA3B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli.Cloudinary.Specs", "Vellum.Cli.Cloudinary.Specs\Vellum.Cli.Cloudinary.Specs.csproj", "{8E4F2674-0F09-4D04-9F23-32E6E80C0003}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Templates.Blog", "Vellum.Templates.Blog\Vellum.Templates.Blog.csproj", "{18B74DE2-A222-4039-A94A-144CC779D883}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli.Tinify", "Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj", "{F944D1E2-D690-4635-9F42-0E5607DC763F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +31,26 @@ Global
 		{8F4F2283-A74F-4FEA-AFA2-A501B1D52EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F4F2283-A74F-4FEA-AFA2-A501B1D52EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F4F2283-A74F-4FEA-AFA2-A501B1D52EF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF36CB30-C9D3-4C6B-BA28-50B60D61DAA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF36CB30-C9D3-4C6B-BA28-50B60D61DAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF36CB30-C9D3-4C6B-BA28-50B60D61DAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF36CB30-C9D3-4C6B-BA28-50B60D61DAA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5137E14C-30D4-4FB8-A8AD-56D4F4C2EA3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5137E14C-30D4-4FB8-A8AD-56D4F4C2EA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5137E14C-30D4-4FB8-A8AD-56D4F4C2EA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5137E14C-30D4-4FB8-A8AD-56D4F4C2EA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E4F2674-0F09-4D04-9F23-32E6E80C0003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E4F2674-0F09-4D04-9F23-32E6E80C0003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E4F2674-0F09-4D04-9F23-32E6E80C0003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E4F2674-0F09-4D04-9F23-32E6E80C0003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B74DE2-A222-4039-A94A-144CC779D883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B74DE2-A222-4039-A94A-144CC779D883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B74DE2-A222-4039-A94A-144CC779D883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B74DE2-A222-4039-A94A-144CC779D883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
