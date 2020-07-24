@@ -28,7 +28,6 @@
     <PackageDescription>Vellum is a Static Content Management System.</PackageDescription>
     <PackageTags>vellum static cms vellum-cli endjin</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyName>vellum-cli</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -57,10 +56,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vellum.Cli.Abstractions\Vellum.Cli.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Vellum\Cli\Packages\" />
   </ItemGroup>
 
 </Project>
