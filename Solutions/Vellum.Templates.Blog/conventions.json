@@ -10,7 +10,7 @@
         },
         {
           "ContentType": "application/vnd.vellum.conventions.file-path.blog.posts",
-          "Value": "$(workspacepath)\\content\\authors\\$(username)\\"
+          "Value": "$(workspacepath)\\content\\blog\\$(username)\\"
         }
       ]
     }
