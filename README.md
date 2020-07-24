@@ -75,7 +75,7 @@ NOT IMPLEMENTED YET `vellum-cli plugins list available` - Lists available vellum
 
 NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
 
-`vellum-cli new <TEMPLATE NAME> --path <PATH>` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
+`vellum-cli new <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
 
 ## Plugins
 
