@@ -24,11 +24,11 @@ namespace Vellum.Cli.Tinify.Commands.Settings
             try
             {
                 settingsManager.SaveSettings(settings);
-                console.Out.WriteLine($"Value updated.");
+                console.Out.WriteLine($"Settings updated.");
             }
             catch
             {
-                console.Error.WriteLine($"Value could not be updated.");
+                console.Error.WriteLine($"Settings could not be updated.");
             }
 
             return Task.FromResult(0);

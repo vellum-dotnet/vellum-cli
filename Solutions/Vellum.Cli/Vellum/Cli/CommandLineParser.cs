@@ -243,7 +243,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "package-id",
+                        Name = "--package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -258,7 +258,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "package-id",
+                        Name = "--package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -294,7 +294,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "package-id",
+                        Name = "--package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -309,7 +309,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "package-id",
+                        Name = "--package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },

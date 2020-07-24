@@ -75,19 +75,19 @@ namespace Vellum.Cli.Cloudinary.Commands
                 {
                     new Argument<string>
                     {
-                        Name = "cloud",
+                        Name = "--cloud",
                         Description = "Cloudinary Cloud Account PackageId",
                         Arity = ArgumentArity.ExactlyOne,
                     },
                     new Argument<string>
                     {
-                        Name = "key",
+                        Name = "--key",
                         Description = "Cloudinary API Key",
                         Arity = ArgumentArity.ExactlyOne,
                     },
                     new Argument<string>
                     {
-                        Name = "secret",
+                        Name = "--secret",
                         Description = "Cloudinary API Secret",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -107,7 +107,7 @@ namespace Vellum.Cli.Cloudinary.Commands
                 {
                     new Argument<FileInfo>
                     {
-                        Name = "file-path",
+                        Name = "--file-path",
                         Description = "Which file should be uploaded to Cloudinary?",
                         Arity = ArgumentArity.ExactlyOne,
                     },

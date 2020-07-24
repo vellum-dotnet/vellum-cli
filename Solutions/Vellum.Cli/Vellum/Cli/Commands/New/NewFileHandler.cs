@@ -50,11 +50,10 @@ namespace Vellum.Cli.Commands.New
             if (convention != null)
             {
                 IVariableDirectoryPath variablePath = convention.Value.ToVariableDirectoryPath();
-                IAbsoluteDirectoryPath evaluatedPath;
 
-                if (variablePath.TryResolve(environmentSettings.ToKvPs(), out evaluatedPath) == VariablePathResolvingStatus.Success)
+                if (variablePath.TryResolve(environmentSettings.ToKvPs(), out IAbsoluteDirectoryPath evaluatedPath) == VariablePathResolvingStatus.Success)
                 {
-                    var filepath = evaluatedPath.GetChildFileWithName($"post-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.md");
+                    IAbsoluteFilePath filepath = evaluatedPath.GetChildFileWithName($"post-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.md");
 
                     if (!filepath.ParentDirectoryPath.Exists)
                     {
@@ -64,6 +63,8 @@ namespace Vellum.Cli.Commands.New
                     string template = Path.Join(contentTypeConventionsRoot.FilePath.ParentDirectoryPath.ParentDirectoryPath.ToString(), contentTypeConventionsRoot?.Conventions.FirstOrDefault()?.TemplatePath);
 
                     File.Copy(template, filepath.ToString());
+
+                    console.Out.WriteLine($"Created: {filepath}");
                 }
             }
 
@@ -75,11 +76,11 @@ namespace Vellum.Cli.Commands.New
             var conventionsManager = new ConventionsManager();
             var conventions = new List<ContentTypeConventionsRoot>();
 
-            List<IAbsoluteFilePath> conventionFilePaths = FindAllConventionFiles(appEnvironment);
+            IEnumerable<IAbsoluteFilePath> conventionFilePaths = FindAllConventionFiles(appEnvironment);
 
             foreach (IAbsoluteFilePath filePath in conventionFilePaths)
             {
-                var convention = await conventionsManager.LoadAsync(filePath).ConfigureAwait(false);
+                ContentTypeConventionsRoot convention = await conventionsManager.LoadAsync(filePath).ConfigureAwait(false);
                 convention.FilePath = filePath;
                 conventions.Add(convention);
             }
@@ -87,14 +88,15 @@ namespace Vellum.Cli.Commands.New
             return conventions;
         }
 
-        private static List<IAbsoluteFilePath> FindAllConventionFiles(IAppEnvironment appEnvironment)
+        private static IEnumerable<IAbsoluteFilePath> FindAllConventionFiles(IAppEnvironment appEnvironment)
         {
             var conventionFilePaths = new List<IAbsoluteFilePath>();
-            foreach (var pluginPath in appEnvironment.TemplatesPath.ChildrenDirectoriesPath)
+
+            foreach (IAbsoluteDirectoryPath pluginPath in appEnvironment.TemplatesPath.ChildrenDirectoriesPath)
             {
-                foreach (var child in pluginPath.ChildrenDirectoriesPath)
+                foreach (IAbsoluteDirectoryPath child in pluginPath.ChildrenDirectoriesPath)
                 {
-                    var current = child;
+                    IAbsoluteDirectoryPath current = child;
 
                     while (current != null)
                     {
