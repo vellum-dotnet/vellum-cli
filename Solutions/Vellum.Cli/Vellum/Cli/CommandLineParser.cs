@@ -213,12 +213,12 @@ namespace Vellum.Cli
                     "new",
                     "Create new files based on templates.")
                 {
-                    new Argument<string>("--template-name")
+                    new Argument<string>("template-name")
                     {
                         Description = "Name of the template, as defined by the template convention",
                         Arity = ArgumentArity.ExactlyOne,
                     },
-                    new Argument<FileInfo>("--file-path")
+                    new Argument<FileInfo>("file-path")
                     {
                         Description = "Where do you want the new file to be created?",
                         Arity = ArgumentArity.ZeroOrOne,
@@ -243,7 +243,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "--package-id",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -258,7 +258,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "--package-id",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -294,7 +294,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "--package-id",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -309,7 +309,7 @@ namespace Vellum.Cli
                 {
                     new Argument<string>
                     {
-                        Name = "--package-id",
+                        Name = "package-id",
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
                     },

@@ -75,7 +75,7 @@ namespace Vellum.Cli.Tinify.Commands
                 {
                     new Argument<string>
                     {
-                        Name = "Key",
+                        Name = "key",
                         Description = "Tinify API Key",
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -95,7 +95,7 @@ namespace Vellum.Cli.Tinify.Commands
                 {
                     new Argument<FileInfo>
                     {
-                        Name = "--file-path",
+                        Name = "file-path",
                         Description = "Which image file (jpg|png) are you going to optimize?",
                         Arity = ArgumentArity.ExactlyOne,
                     },

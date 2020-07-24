@@ -52,7 +52,7 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
                 double percentChange = (newSizeInBytes - originalSizeInBytes) * 100.0 / originalSizeInBytes;
 
                 console.Out.WriteLine($"New size: {newSizeInBytes / 1024}KB");
-                console.Out.WriteLine($"-{percentChange}% Reduction");
+                console.Out.WriteLine($"{percentChange:00}% Reduction");
             }
             catch (Exception exception)
             {
