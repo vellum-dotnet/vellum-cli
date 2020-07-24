@@ -10,6 +10,8 @@ namespace Vellum.Cli.Abstractions.Conventions
     {
         public string ContentType { get; set; }
 
+        public string TemplatePath { get; set; }
+
         public List<Convention> Conventions { get; set; }
     }
 }

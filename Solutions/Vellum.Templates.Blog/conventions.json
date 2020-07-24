@@ -2,6 +2,7 @@
   "Conventions": [
     {
       "ContentType": "application/vnd.endjin.ssg.blogs+md",
+      "TemplatePath": "\\content\\blog\\post\\template.md ",
       "Conventions": [
         {
           "ContentType": "application/vnd.vellum.conventions.templates.shortcut.command-name",
@@ -9,7 +10,7 @@
         },
         {
           "ContentType": "application/vnd.vellum.conventions.file-path.blog.posts",
-          "Value": "\\content\\authors\\%username%\\"
+          "Value": "$(workspacepath)\\content\\authors\\$(username)\\"
         }
       ]
     }

@@ -11,15 +11,15 @@ namespace Vellum.Cli.Abstractions.Conventions
 
     public class ConventionsManager
     {
-        public async Task<ContentTypeConventions> LoadAsync(IAbsoluteFilePath path)
+        public async Task<ContentTypeConventionsRoot> LoadAsync(IAbsoluteFilePath path)
         {
             return path.Exists ?
-                JsonConvert.DeserializeObject<ContentTypeConventions>(await File.ReadAllTextAsync(path.ToString()).ConfigureAwait(false)) : null;
+                JsonConvert.DeserializeObject<ContentTypeConventionsRoot>(await File.ReadAllTextAsync(path.ToString()).ConfigureAwait(false)) : null;
         }
 
-        public async Task SaveAsync(IAbsoluteFilePath path, ContentTypeConventions conventions)
+        public async Task SaveAsync(IAbsoluteFilePath path, ContentTypeConventionsRoot conventionsRoot)
         {
-            string json = JsonConvert.SerializeObject(conventions, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(conventionsRoot, Formatting.Indented);
 
             await File.WriteAllTextAsync(path.ToString(), json).ConfigureAwait(false);
         }
