@@ -22,18 +22,17 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     netSdkVersion: '3.x'
-    postBuild:
-    - task: DotNetCoreCLI@2
-      displayName: 'Publish Assets for .nuspec Packages'
-      inputs:
-        command: 'publish'
-        zipAfterPublish: False
-        projects: '**/*/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer) --no-build --no-restore'
-        publishWebProjects: False
-        versioningScheme: byBuildNumber
-        buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
     postPack:
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish Assets for .nuspec Packages'
+        inputs:
+          command: 'publish'
+          zipAfterPublish: False
+          projects: '**/*/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer) --no-build --no-restore'
+          publishWebProjects: False
+          versioningScheme: byBuildNumber
+          buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
       - task: NuGetCommand@2
         displayName: 'Create .nuspec based NuGet Packages'
         inputs:
