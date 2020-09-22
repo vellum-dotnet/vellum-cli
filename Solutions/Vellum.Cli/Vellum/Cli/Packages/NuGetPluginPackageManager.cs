@@ -53,21 +53,21 @@ namespace Vellum.Cli.Packages
         private async Task<PluginPackage> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath pluginRepositoryPath)
         {
             var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
-            var settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
+            ISettings settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
             var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
             var packageMetaDataList = new List<PluginPackage>();
 
             using (var cacheContext = new SourceCacheContext())
             {
-                var repositories = sourceRepositoryProvider.GetRepositories();
+                IEnumerable<SourceRepository> repositories = sourceRepositoryProvider.GetRepositories();
                 var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
 
-                foreach (var sourceRepository in repositories)
+                foreach (SourceRepository sourceRepository in repositories)
                 {
-                    var dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>().ConfigureAwait(false);
+                    DependencyInfoResource dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>().ConfigureAwait(false);
 
-                    var dependencyInfo = await dependencyInfoResource.ResolvePackages(
+                    IEnumerable<SourcePackageDependencyInfo> dependencyInfo = await dependencyInfoResource.ResolvePackages(
                         packageId,
                         nugetFramework,
                         cacheContext,

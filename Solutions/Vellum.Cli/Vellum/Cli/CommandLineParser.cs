@@ -8,7 +8,6 @@ namespace Vellum.Cli
     using System.CommandLine;
     using System.CommandLine.Builder;
     using System.CommandLine.Invocation;
-    using System.CommandLine.IO;
     using System.CommandLine.Parsing;
     using System.IO;
     using System.Threading.Tasks;
@@ -78,7 +77,7 @@ namespace Vellum.Cli
             rootCommand.AddCommand(Plugins());
             rootCommand.AddCommand(Templates());
 
-            CommandLineBuilder commandBuilder = new CommandLineBuilder(rootCommand).UseDefaults();
+            CommandLineBuilder commandBuilder = new CommandLineBuilder(rootCommand);
 
             try
             {
@@ -91,7 +90,7 @@ namespace Vellum.Cli
             {
                 // If this is the first run, initialize the environment and default plugins
                 Console.WriteLine("Error Detected: vellum environment uninitialized.");
-                Parser parser = commandBuilder.Build();
+                Parser parser = commandBuilder.UseDefaults().Build();
 
                 int result = parser.Invoke("environment init");
 
@@ -105,7 +104,7 @@ namespace Vellum.Cli
                 }
             }
 
-            return commandBuilder.Build();
+            return commandBuilder.UseDefaults().Build();
 
             RootCommand Root()
             {
