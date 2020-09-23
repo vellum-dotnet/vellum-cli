@@ -22,6 +22,12 @@
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20303.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="../PackageIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
   </PropertyGroup>
