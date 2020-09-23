@@ -1,5 +1,7 @@
-mode: "ContinuousDeployment"
 branches:
   master:
+    increment: patch
     tag: preview
-    increment: Minor
+next-version: "0.2"
+mode: ContinuousDeployment
+
