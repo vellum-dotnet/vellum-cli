@@ -13,6 +13,7 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: vellum-dotnet-github
+      ref: refs/tags/last-known-good
 
 jobs:
 - template: templates/build.and.release.yml@recommended_practices
