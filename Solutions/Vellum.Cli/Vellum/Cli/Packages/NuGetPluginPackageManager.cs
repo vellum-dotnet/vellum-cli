@@ -33,7 +33,7 @@ namespace Vellum.Cli.Packages
 
         public Task UninstallAsync(string packageId)
         {
-            var pluginPath = Path.Join(this.appEnvironment.PluginPath.ToString(), packageId);
+            string pluginPath = Path.Join(this.appEnvironment.PluginPath.ToString(), packageId);
 
             if (Directory.Exists(pluginPath))
             {
@@ -45,7 +45,7 @@ namespace Vellum.Cli.Packages
 
         public async Task<PluginPackage> InstallLatestAsync(string packageId)
         {
-            var packageMetaData = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
+            PluginPackage packageMetaData = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
 
             return packageMetaData;
         }
@@ -148,7 +148,7 @@ namespace Vellum.Cli.Packages
                         RepositoryPath = pluginRepositoryPath,
                     };
 
-                    foreach (var contentItem in await packageReader.GetContentItemsAsync(CancellationToken.None).ConfigureAwait(false))
+                    foreach (FrameworkSpecificGroup contentItem in await packageReader.GetContentItemsAsync(CancellationToken.None).ConfigureAwait(false))
                     {
                         packageMetaData.Plugins.AddRange(contentItem.Items);
                     }
@@ -182,7 +182,7 @@ namespace Vellum.Cli.Packages
                 }
                 catch (NuGetResolverConstraintException exception)
                 {
-                    var foo = exception.Message;
+                    string foo = exception.Message;
                 }
             }
 

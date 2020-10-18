@@ -77,7 +77,7 @@ namespace Vellum.Cli
             rootCommand.AddCommand(Plugins());
             rootCommand.AddCommand(Templates());
 
-            CommandLineBuilder commandBuilder = new CommandLineBuilder(rootCommand);
+            var commandBuilder = new CommandLineBuilder(rootCommand);
 
             try
             {
@@ -106,7 +106,7 @@ namespace Vellum.Cli
 
             return commandBuilder.UseDefaults().Build();
 
-            RootCommand Root()
+            static RootCommand Root()
             {
                 return new RootCommand
                 {
@@ -176,11 +176,11 @@ namespace Vellum.Cli
                 // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
                 setCmd.AddValidator(commandResult =>
                 {
-                    var workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
-                    var publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
-                    var username = commandResult.ValueForOption<string>("username");
-                    var key = commandResult.ValueForOption<string>("key");
-                    var value = commandResult.ValueForOption<string>("value");
+                    DirectoryInfo workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
+                    DirectoryInfo publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
+                    string username = commandResult.ValueForOption<string>("username");
+                    string key = commandResult.ValueForOption<string>("key");
+                    string value = commandResult.ValueForOption<string>("value");
 
                     if (workspace == null && publish == null && username == null && key == null && value == null)
                     {
