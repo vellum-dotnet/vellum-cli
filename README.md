@@ -47,7 +47,7 @@ You should see something like:
 
 If you don't see such a file run the following command:
 
-`Invoke-WebRequest -Uri https://raw.githubusercontent.com/dotnet/command-line-api/master/src/System.CommandLine.Suggest/dotnet-suggest-shim.ps1 -OutFile $profile`
+`Invoke-WebRequest -Uri https://raw.githubusercontent.com/dotnet/command-line-api/main/src/System.CommandLine.Suggest/dotnet-suggest-shim.ps1 -OutFile $profile`
 
 Otherwise, copy the contents of the file above and paste it into your pre-existing profile.
 
