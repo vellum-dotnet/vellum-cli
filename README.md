@@ -85,11 +85,11 @@ NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum
 
 [Cloudinary](https://cloudinary.com/) is a Content Delivery Network that also offers sophiticated APIs for manipulating media. 
 
-`vellum cloudinary settings list` - lists the current settings.
+`vellum-cli cloudinary settings list` - lists the current settings.
 
-`vellum cloudinary settings update <CLOUD> <KEY> <SECRET>` - update the settings for Cloudinary authentication.
+`vellum-cli cloudinary settings update <CLOUD> <KEY> <SECRET>` - update the settings for Cloudinary authentication.
 
-`vellum cloudinary upload <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
+`vellum-cli cloudinary upload <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
 
 ### Tinify
 
@@ -97,9 +97,9 @@ NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum
 
 To use, first you need to register for an [API Key](https://tinypng.com/developers), this will allow you to process 500 images per month.
 
-`vellum tinify settings update <KEY>` - updates tinify setting with your API Key.
+`vellum-cli tinify settings update <KEY>` - updates tinify setting with your API Key.
 
-`vellum tinify settings list ` - lists your tinify settings.
+`vellum-cli tinify settings list ` - lists your tinify settings.
 
 ## Licenses
 
