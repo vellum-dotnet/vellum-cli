@@ -3,7 +3,7 @@
   
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>vellum-cli</AssemblyName>
   </PropertyGroup>
 
@@ -43,15 +43,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Markdig" Version="0.22.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
+    <PackageReference Include="Markdig" Version="0.22.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20303.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.3.1" />
     <PackageReference Include="NDepend.Path" Version="2.0.0" />
-    <PackageReference Include="NuGet.Common" Version="5.7.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
-    <PackageReference Include="NuGet.Resolver" Version="5.7.0" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="NuGet.Common" Version="5.8.0" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="5.8.0" />
+    <PackageReference Include="NuGet.Resolver" Version="5.8.0" />
+    <PackageReference Include="YamlDotNet" Version="9.1.0" />
   </ItemGroup>
 
   <ItemGroup>
