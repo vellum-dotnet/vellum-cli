@@ -55,7 +55,7 @@ namespace Vellum.Cli
             NewFile newFile = null,
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
-            PluginList pluginList = null,
+            PluginList pluginListInstalled = null,
             SetUsername setEnvironmentSetting = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
@@ -65,7 +65,7 @@ namespace Vellum.Cli
             newFile ??= NewFileHandler.ExecuteAsync;
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
-            pluginList ??= PluginListHandler.ExecuteAsync;
+            pluginListInstalled ??= PluginListInstalledHandler.ExecuteAsync;
             setEnvironmentSetting ??= SetEnvironmentSettingHandler.ExecuteAsync;
             templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
             templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
@@ -174,9 +174,11 @@ namespace Vellum.Cli
                 });
 
                 // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
-                setCmd.AddValidator(commandResult =>
+/*
+               ValueForOption has been removed see https://github.com/dotnet/command-line-api/issues/1119
+               setCmd.AddValidator(commandResult =>
                 {
-                    DirectoryInfo workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
+                    DirectoryInfo workspace = commandResult.ValueForOption <DirectoryInfo>("workspace-path");
                     DirectoryInfo publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
                     string username = commandResult.ValueForOption<string>("username");
                     string key = commandResult.ValueForOption<string>("key");
@@ -194,6 +196,7 @@ namespace Vellum.Cli
 
                     return null;
                 });
+*/
 
                 setCmd.Handler = CommandHandler.Create<SetOptions, InvocationContext>(async (options, context) =>
                 {
@@ -268,13 +271,19 @@ namespace Vellum.Cli
                     await pluginUninstall(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
-                var listCmd = new Command("list", "List installed vellum-cli plugins.")
+                var listCmd = new Command("list", "List vellum-cli plugins.")
+                {
+                };
+
+                var listInstalledCmd = new Command("installed", "List installed vellum-cli plugins.")
                 {
                     Handler = CommandHandler.Create<InvocationContext>(async (context) =>
                     {
-                        await pluginList(context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                        await pluginListInstalled(context.Console, this.appEnvironment, context).ConfigureAwait(false);
                     }),
                 };
+
+                listCmd.AddCommand(listInstalledCmd);
 
                 cmd.AddCommand(installCmd);
                 cmd.AddCommand(uninstallCmd);

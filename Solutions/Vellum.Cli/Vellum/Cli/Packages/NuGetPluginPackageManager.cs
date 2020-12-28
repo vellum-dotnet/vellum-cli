@@ -50,6 +50,19 @@ namespace Vellum.Cli.Packages
             return packageMetaData;
         }
 
+        public IEnumerable<PluginPackage> ListInstalledPackages()
+        {
+            foreach (IAbsoluteDirectoryPath directory in this.appEnvironment.PluginPath.ChildrenDirectoriesPath)
+            {
+                var pluginPackage = new PluginPackage();
+                pluginPackage.Name = directory.DirectoryName;
+                pluginPackage.Version = directory.ChildrenDirectoriesPath.FirstOrDefault()?.DirectoryName;
+                pluginPackage.RepositoryPath = this.appEnvironment.PluginPath;
+
+                yield return pluginPackage;
+            }
+        }
+
         private async Task<PluginPackage> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath pluginRepositoryPath)
         {
             var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
