@@ -173,7 +173,7 @@ namespace Vellum.Cli
                     },
                 });
 
-                // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
+               // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
 /*
                ValueForOption has been removed see https://github.com/dotnet/command-line-api/issues/1119
                setCmd.AddValidator(commandResult =>

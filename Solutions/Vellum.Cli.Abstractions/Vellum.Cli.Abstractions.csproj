@@ -28,12 +28,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="../PackageIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
   </PropertyGroup>

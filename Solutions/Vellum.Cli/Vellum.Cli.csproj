@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>vellumdotne</ToolCommandName>
+    <ToolCommandName>vellum</ToolCommandName>
   </PropertyGroup>
 
   <!-- Enable these settings for an optimised single .exe -->
@@ -57,12 +57,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vellum.Cli.Abstractions\Vellum.Cli.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="../PackageIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
