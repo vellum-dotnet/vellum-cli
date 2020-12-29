@@ -38,7 +38,7 @@ namespace Vellum.Cli
             this.appEnvironment = appEnvironment;
         }
 
-        public delegate Task ContentList(ListOptions options, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task ContentList(IServiceCollection services, ListOptions options, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task EnvironmentInit(EnvironmentOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
@@ -134,7 +134,7 @@ namespace Vellum.Cli
                 {
                     Handler = CommandHandler.Create<ListOptions, InvocationContext>(async (options, context) =>
                     {
-                        await contentList(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                        await contentList(this.services, options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                     }),
                 };
 

@@ -4,7 +4,6 @@
 
 namespace Vellum.Cli.Commands.Content
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using NDepend.Path;
@@ -18,12 +17,8 @@ namespace Vellum.Cli.Commands.Content
         public async Task<SiteTaxonomy> FindAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
         {
             SiteTaxonomy siteTaxonomy = null;
-            var siteTaxonomyLocator = new TaxonomyFileLocator();
-            var taxonomyFileParser = new TaxonomyFileInfoReader();
 
-            IEnumerable<IAbsoluteFilePath> files = siteTaxonomyLocator.LocateRecursively(siteTaxonomyDirectoryPath);
-
-            await foreach (TaxonomyFileInfo file in taxonomyFileParser.ReadAsync(files))
+            await foreach (TaxonomyFileInfo file in new TaxonomyFileInfoRepository().FindAllAsync(siteTaxonomyDirectoryPath))
             {
                 if (file.ContentType == WellKnown.ContentTypes.Site)
                 {
