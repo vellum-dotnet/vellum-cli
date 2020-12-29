@@ -13,6 +13,9 @@ namespace Vellum.Cli
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
+
+    using NDepend.Path;
+
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Commands.Content;
@@ -134,6 +137,13 @@ namespace Vellum.Cli
                         await contentList(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
                     }),
                 };
+
+                listCmd.AddArgument(new Argument<DirectoryInfo>
+                {
+                    Name = "site-taxonomy-directory-path",
+                    Description = "Path to the site template directory.",
+                    Arity = ArgumentArity.ZeroOrOne,
+                }.ExistingOnly());
 
                 listCmd.AddOption(new Option<bool>("--published", "Show only published content."));
                 listCmd.AddOption(new Option<bool>("--draft", "Show only draft content."));

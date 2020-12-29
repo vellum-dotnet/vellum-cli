@@ -56,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Vellum.Abstractions\Vellum.Abstractions.csproj" />
     <ProjectReference Include="..\Vellum.Cli.Abstractions\Vellum.Cli.Abstractions.csproj" />
   </ItemGroup>
 

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Templates.Blog", "Ve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Cli.Tinify", "Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj", "{F944D1E2-D690-4635-9F42-0E5607DC763F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vellum.Abstractions", "Vellum.Abstractions\Vellum.Abstractions.csproj", "{64B450BC-B529-4273-BC75-6921BD02FB3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F944D1E2-D690-4635-9F42-0E5607DC763F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64B450BC-B529-4273-BC75-6921BD02FB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B450BC-B529-4273-BC75-6921BD02FB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B450BC-B529-4273-BC75-6921BD02FB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B450BC-B529-4273-BC75-6921BD02FB3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
