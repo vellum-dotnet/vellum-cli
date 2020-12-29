@@ -2,7 +2,7 @@
   "profiles": {
     "Vellum.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "plugins list installed"
+      "commandLineArgs": "content list --published"
     }
   }
 }

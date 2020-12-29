@@ -15,6 +15,7 @@ namespace Vellum.Cli
     using Microsoft.Extensions.DependencyInjection;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Commands.Content;
     using Vellum.Cli.Commands.Environment;
     using Vellum.Cli.Commands.New;
     using Vellum.Cli.Commands.Plugins;
@@ -34,6 +35,8 @@ namespace Vellum.Cli
             this.appEnvironment = appEnvironment;
         }
 
+        public delegate Task ContentList(ListOptions options, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
         public delegate Task EnvironmentInit(EnvironmentOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task NewFile(NewFileOptions fileOptions, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
@@ -44,23 +47,25 @@ namespace Vellum.Cli
 
         public delegate Task PluginList(IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task SetUsername(SetOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task SetEnvironmentSetting(SetOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task TemplateInstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task TemplateUninstall(TemplateOptions options, IConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public Parser Create(
+            ContentList contentList = null,
             EnvironmentInit environmentInit = null,
             NewFile newFile = null,
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
             PluginList pluginListInstalled = null,
-            SetUsername setEnvironmentSetting = null,
+            SetEnvironmentSetting setEnvironmentSetting = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
         {
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
+            contentList ??= ContentListHandler.ExecuteAsync;
             environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
             newFile ??= NewFileHandler.ExecuteAsync;
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
@@ -72,6 +77,7 @@ namespace Vellum.Cli
 
             // Set up intrinsic commands that will always be available.
             RootCommand rootCommand = Root();
+            rootCommand.AddCommand(Content());
             rootCommand.AddCommand(Environment());
             rootCommand.AddCommand(NewFile());
             rootCommand.AddCommand(Plugins());
@@ -113,6 +119,28 @@ namespace Vellum.Cli
                     Name = "vellum-cli",
                     Description = "Static Content Management System.",
                 };
+            }
+
+            Command Content()
+            {
+                var cmd = new Command(
+                    "content",
+                    "Edit, preview, publish and promote content.");
+
+                var listCmd = new Command("list", "List content in your repository.")
+                {
+                    Handler = CommandHandler.Create<ListOptions, InvocationContext>(async (options, context) =>
+                    {
+                        await contentList(options, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                    }),
+                };
+
+                listCmd.AddOption(new Option<bool>("--published", "Show only published content."));
+                listCmd.AddOption(new Option<bool>("--draft", "Show only draft content."));
+
+                cmd.AddCommand(listCmd);
+
+                return cmd;
             }
 
             Command Environment()
