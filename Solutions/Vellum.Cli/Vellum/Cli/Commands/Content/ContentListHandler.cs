@@ -11,9 +11,6 @@ namespace Vellum.Cli.Commands.Content
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using Vellum.Abstractions;
-    using Vellum.Abstractions.Content.ContentFactories;
-    using Vellum.Abstractions.IO;
     using Vellum.Abstractions.Taxonomy;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
@@ -27,35 +24,22 @@ namespace Vellum.Cli.Commands.Content
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            services.AddWellKnownTaxonomyContentTypes();
-            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            var taxonomyDocumentRepository = new TaxonomyDocumentRespository(services);
 
-            var taxonomyFileInfoRepository = new TaxonomyFileInfoRepository();
-            var siteTaxonomyRepository = new SiteTaxonomyRepository();
+            IAsyncEnumerable<TaxonomyDocument> results = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
 
-            IAsyncEnumerable<TaxonomyFileInfo> files = taxonomyFileInfoRepository.FindAllAsync(options.SiteTaxonomyDirectoryPath);
-
-            var taxonomyDocuments = new List<TaxonomyDocument>();
-
-            await foreach (TaxonomyFileInfo file in files)
+            await foreach (TaxonomyDocument result in results)
             {
-                IFileReader<TaxonomyDocument> reader = serviceProvider.GetContent<IFileReader<TaxonomyDocument>>(file.ContentType);
-
-                if (reader != null)
-                {
-                    TaxonomyDocument taxonomyDocument = await reader.ReadAsync(file.Path).ConfigureAwait(false);
-                    taxonomyDocument.Hash = file.Hash;
-                    taxonomyDocuments.Add(taxonomyDocument);
-                }
-                else
-                {
-                    console.Error.Write($"Cannot Read file with ContentType {file.ContentType}" + System.Environment.NewLine);
-                }
+                console.Out.Write(result.Navigation.Url + System.Environment.NewLine);
             }
+
+            /*
+            var siteTaxonomyRepository = new SiteTaxonomyRepository();
 
             SiteTaxonomy siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
 
             console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
+            */
 
             return ReturnCodes.Ok;
         }
