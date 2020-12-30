@@ -4,13 +4,14 @@
 
 namespace Vellum.Cli.Commands.Content
 {
+    using System;
     using System.Collections.Generic;
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
-
+    using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Taxonomy;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
@@ -26,11 +27,16 @@ namespace Vellum.Cli.Commands.Content
         {
             var taxonomyDocumentRepository = new TaxonomyDocumentRespository(services);
 
-            IAsyncEnumerable<TaxonomyDocument> results = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
+            IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
+            IAsyncEnumerable<TaxonomyDocument> loaded = taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments);
 
-            await foreach (TaxonomyDocument result in results)
+            await foreach (TaxonomyDocument doc in loaded)
             {
-                console.Out.Write(result.Navigation.Url + System.Environment.NewLine);
+                Console.WriteLine(doc.Path.ToString());
+                foreach (ContentFragment contentFragment in doc.ContentFragments)
+                {
+                    Console.WriteLine(contentFragment.Id);
+                }
             }
 
             /*

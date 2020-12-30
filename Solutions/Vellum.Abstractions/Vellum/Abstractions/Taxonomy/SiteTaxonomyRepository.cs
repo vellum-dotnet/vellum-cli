@@ -17,7 +17,7 @@ namespace Vellum.Abstractions.Taxonomy
 
             await foreach (TaxonomyFileInfo file in new TaxonomyFileInfoRepository().FindAllAsync(siteTaxonomyDirectoryPath))
             {
-                if (file.ContentType == WellKnown.ContentTypes.Site)
+                if (file.ContentType == WellKnown.Taxonomies.ContentTypes.Site)
                 {
                     siteTaxonomy = await new YamlParser<SiteTaxonomy>().ParseAsync(file.Path).ConfigureAwait(false);
                     siteTaxonomy.Path = file.Path;

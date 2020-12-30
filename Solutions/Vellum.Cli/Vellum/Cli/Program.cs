@@ -20,6 +20,8 @@ namespace Vellum.Cli
         {
             Console.OutputEncoding = Encoding.UTF8;
 
+            ServiceCollection.AddCommonServices();
+
             return await new CommandLineParser(
                 new FileSystemRoamingProfileAppEnvironment(),
                 new CommandPluginHost(),
