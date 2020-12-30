@@ -16,7 +16,7 @@ namespace Vellum.Abstractions.Parsers
         public async Task<T> ParseAsync(IAbsoluteFilePath filePath)
         {
             IDeserializer deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().IgnoreFields().Build();
-            string content = await File.ReadAllTextAsync(filePath.ToString()).ConfigureAwait(false);
+            string content = await File.ReadAllTextAsync(filePath.ToString()).ConfigureAwait(continueOnCapturedContext: false);
 
             return deserializer.Deserialize<T>(content);
         }

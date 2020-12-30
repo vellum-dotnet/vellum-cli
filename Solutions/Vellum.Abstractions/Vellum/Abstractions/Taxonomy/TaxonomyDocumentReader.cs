@@ -24,23 +24,17 @@ namespace Vellum.Abstractions.Taxonomy
             template.Path = filePath;
 
             // set default (visible / enabled) if missing
-            if (template.Navigation.Footer == null)
+            template.Navigation.Footer ??= new NavigationOption
             {
-                template.Navigation.Footer = new NavigationOption
-                {
-                    Link = true,
-                    Visible = true,
-                };
-            }
+                Link = true,
+                Visible = true,
+            };
 
-            if (template.Navigation.Header == null)
+            template.Navigation.Header ??= new NavigationOption
             {
-                template.Navigation.Header = new NavigationOption
-                {
-                    Link = true,
-                    Visible = true,
-                };
-            }
+                Link = true,
+                Visible = true,
+            };
 
             return template;
         }

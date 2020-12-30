@@ -2,13 +2,10 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Commands.Content
+namespace Vellum.Abstractions.Taxonomy
 {
     using System.Collections.Generic;
-
     using NDepend.Path;
-
-    using Vellum.Abstractions.Taxonomy;
 
     public class TaxonomyFileInfoRepository
     {

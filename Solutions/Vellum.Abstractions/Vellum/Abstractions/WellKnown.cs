@@ -12,7 +12,7 @@ namespace Vellum.Abstractions
 
             public const string Page = "application/vnd.vellum.taxonomy.page+yaml";
 
-            public const string Site = "application/vnd.vellum.taxonomy.site+yml";
+            public const string Site = "application/vnd.vellum.taxonomy.site+yaml";
 
             public static class Blog
             {

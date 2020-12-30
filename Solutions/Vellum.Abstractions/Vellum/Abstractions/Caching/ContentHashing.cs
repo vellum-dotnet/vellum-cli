@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Taxonomy
+namespace Vellum.Abstractions.Caching
 {
     using System.Linq;
     using System.Security.Cryptography;

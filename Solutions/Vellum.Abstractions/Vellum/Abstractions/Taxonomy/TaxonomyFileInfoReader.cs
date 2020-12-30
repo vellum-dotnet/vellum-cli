@@ -9,7 +9,7 @@ namespace Vellum.Abstractions.Taxonomy
     using System.Linq;
 
     using NDepend.Path;
-
+    using Vellum.Abstractions.Caching;
     using YamlDotNet.RepresentationModel;
 
     public class TaxonomyFileInfoReader
@@ -24,10 +24,12 @@ namespace Vellum.Abstractions.Taxonomy
                 yaml.Load(new StringReader(contents));
 
                 // Examine the stream
-                var mapping = yaml.Documents[0].RootNode as YamlMappingNode;
-                string contentType = ((YamlScalarNode)mapping.Children.FirstOrDefault(x => ((YamlScalarNode)x.Key).Value == "ContentType").Value).Value;
+                if (yaml.Documents[0].RootNode is YamlMappingNode mapping)
+                {
+                    string contentType = ((YamlScalarNode)mapping.Children.FirstOrDefault(x => ((YamlScalarNode)x.Key).Value == "ContentType").Value).Value;
 
-                yield return new TaxonomyFileInfo { ContentType = contentType, Path = file, Hash = ContentHashing.Hash(contents) };
+                    yield return new TaxonomyFileInfo { ContentType = contentType, Path = file, Hash = ContentHashing.Hash(contents) };
+                }
             }
         }
     }

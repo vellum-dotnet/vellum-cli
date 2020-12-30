@@ -12,7 +12,6 @@ namespace Vellum.Abstractions.Taxonomy
 
     using Vellum.Abstractions.Content.ContentFactories;
     using Vellum.Abstractions.IO;
-    using Vellum.Cli.Commands.Content;
 
     public class TaxonomyDocumentRespository
     {
