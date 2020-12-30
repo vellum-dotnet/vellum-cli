@@ -77,7 +77,7 @@ NOT IMPLEMENTED YET `vellum plugins list available` - Lists available vellum plu
 
 `vellum new <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
 
-`vellum content list --published`
+`vellum content list --published` - Lists all published content
 
 `vellum content list --draft`
 

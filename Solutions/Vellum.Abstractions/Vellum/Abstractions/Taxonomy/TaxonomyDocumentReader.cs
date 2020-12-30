@@ -14,7 +14,7 @@ namespace Vellum.Abstractions.Taxonomy
 
     public class TaxonomyDocumentReader : IFileReader<TaxonomyDocument>
     {
-        public const string RegisteredContentType = WellKnown.ContentTypes.Page;
+        public const string RegisteredContentType = WellKnown.Taxonomies.ContentTypes.Page;
 
         public string ContentType => RegisteredContentType;
 
