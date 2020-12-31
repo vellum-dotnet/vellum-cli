@@ -23,10 +23,3 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     build_script: ./vellum-cli.build.ps1
     netSdkVersion: '3.x'
-    prePublishReleaseArtifacts:
-      - task: CopyFiles@2
-        displayName: 'Copy .nuspec Generated NuGet Packages To Release Folder'
-        inputs:
-          SourceFolder: '$(Build.ArtifactStagingDirectory)'
-          Contents: '*.nupkg'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/Release/NuGet/Packages/$(Build.BuildID)'
