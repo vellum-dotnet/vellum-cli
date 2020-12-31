@@ -13,7 +13,7 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: vellum-dotnet-github
-      ref: refs/heads/invokebuild-spike
+      ref: refs/heads/feature/invokebuild-spike
 
 jobs:
 - template: templates/build.and.release.yml@recommended_practices
