@@ -4,6 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <NuspecFile>Vellum.Cli.Cloudinary.nuspec</NuspecFile>
   </PropertyGroup>
 
   <ItemGroup>
