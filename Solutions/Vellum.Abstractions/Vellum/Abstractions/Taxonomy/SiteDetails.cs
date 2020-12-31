@@ -1,4 +1,4 @@
-﻿// <copyright file="SiteTaxonomy.cs" company="Endjin Limited">
+﻿// <copyright file="SiteDetails.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace Vellum.Abstractions.Taxonomy
     using NDepend.Path;
 
     [DebuggerDisplay("{Url} | {Description}")]
-    public class SiteTaxonomy : Representation
+    public class SiteDetails : Representation
     {
         public string Description { get; set; }
 

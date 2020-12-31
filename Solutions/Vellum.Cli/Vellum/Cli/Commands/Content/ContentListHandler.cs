@@ -9,10 +9,12 @@ namespace Vellum.Cli.Commands.Content
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
     using Vellum.Abstractions.Content;
+    using Vellum.Abstractions.Content.Primitives;
     using Vellum.Abstractions.Taxonomy;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
@@ -30,9 +32,12 @@ namespace Vellum.Cli.Commands.Content
             stopwatch.Start();
 
             var taxonomyDocumentRepository = new TaxonomyDocumentRespository(services);
+            var siteTaxonomyParser = new SiteTaxonomyParser();
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
             IAsyncEnumerable<TaxonomyDocument> loaded = taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments);
+
+            NavigationNode siteNavigation = siteTaxonomyParser.Parse(await loaded.Select(x => x).ToListAsync());
 
             await foreach (TaxonomyDocument doc in loaded)
             {
@@ -45,9 +50,9 @@ namespace Vellum.Cli.Commands.Content
 
             stopwatch.Stop();
             /*
-            var siteTaxonomyRepository = new SiteTaxonomyRepository();
+            var siteTaxonomyRepository = new SiteDetailsRepository();
 
-            SiteTaxonomy siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
+            SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
 
             console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
             */

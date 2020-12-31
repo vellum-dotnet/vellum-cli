@@ -1,4 +1,4 @@
-﻿// <copyright file="SiteTaxonomyRepository.cs" company="Endjin Limited">
+﻿// <copyright file="SiteDetailsRepository.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -9,24 +9,24 @@ namespace Vellum.Abstractions.Taxonomy
     using Vellum.Abstractions;
     using Vellum.Abstractions.Parsers;
 
-    public class SiteTaxonomyRepository
+    public class SiteDetailsRepository
     {
-        public async Task<SiteTaxonomy> FindAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
+        public async Task<SiteDetails> FindAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
         {
-            SiteTaxonomy siteTaxonomy = null;
+            SiteDetails siteDetails = null;
 
             await foreach (TaxonomyFileInfo file in new TaxonomyFileInfoRepository().FindAllAsync(siteTaxonomyDirectoryPath))
             {
                 if (file.ContentType == WellKnown.Taxonomies.ContentTypes.Site)
                 {
-                    siteTaxonomy = await new YamlParser<SiteTaxonomy>().ParseAsync(file.Path).ConfigureAwait(false);
-                    siteTaxonomy.Path = file.Path;
+                    siteDetails = await new YamlParser<SiteDetails>().ParseAsync(file.Path).ConfigureAwait(false);
+                    siteDetails.Path = file.Path;
 
                     break;
                 }
             }
 
-            return siteTaxonomy;
+            return siteDetails;
         }
     }
 }

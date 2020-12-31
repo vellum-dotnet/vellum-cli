@@ -27,6 +27,7 @@
     <PackageReference Include="Marain.ContentManagement.Abstractions" Version="0.1.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="5.0.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="YamlDotNet" Version="9.1.0" />
   </ItemGroup>
 
