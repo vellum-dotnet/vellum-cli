@@ -7,6 +7,8 @@ namespace Vellum.Abstractions.Taxonomy
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
 
     using NDepend.Path;
@@ -87,6 +89,10 @@ namespace Vellum.Abstractions.Taxonomy
 
                 yield return taxonomyDocument;
             }
+
+            var mc = (MemoryCache)serviceProvider.GetRequiredService<IMemoryCache>();
+
+            mc.Compact(100);
         }
     }
 }

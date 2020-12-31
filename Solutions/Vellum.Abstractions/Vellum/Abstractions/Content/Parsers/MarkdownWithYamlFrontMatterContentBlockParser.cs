@@ -9,15 +9,21 @@ namespace Vellum.Abstractions.Content.Parsers
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Markdig;
     using Markdig.Extensions.Yaml;
+    using Markdig.Renderers;
     using Markdig.Syntax;
+
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.FileSystemGlobbing;
     using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
-    using Vellum.Abstractions.Caching;
+
+    using NDepend.Path;
+
     using Vellum.Abstractions.Content.Formatting;
     using Vellum.Abstractions.Taxonomy;
+
     using YamlDotNet.Serialization;
 
     public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
@@ -29,9 +35,9 @@ namespace Vellum.Abstractions.Content.Parsers
 
         public MarkdownWithYamlFrontMatterContentBlockParser(IMemoryCache memoryCache, ContentFormatter contentFormatter)
         {
-            this.memoryCache = memoryCache;
             this.contentFormatter = contentFormatter;
             this.deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().IgnoreFields().Build();
+            this.memoryCache = memoryCache;
             this.pipeline = new MarkdownPipelineBuilder()
                 .UseAutoIdentifiers()
                 .UseGridTables()
@@ -44,113 +50,131 @@ namespace Vellum.Abstractions.Content.Parsers
 
         public async Task<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock)
         {
-            var cfs = new List<ContentFragment>();
-            var matcher = new Matcher();
-            FileInfo templateFileInfo = taxonomyDocument.Path.FileInfo;
+            var contentFragments = new List<ContentFragment>();
 
-            matcher.AddInclude(contentBlock.Spec.Path);
-
-            PatternMatchingResult results = matcher.Execute(new DirectoryInfoWrapper(templateFileInfo.Directory));
-
-            foreach (var file in results.Files)
+            foreach (IAbsoluteFilePath contentFragmentAbsoluteFilePath in this.FindContentFragmentFiles(contentBlock.Spec.Path, taxonomyDocument.Path.ParentDirectoryPath))
             {
-                string cacheKey = $"MarkdownWithYamlFrontMatterContentBlockParser::{file.Path}";
+                string cacheKey = $"{nameof(MarkdownWithYamlFrontMatterContentBlockParser)}::{contentFragmentAbsoluteFilePath}";
 
-                if (!this.memoryCache.TryGetValue<ContentFragment>(cacheKey, out ContentFragment cachedContentFragment))
+                if (!this.memoryCache.TryGetValue(cacheKey, out ContentFragment cachedContentFragment))
                 {
-                    string filePath = Path.GetFullPath(Path.Join(templateFileInfo.Directory?.FullName, file.Path));
-                    string content = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+                    string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()).ConfigureAwait(false);
 
-                    var cf = new ContentFragment
-                    {
-                        ContentType = contentBlock.ContentType,
-                        Hash = ContentHashing.Hash(content),
-                        Id = contentBlock.Id,
-                    };
-
+                    ContentFragment contentFragment = ContentFragmentFactory.Create(contentBlock, content);
                     MarkdownDocument doc = Markdown.Parse(content, this.pipeline);
-                    YamlFrontMatterBlock yamlBlock = doc.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
-                    if (yamlBlock != null)
+                    try
                     {
-                        string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
+                        contentFragment.MetaData = this.ConvertFrontMatterToMetaData(doc, contentFragmentAbsoluteFilePath, contentFragment);
 
-                        try
+                        if (!string.IsNullOrEmpty(contentBlock.Spec.ContentType) &&
+                            !string.IsNullOrEmpty(contentFragment.ContentType) &&
+                            contentBlock.Spec.ContentType != contentFragment.ContentType)
                         {
-                            Dictionary<string, dynamic> frontMatter = this.deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
-
-                            frontMatter.Add("FilePath", filePath);
-
-                            if (frontMatter.TryGetValue("ContentType", out dynamic contentType))
-                            {
-                                cf.ContentType = contentType;
-                                frontMatter.Remove("ContentType");
-                            }
-
-                            if (frontMatter.TryGetValue("PublicationStatus", out dynamic status))
-                            {
-                                cf.PublicationStatus = PublicationStatusEnumParser.Parse(status);
-                                frontMatter.Remove("PublicationStatus");
-                            }
-
-                            if (frontMatter.TryGetValue("Date", out dynamic date))
-                            {
-                                if (DateTime.TryParse(date, out DateTime dateTime))
-                                {
-                                    cf.Date = dateTime;
-                                    frontMatter.Remove("Date");
-                                }
-                            }
-
-                            cf.MetaData = frontMatter;
-
-                            if (!string.IsNullOrEmpty(contentBlock.Spec.ContentType) &&
-                                !string.IsNullOrEmpty(cf.ContentType) &&
-                                contentBlock.Spec.ContentType != cf.ContentType)
-                            {
-                                continue;
-                            }
-                        }
-                        catch (Exception exception)
-                        {
-                            throw new AggregateException(new InvalidOperationException($"Error parsing {filePath}"), exception);
+                            continue;
                         }
                     }
-                    else
+                    catch (Exception exception)
                     {
-                        var frontMatter = new Dictionary<string, dynamic> { { "FilePath", filePath } };
-                        cf.MetaData = frontMatter;
+                        throw new AggregateException(new InvalidOperationException($"Error parsing {contentFragmentAbsoluteFilePath}"), exception);
                     }
 
-                    cf.Body = this.contentFormatter.Apply(Markdown.ToHtml(content, this.pipeline));
-                    cfs.Add(cf);
+                    if (doc.HasContentOtherThanYamlFrontMatter())
+                    {
+                        contentFragment.Body = this.RenderMarkdown(doc);
+                    }
 
-                    this.memoryCache.Set(cacheKey, cf);
+                    contentFragments.Add(contentFragment);
+
+                    this.memoryCache.Set(cacheKey, contentFragment);
                 }
                 else
                 {
-                    cfs.Add(cachedContentFragment);
+                    contentFragments.Add(cachedContentFragment);
                 }
             }
 
             // TODO: Content Block Filtering should be pulled out as the next stage in the processing pipeline.
             if (contentBlock.Spec.Tags.Count > 0)
             {
-                cfs = cfs.Where(x => x.MetaData.ContainsKey("Tags")).Where(t =>
-                    ((List<object>)t.MetaData["Tags"]).Intersect(contentBlock.Spec.Tags).Any()).ToList();
+                contentFragments = contentFragments.Where(x => x.MetaData.ContainsKey("Tags")).Where(t => ((List<object>)t.MetaData["Tags"]).Intersect(contentBlock.Spec.Tags).Any()).ToList();
             }
 
             if (contentBlock.Spec.Count > 0)
             {
-                cfs = cfs.Take(contentBlock.Spec.Count).ToList();
+                contentFragments = contentFragments.Take(contentBlock.Spec.Count).ToList();
             }
 
-            for (int i = 0; i < cfs.Count; i++)
+            for (int i = 0; i < contentFragments.Count; i++)
             {
-                cfs[i].Position = i;
+                contentFragments[i].Position = i;
             }
 
-            return cfs;
+            return contentFragments;
+        }
+
+        private Dictionary<string, dynamic> ConvertFrontMatterToMetaData(MarkdownDocument markdown, IAbsoluteFilePath contentFragmentAbsoluteFilePath, ContentFragment cf)
+        {
+            YamlFrontMatterBlock yamlBlock = markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
+
+            if (yamlBlock == null)
+            {
+                return new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath.ToString() } };
+            }
+
+            string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
+            Dictionary<string, dynamic> frontMatter = this.deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
+
+            frontMatter.Add("FilePath", contentFragmentAbsoluteFilePath.ToString());
+
+            if (frontMatter.TryGetValue("ContentType", out dynamic contentType))
+            {
+                cf.ContentType = contentType;
+                frontMatter.Remove("ContentType");
+            }
+
+            if (frontMatter.TryGetValue("PublicationStatus", out dynamic status))
+            {
+                cf.PublicationStatus = PublicationStatusEnumParser.Parse(status);
+                frontMatter.Remove("PublicationStatus");
+            }
+
+            if (frontMatter.TryGetValue("Date", out dynamic date))
+            {
+                if (DateTime.TryParse(date, out DateTime dateTime))
+                {
+                    cf.Date = dateTime;
+                    frontMatter.Remove("Date");
+                }
+            }
+
+            return frontMatter;
+        }
+
+        private IEnumerable<IAbsoluteFilePath> FindContentFragmentFiles(string contentFragmentPath, IAbsoluteDirectoryPath rootDirectory)
+        {
+            var matcher = new Matcher();
+
+            matcher.AddInclude(contentFragmentPath);
+
+            PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(rootDirectory.DirectoryInfo));
+
+            foreach (FilePatternMatch match in matches.Files)
+            {
+                yield return match.Path.ToRelativeFilePath().GetAbsolutePathFrom(rootDirectory);
+            }
+        }
+
+        private string RenderMarkdown(MarkdownDocument doc)
+        {
+            using (var writer = new StringWriter())
+            {
+                var renderer = new HtmlRenderer(writer);
+                this.pipeline.Setup(renderer);
+                renderer.Render(doc);
+
+                return this.contentFormatter.Apply(html: writer.ToString());
+            }
         }
     }
 }

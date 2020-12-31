@@ -8,6 +8,7 @@ namespace Vellum.Cli.Commands.Content
     using System.Collections.Generic;
     using System.CommandLine;
     using System.CommandLine.Invocation;
+    using System.Diagnostics;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,9 @@ namespace Vellum.Cli.Commands.Content
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             var taxonomyDocumentRepository = new TaxonomyDocumentRespository(services);
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
@@ -35,10 +39,11 @@ namespace Vellum.Cli.Commands.Content
                 Console.WriteLine(doc.Path.ToString());
                 foreach (ContentFragment contentFragment in doc.ContentFragments)
                 {
-                    Console.WriteLine(contentFragment.ContentType);
+                    // Console.WriteLine(contentFragment.Hash);
                 }
             }
 
+            stopwatch.Stop();
             /*
             var siteTaxonomyRepository = new SiteTaxonomyRepository();
 
@@ -46,6 +51,7 @@ namespace Vellum.Cli.Commands.Content
 
             console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
             */
+            Console.WriteLine("Rendering Took: {0}", stopwatch.Elapsed);
 
             return ReturnCodes.Ok;
         }
