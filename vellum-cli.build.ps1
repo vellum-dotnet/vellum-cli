@@ -46,10 +46,11 @@ task PostPackage -After Package {
 
         # patch the version number in the .nuspec file
         $nuspecFile = $project -replace "\.csproj",".nuspec"
-        Write-Build Gray "Patching version number in: $nuspecFile"
-        $nuspec = [xml](Get-Content $nuspecFile)
+        $nuspecPath = Join-Path -Resolve $PWD $nuspecFile
+        Write-Build Gray "Patching version number in: $nuspecPath"
+        $nuspec = [xml](Get-Content $nuspecPath)
         $nuspec.package.metadata.version = $script:GitVersion.SemVer
-        $nuspec.Save($nuspecFile)
+        $nuspec.Save($nuspecPath)
 
         exec {
             dotnet pack $project `
