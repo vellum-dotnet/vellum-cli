@@ -1,0 +1,26 @@
+{
+  "WarnOnly": false,
+  "ErrorSettings": {
+    "ErrorSeverityThreshold": 5,
+    "CVSS3Threshold": -1,
+    "IgnoredPackages": [
+      {
+        "Id": "NugetDefense",
+        "Version": "1.0.6"
+      }
+    ],
+    "IgnoredCvEs": [],
+    "WhiteListedPackages": [],
+    "BlackListedPackages": []
+  },
+  "OssIndex": {
+    "Enabled": true,
+    "BreakIfCannotRun": true
+  },
+  "NVD": {
+    "SelfUpdate": false,
+    "TimeoutInSeconds": 15,
+    "Enabled": true,
+    "BreakIfCannotRun": true
+  }
+}
