@@ -51,7 +51,7 @@
     <PackageReference Include="NuGet.Common" Version="5.7.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
     <PackageReference Include="NuGet.Resolver" Version="5.7.0" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="YamlDotNet" Version="9.1.1" />
   </ItemGroup>
 
   <ItemGroup>
