@@ -28,7 +28,6 @@ namespace Vellum.Abstractions.Taxonomy
 
         public async IAsyncEnumerable<TaxonomyDocument> LoadAllAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
         {
-            this.services.AddWellKnownTaxonomyContentTypes();
             ServiceProvider serviceProvider = this.services.BuildServiceProvider();
 
             var taxonomyFileInfoRepository = new TaxonomyFileInfoRepository();
