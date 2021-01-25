@@ -126,6 +126,16 @@ Keep up with everything that's going on at endjin via our [blog](https://blogs.e
 
 Our other Open Source projects can be found on GitHub on our [endjin](https://github.com/endjin), [Corvus](https://github.com/corvus-dotnet), [Menes](https://github.com/menes-dotnet), [Marain](https://github.com/marain-dotnet), and [AIS.NET](https://github.com/ais-net) Orgs.
 
+<details><summary><b>Show instructions</b></summary>
+
+1. 
+2.
+3.
+4.
+5.
+
+</details>
+
 ## Code of conduct
 
 This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [&#104;&#101;&#108;&#108;&#111;&#064;&#101;&#110;&#100;&#106;&#105;&#110;&#046;&#099;&#111;&#109;](&#109;&#097;&#105;&#108;&#116;&#111;:&#104;&#101;&#108;&#108;&#111;&#064;&#101;&#110;&#100;&#106;&#105;&#110;&#046;&#099;&#111;&#109;) with any additional questions or comments.
