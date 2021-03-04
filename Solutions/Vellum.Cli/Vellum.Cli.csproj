@@ -50,7 +50,7 @@
     <PackageReference Include="NDepend.Path" Version="2.0.0" />
     <PackageReference Include="NuGet.Common" Version="5.8.1" />
     <PackageReference Include="NuGet.Packaging.Core" Version="5.8.1" />
-    <PackageReference Include="NuGet.Resolver" Version="5.8.1" />
+    <PackageReference Include="NuGet.Resolver" Version="5.9.0" />
     <PackageReference Include="YamlDotNet" Version="9.1.4" />
   </ItemGroup>
 
