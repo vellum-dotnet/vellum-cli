@@ -5,6 +5,8 @@
 namespace Vellum.Cli
 {
     using System;
+    using System.CommandLine;
+    using System.CommandLine.IO;
     using System.CommandLine.Parsing;
     using System.Text;
     using System.Threading.Tasks;
@@ -22,10 +24,13 @@ namespace Vellum.Cli
 
             ServiceCollection.AddCommonServices();
 
+            var console = new VellumConsole();
+
             return await new CommandLineParser(
+                console,
                 new FileSystemRoamingProfileAppEnvironment(),
                 new CommandPluginHost(),
-                ServiceCollection).Create().InvokeAsync(args).ConfigureAwait(false);
+                ServiceCollection).Create().InvokeAsync(args, console).ConfigureAwait(false);
         }
     }
 }

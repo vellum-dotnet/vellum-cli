@@ -4,7 +4,6 @@
 
 namespace Vellum.Cli.Commands.Plugins
 {
-    using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.Threading.Tasks;
 
@@ -18,13 +17,13 @@ namespace Vellum.Cli.Commands.Plugins
     public static class PluginListInstalledHandler
     {
         public static Task<int> ExecuteAsync(
-            IConsole console,
+            IVellumConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
             var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
-            AnsiConsole.Render(new Markup("Listing installed plugins:\n"));
+            console.Write(new Markup("Listing installed plugins:\n"));
 
             var table = new Table
             {
@@ -40,7 +39,7 @@ namespace Vellum.Cli.Commands.Plugins
                 table.AddRow(package.Name, package.Version, package.PluginPath.ToString());
             }
 
-            AnsiConsole.Render(table);
+            console.Write(table);
 
             return Task.FromResult(ReturnCodes.Ok);
         }

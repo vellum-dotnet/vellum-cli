@@ -17,7 +17,7 @@ namespace Vellum.Cli.Commands.Templates
     {
         public static async Task<int> ExecuteAsync(
             TemplateOptions options,
-            IConsole console,
+            IVellumConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {

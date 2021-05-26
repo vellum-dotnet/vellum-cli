@@ -17,7 +17,7 @@ namespace Vellum.Cli.Commands.Plugins
     {
         public static async Task<int> ExecuteAsync(
             PluginOptions options,
-            IConsole console,
+            IVellumConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
