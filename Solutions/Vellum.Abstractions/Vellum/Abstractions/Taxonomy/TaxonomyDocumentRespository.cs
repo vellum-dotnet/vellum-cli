@@ -54,7 +54,6 @@ namespace Vellum.Abstractions.Taxonomy
 
         public async IAsyncEnumerable<TaxonomyDocument> LoadContentFragmentsAsync(IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments)
         {
-            this.services.AddWellKnownContentBlockContentTypes();
             ServiceProvider serviceProvider = this.services.BuildServiceProvider();
 
             // throw new InvalidOperationException($"There is no ContentBlockParser registered for ContentType {contentBlock.ContentType}");

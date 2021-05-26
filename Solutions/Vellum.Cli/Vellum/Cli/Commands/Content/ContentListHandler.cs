@@ -35,6 +35,7 @@ namespace Vellum.Cli.Commands.Content
 
             services.AddWellKnownTaxonomyContentTypes();
             services.AddWellKnownContentFragmentTypeFactories();
+            services.AddWellKnownContentBlockContentTypes();
 
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
@@ -46,42 +47,23 @@ namespace Vellum.Cli.Commands.Content
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
             IAsyncEnumerable<TaxonomyDocument> loaded = taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments);
-            List<TaxonomyDocument> documents = await loaded.Select(x => x).ToListAsync();
 
+            // List<TaxonomyDocument> documents = await loaded.Select(x => x).ToListAsync();
             await foreach (TaxonomyDocument doc in loaded)
             {
-                Console.WriteLine(doc.Path.ToString());
+                // Console.WriteLine(doc.Path.ToString());
                 foreach (ContentFragment contentFragment in doc.ContentFragments)
                 {
                     if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
                     {
                         ContentFragmentTypeFactory<IBlogPost> cff = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
                         IBlogPost cf = cff.Create(contentFragment);
-                        Console.WriteLine(cf.Attachments);
-                        Console.WriteLine(cf.Author);
-                        Console.WriteLine(cf.Body);
-                        Console.WriteLine(cf.Categories);
-                        Console.WriteLine(cf.ContentType);
-                        Console.WriteLine(cf.Date);
-                        Console.WriteLine(cf.Excerpt);
-                        Console.WriteLine(cf.Faqs);
-                        Console.WriteLine(cf.HeaderImageUrl);
-                        Console.WriteLine(cf.IsSeries);
-                        Console.WriteLine(cf.PartTitle);
-                        Console.WriteLine(cf.Position);
-                        Console.WriteLine(cf.Profile);
-                        Console.WriteLine(cf.PublicationStatus);
-                        Console.WriteLine(cf.Series);
-                        Console.WriteLine(cf.Slug);
-                        Console.WriteLine(cf.Tags);
                         Console.WriteLine(cf.Title);
-                        Console.WriteLine(cf.Url);
-                        Console.WriteLine(cf.UserName);
                     }
                 }
             }
 
-            NavigationNode siteNavigation = siteTaxonomyParser.Parse(documents);
+            /*NavigationNode siteNavigation = siteTaxonomyParser.Parse(documents);
 
             var siteContext = new SiteContext
             {
@@ -89,7 +71,7 @@ namespace Vellum.Cli.Commands.Content
                 Navigation = siteNavigation,
                 Pages = documents,
                 Details = siteTaxonomy,
-            };
+            };*/
 
             stopwatch.Stop();
 
