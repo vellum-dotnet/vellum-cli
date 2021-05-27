@@ -3,7 +3,7 @@
 [![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/vellum-dotnet/vellum-cli/master/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum.cli/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/total?cache=false)
 
-`Vellum` is a Static Content Management System, available as a .NET Global Tool, and is built using Microsoft's `System.CommandLine` [libraries](https://github.com/dotnet/command-line-api). These packages, while still marked as experimental, are seeing lots of real-world usage, including tools such as [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet) and [].NET Interactive](https://github.com/dotnet/interactive). A useful blog post for understanding `System.CommandLine` is [Radu Matei's](https://twitter.com/matei_radu) blog post "[Building self-contained, single executable .NET Core 3 CLI tools](https://radu-matei.com/blog/self-contained-dotnet-cli/)".
+`Vellum` is a Static Content Management System, available as a .NET Global Tool, and is built using Microsoft's `System.CommandLine` [libraries](https://github.com/dotnet/command-line-api). These packages, while still marked as experimental, are seeing lots of real-world usage, including tools such as [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet) and [.NET Interactive](https://github.com/dotnet/interactive). A useful blog post for understanding `System.CommandLine` is [Radu Matei's](https://twitter.com/matei_radu) blog post "[Building self-contained, single executable .NET Core 3 CLI tools](https://radu-matei.com/blog/self-contained-dotnet-cli/)".
 
 ## dotnet global tools
 
