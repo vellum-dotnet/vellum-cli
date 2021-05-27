@@ -26,7 +26,7 @@ namespace Vellum.Cli.Commands.Content
         public static async Task<int> ExecuteAsync(
             IServiceCollection services,
             ListOptions options,
-            IConsole console,
+            IVellumConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
