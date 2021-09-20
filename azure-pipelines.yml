@@ -38,7 +38,7 @@ jobs:
         displayName: 'Create .nuspec based NuGet Packages'
         inputs:
           command: 'pack'
-          packagesToPack: '**/*/*.nuspec'
+          packagesToPack: 'Solutions/*/*.nuspec'
           versioningScheme: 'byEnvVar'
           versionEnvVar: 'GitVersion.SemVer'
       - task: CopyFiles@2
