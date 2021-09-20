@@ -176,11 +176,11 @@ namespace Vellum.Cli
                 // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
                 setCmd.AddValidator(commandResult =>
                 {
-                    DirectoryInfo workspace = commandResult.ValueForOption<DirectoryInfo>("workspace-path");
-                    DirectoryInfo publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
-                    string username = commandResult.ValueForOption<string>("username");
-                    string key = commandResult.ValueForOption<string>("key");
-                    string value = commandResult.ValueForOption<string>("value");
+                    DirectoryInfo workspace = commandResult["workspace-path"].GetValueOrDefault<DirectoryInfo>();
+                    DirectoryInfo publish = commandResult["publish-path"].GetValueOrDefault<DirectoryInfo>();
+                    string username = commandResult["username"].GetValueOrDefault<string>();
+                    string key = commandResult["key"].GetValueOrDefault<string>();
+                    string value = commandResult["value"].GetValueOrDefault<string>();
 
                     if (workspace == null && publish == null && username == null && key == null && value == null)
                     {
