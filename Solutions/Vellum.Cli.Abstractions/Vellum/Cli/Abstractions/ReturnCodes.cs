@@ -4,7 +4,7 @@
 
 namespace Vellum.Cli.Abstractions
 {
-    public class ReturnCodes
+    public static class ReturnCodes
     {
         public const int Exception = 2;
         public const int Error = 1;
