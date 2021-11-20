@@ -14,7 +14,7 @@ namespace Vellum.Cli.Commands.Environment
     {
         public static async Task<int> ExecuteAsync(
             EnvironmentOptions options,
-            IVellumConsole console,
+            ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {

@@ -24,7 +24,7 @@ namespace Vellum.Cli
 
             ServiceCollection.AddCommonServices();
 
-            var console = new VellumConsole();
+            ICompositeConsole console = new CompositeConsole();
 
             return await new CommandLineParser(
                 console,

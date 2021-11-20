@@ -1,21 +1,20 @@
-﻿// <copyright file="VellumConsole.cs" company="Endjin Limited">
+﻿// <copyright file="CompositeConsole.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 namespace Vellum.Cli
 {
     using System;
-    using System.CommandLine;
     using System.CommandLine.IO;
     using Spectre.Console;
     using Spectre.Console.Rendering;
 
-    internal sealed class VellumConsole : IVellumConsole
+    internal sealed class CompositeConsole : ICompositeConsole
     {
         private readonly AnsiConsoleStreamWriter standardOut;
         private readonly IStandardStreamWriter standardError;
 
-        public VellumConsole()
+        public CompositeConsole()
         {
             this.standardOut = new AnsiConsoleStreamWriter(AnsiConsole.Console);
             this.standardError = StandardStreamWriter.Create(Console.Error);

@@ -12,7 +12,7 @@ namespace Vellum.Abstractions.Caching
     {
         public static string Hash(string content)
         {
-            using (var sha256Managed = new SHA256Managed())
+            using (var sha256Managed = SHA256.Create())
             {
                 // Compute hash from text parameter
                 sha256Managed.ComputeHash(Encoding.UTF8.GetBytes(content));

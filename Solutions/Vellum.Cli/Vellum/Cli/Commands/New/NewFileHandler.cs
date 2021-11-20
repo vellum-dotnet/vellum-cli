@@ -21,7 +21,7 @@ namespace Vellum.Cli.Commands.New
     {
         public static async Task<int> ExecuteAsync(
             NewFileOptions fileOptions,
-            IVellumConsole console,
+            ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {

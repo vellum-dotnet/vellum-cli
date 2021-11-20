@@ -86,7 +86,7 @@ namespace Vellum.Cli.Environment
                             .EnumerateDirectories(path.ToString(), "*.*", SearchOption.AllDirectories)
                             .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any()).Select(x => x.ToAbsoluteDirectoryPath());
 
-                        foreach (var leafPath in leafPaths)
+                        foreach (IAbsoluteDirectoryPath leafPath in leafPaths)
                         {
                             yield return leafPath;
                         }

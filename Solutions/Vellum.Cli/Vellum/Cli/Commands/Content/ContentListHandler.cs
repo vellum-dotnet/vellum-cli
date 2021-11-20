@@ -6,18 +6,18 @@ namespace Vellum.Cli.Commands.Content
 {
     using System;
     using System.Collections.Generic;
-    using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.Diagnostics;
-    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
+
+    using Spectre.Console;
 
     using Vellum.Abstractions;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
-    using Vellum.Abstractions.Content.Primitives;
     using Vellum.Abstractions.Taxonomy;
+
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
 
@@ -26,7 +26,7 @@ namespace Vellum.Cli.Commands.Content
         public static async Task<int> ExecuteAsync(
             IServiceCollection services,
             ListOptions options,
-            IVellumConsole console,
+            ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
@@ -48,6 +48,12 @@ namespace Vellum.Cli.Commands.Content
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
             IAsyncEnumerable<TaxonomyDocument> loaded = taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments);
 
+            var table = new Table();
+            table.AddColumn("Title");
+            table.AddColumn("Author");
+            table.AddColumn("Date");
+            table.AddColumn("Status");
+
             // List<TaxonomyDocument> documents = await loaded.Select(x => x).ToListAsync();
             await foreach (TaxonomyDocument doc in loaded)
             {
@@ -58,10 +64,14 @@ namespace Vellum.Cli.Commands.Content
                     {
                         ContentFragmentTypeFactory<IBlogPost> cff = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
                         IBlogPost cf = cff.Create(contentFragment);
-                        Console.WriteLine(cf.Title);
+
+                        table.AddRow(cf.Title, cf.Author.ToString(), cf.Date.ToShortDateString(), cf.PublicationStatus.ToString());
+                        break;
                     }
                 }
             }
+
+            console.Write(table);
 
             /*NavigationNode siteNavigation = siteTaxonomyParser.Parse(documents);
 

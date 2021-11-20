@@ -27,12 +27,12 @@ namespace Vellum.Cli
 
     public class CommandLineParser
     {
-        private readonly IVellumConsole console;
+        private readonly ICompositeConsole console;
         private readonly IAppEnvironment appEnvironment;
         private readonly ICommandPluginHost commandPluginHost;
         private readonly IServiceCollection services;
 
-        public CommandLineParser(IVellumConsole console, IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost, IServiceCollection services)
+        public CommandLineParser(ICompositeConsole console, IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost, IServiceCollection services)
         {
             this.console = console;
             this.services = services;
@@ -40,23 +40,23 @@ namespace Vellum.Cli
             this.appEnvironment = appEnvironment;
         }
 
-        public delegate Task ContentList(IServiceCollection services, ListOptions options, IVellumConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task ContentList(IServiceCollection services, ListOptions options, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task EnvironmentInit(EnvironmentOptions options, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task EnvironmentInit(EnvironmentOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task NewFile(NewFileOptions fileOptions, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task NewFile(NewFileOptions fileOptions, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginInstall(PluginOptions options, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginInstall(PluginOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginUninstall(PluginOptions options, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginUninstall(PluginOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginList(IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginList(ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task SetEnvironmentSetting(SetOptions options, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task SetEnvironmentSetting(SetOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task TemplateInstall(TemplateOptions options, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task TemplateInstall(TemplateOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task TemplateUninstall(TemplateOptions options, IVellumConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task TemplateUninstall(TemplateOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public Parser Create(
             ContentList contentList = null,
