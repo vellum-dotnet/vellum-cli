@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tinify" Version="1.5.2" />
-    <PackageReference Include="Endjin.RecommendedPractices" Version="1.2.0">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Tinify" Version="1.5.3" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
   </ItemGroup>
 

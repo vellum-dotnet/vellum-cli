@@ -8,7 +8,7 @@ namespace Vellum.Cli.Abstractions.Templates
 
     public class TemplatesSettings
     {
-        public  DefaultTemplate DefaultTemplate { get; set; }
+        public DefaultTemplate DefaultTemplate { get; set; }
 
         public List<TemplatePackage> Packages { get; set; } = new List<TemplatePackage>();
     }

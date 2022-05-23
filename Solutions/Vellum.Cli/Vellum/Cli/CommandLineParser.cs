@@ -135,7 +135,7 @@ namespace Vellum.Cli
 
                 setCmd.AddOption(new Option("--username", "Username for the current user.")
                 {
-                    Argument =  new Argument<string>
+                    Argument = new Argument<string>
                     {
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -143,7 +143,7 @@ namespace Vellum.Cli
 
                 setCmd.AddOption(new Option("--workspace-path", "The location of your vellum workspace.")
                 {
-                    Argument =  new Argument<DirectoryInfo>
+                    Argument = new Argument<DirectoryInfo>
                     {
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -151,7 +151,7 @@ namespace Vellum.Cli
 
                 setCmd.AddOption(new Option("--publish-path", "The location for generated output.")
                 {
-                    Argument =  new Argument<DirectoryInfo>
+                    Argument = new Argument<DirectoryInfo>
                     {
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -159,7 +159,7 @@ namespace Vellum.Cli
 
                 setCmd.AddOption(new Option("--key", "A user-defined setting key.")
                 {
-                    Argument =  new Argument<string>
+                    Argument = new Argument<string>
                     {
                         Arity = ArgumentArity.ExactlyOne,
                     },
@@ -167,7 +167,7 @@ namespace Vellum.Cli
 
                 setCmd.AddOption(new Option("--value", "A user-defined setting value for the specified key.")
                 {
-                    Argument =  new Argument<string>
+                    Argument = new Argument<string>
                     {
                         Arity = ArgumentArity.ExactlyOne,
                     },
