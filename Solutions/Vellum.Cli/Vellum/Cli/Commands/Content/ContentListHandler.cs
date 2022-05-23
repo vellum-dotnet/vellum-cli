@@ -8,6 +8,7 @@ namespace Vellum.Cli.Commands.Content
     using System.Collections.Generic;
     using System.CommandLine.Invocation;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,7 @@ namespace Vellum.Cli.Commands.Content
     using Vellum.Abstractions;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
+    using Vellum.Abstractions.Content.Primitives;
     using Vellum.Abstractions.Taxonomy;
 
     using Vellum.Cli.Abstractions;
@@ -58,30 +60,39 @@ namespace Vellum.Cli.Commands.Content
             await foreach (TaxonomyDocument doc in loaded)
             {
                 // Console.WriteLine(doc.Path.ToString());
-                foreach (ContentFragment contentFragment in doc.ContentFragments)
+                foreach (ContentFragment contentFragment in doc.ContentFragments.OrderBy(cf => cf.Date))
                 {
                     if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
                     {
                         ContentFragmentTypeFactory<IBlogPost> cff = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
                         IBlogPost cf = cff.Create(contentFragment);
 
-                        table.AddRow(cf.Title, cf.Author.ToString(), cf.Date.ToShortDateString(), cf.PublicationStatus.ToString());
-                        break;
+                        IEnumerable<string> categories = cf.Category;
+                        IEnumerable<Faq> faqs = cf.Faqs;
+
+                        table.AddRow(cf.Title,
+                            cf.Author.ToString(),
+                            cf.Date.ToShortDateString(),
+                            cf.PublicationStatus.ToString());
+
+                        // break;
                     }
                 }
             }
 
             console.Write(table);
 
-            /*NavigationNode siteNavigation = siteTaxonomyParser.Parse(documents);
+            List<TaxonomyDocument> docs = await loaded.ToListAsync();
+
+            NavigationNode siteNavigation = siteTaxonomyParser.Parse(docs);
 
             var siteContext = new SiteContext
             {
                 Preview = false,
                 Navigation = siteNavigation,
-                Pages = documents,
+                Pages = docs,
                 Details = siteTaxonomy,
-            };*/
+            };
 
             stopwatch.Stop();
 
@@ -92,8 +103,9 @@ namespace Vellum.Cli.Commands.Content
 
             console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
             */
-            Console.WriteLine("Rendering Took: {0}", stopwatch.Elapsed);
 
+            Console.WriteLine("Rendering Took: {0}", stopwatch.Elapsed);
+            Console.ReadKey();
             return ReturnCodes.Ok;
         }
     }

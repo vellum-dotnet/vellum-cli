@@ -6,6 +6,8 @@ namespace Vellum.Abstractions
 {
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.Linq;
+
     using Vellum.Abstractions.Content;
 
     public class DynamicContentFragment : DynamicObject
@@ -38,6 +40,13 @@ namespace Vellum.Abstractions
             {
                 result = typeof(ContentFragment).GetProperty(binder.Name)?.GetValue(this.contentFragment, null);
                 return true;
+            }
+
+            var list = result as List<object>;
+
+            if (list != null)
+            {
+                result = list.Select(x => x.ToString()).ToList();
             }
 
             return true;

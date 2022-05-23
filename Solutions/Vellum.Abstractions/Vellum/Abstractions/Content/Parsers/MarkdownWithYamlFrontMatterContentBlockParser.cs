@@ -39,9 +39,8 @@ namespace Vellum.Abstractions.Content.Parsers
             this.deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().IgnoreFields().Build();
             this.memoryCache = memoryCache;
             this.pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
                 .UseAutoIdentifiers()
-                .UseGridTables()
-                .UsePipeTables()
                 .UseYamlFrontMatter()
                 .Build();
         }

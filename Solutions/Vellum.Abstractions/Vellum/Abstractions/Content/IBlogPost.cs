@@ -18,7 +18,7 @@ namespace Vellum.Abstractions.Content
 
         string? Body { get; set; }
 
-        IEnumerable<string>? Categories { get; set; }
+        IEnumerable<string>? Category { get; set; }
 
         Dates? Dates { get; set; }
 

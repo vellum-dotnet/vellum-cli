@@ -7,12 +7,12 @@ namespace Vellum.Abstractions.Content
     public enum PublicationStatus
     {
         /// <summary>
-        /// Content is Published.
+        /// Content is published.
         /// </summary>
         Published,
 
         /// <summary>
-        /// Content is in Draft.
+        /// Content is in draft.
         /// </summary>
         Draft,
 
@@ -20,5 +20,10 @@ namespace Vellum.Abstractions.Content
         /// Content is in an unknown state.
         /// </summary>
         Unknown,
+
+        /// <summary>
+        /// Content is unpublished.
+        /// </summary>
+        Unpublished,
     }
 }
