@@ -14,15 +14,15 @@ namespace Vellum.Cli.Cloudinary.Commands.Settings
 
     public static class UpdateCommandHandler
     {
-        public static Task<int> Execute(UpdateOptions options, IConsole console, InvocationContext context = null)
+        public static Task<int> Execute(string cloud, string key, string secret, IConsole console, InvocationContext context = null)
         {
             var settingsManager = new CloudinarySettingsManager(new FileSystemRoamingProfileAppEnvironment());
 
             var settings = new CloudinarySettings
             {
-                Cloud = options.Cloud,
-                Key = options.Key,
-                Secret = options.Secret,
+                Cloud = cloud,
+                Key = key,
+                Secret = secret,
             };
             try
             {

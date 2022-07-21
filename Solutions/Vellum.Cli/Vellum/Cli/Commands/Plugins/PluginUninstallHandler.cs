@@ -16,18 +16,18 @@ namespace Vellum.Cli.Commands.Plugins
     public static class PluginUninstallHandler
     {
         public static async Task<int> ExecuteAsync(
-            PluginOptions options,
+            string packageId,
             IConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            console.Out.WriteLine($"Uninstalling plugin with package id '{options.PackageId}'");
+            console.Out.WriteLine($"Uninstalling plugin with package id '{packageId}'");
 
             var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
             try
             {
-                await packageManager.UninstallAsync(options.PackageId).ConfigureAwait(false);
+                await packageManager.UninstallAsync(packageId).ConfigureAwait(false);
             }
             catch (Exception exception)
             {

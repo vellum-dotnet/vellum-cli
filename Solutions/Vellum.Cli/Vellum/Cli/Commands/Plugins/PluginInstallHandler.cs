@@ -16,18 +16,18 @@ namespace Vellum.Cli.Commands.Plugins
     public static class PluginInstallHandler
     {
         public static async Task<int> ExecuteAsync(
-            PluginOptions options,
+            string packageId,
             IConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            console.Out.WriteLine($"Installing plugin from package '{options.PackageId}'");
+            console.Out.WriteLine($"Installing plugin from package '{packageId}'");
 
             var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
             try
             {
-                PluginPackage result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
+                PluginPackage result = await packageManager.InstallLatestAsync(packageId).ConfigureAwait(false);
 
                 console.Out.WriteLine($"Using plugin version {result.Version}");
                 console.Out.WriteLine($"Installed plugin {result.Name} to {result.PluginPath}");

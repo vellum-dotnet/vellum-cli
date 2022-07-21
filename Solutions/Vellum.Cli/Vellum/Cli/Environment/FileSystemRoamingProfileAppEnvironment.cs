@@ -69,9 +69,7 @@ namespace Vellum.Cli.Environment
 
                     IEnumerable<string> dirs = Directory
                         .EnumerateDirectories(directory, "*.*", SearchOption.AllDirectories)
-                        .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() &&
-                                    (f.EndsWith(@"bin\Debug\netstandard2.1") ||
-                                     f.EndsWith(@"bin\Debug\netcoreapp3.1")));
+                        .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net6.0"));
 
                     foreach (string dir in dirs)
                     {
@@ -86,7 +84,7 @@ namespace Vellum.Cli.Environment
                             .EnumerateDirectories(path.ToString(), "*.*", SearchOption.AllDirectories)
                             .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any()).Select(x => x.ToAbsoluteDirectoryPath());
 
-                        foreach (var leafPath in leafPaths)
+                        foreach (IAbsoluteDirectoryPath leafPath in leafPaths)
                         {
                             yield return leafPath;
                         }

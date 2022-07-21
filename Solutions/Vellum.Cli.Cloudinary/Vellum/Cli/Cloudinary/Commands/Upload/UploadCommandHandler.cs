@@ -18,9 +18,9 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
 
     public static class UploadCommandHandler
     {
-        public static async Task<int> Execute(UploadOptions options, IConsole console, InvocationContext context = null)
+        public static async Task<int> Execute(FileInfo file, IConsole console, InvocationContext context = null)
         {
-            if (options == null)
+            if (file == null)
             {
                 console.Error.WriteLine("Invalid File TemplateRepositoryPath");
                 return ReturnCodes.Error;
@@ -34,8 +34,8 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
 
             var fileToUpload = new ImageUploadParams
             {
-                File = new FileDescription(options.FilePath.FullName),
-                PublicId = $"assets/images/blog/{DateTime.Now.Year}/{DateTime.Now.Month:00}/{Path.GetFileNameWithoutExtension(options.FilePath.Name.ToLowerInvariant())}",
+                File = new FileDescription(file.FullName),
+                PublicId = $"assets/images/blog/{DateTime.Now.Year}/{DateTime.Now.Month:00}/{Path.GetFileNameWithoutExtension(file.Name.ToLowerInvariant())}",
                 UniqueFilename = false,
                 UseFilename = false,
             };
@@ -45,7 +45,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload
                 ImageUploadResult uploadResult = await cloudinary.UploadAsync(fileToUpload).ConfigureAwait(false);
 
                 console.Out.WriteLine("Image uploaded.");
-                console.Out.WriteLine($"Use following path in your blog post: /{uploadResult.PublicId}{Path.GetExtension(options.FilePath.Name)}");
+                console.Out.WriteLine($"Use following path in your blog post: /{uploadResult.PublicId}{Path.GetExtension(file.Name)}");
             }
             catch (Exception exception)
             {

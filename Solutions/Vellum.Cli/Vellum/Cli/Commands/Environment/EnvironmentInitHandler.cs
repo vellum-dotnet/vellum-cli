@@ -13,10 +13,8 @@ namespace Vellum.Cli.Commands.Environment
     public static class EnvironmentInitHandler
     {
         public static async Task<int> ExecuteAsync(
-            EnvironmentOptions options,
             IConsole console,
-            IAppEnvironment appEnvironment,
-            InvocationContext context = null)
+            IAppEnvironment appEnvironment)
         {
             await appEnvironment.InitializeAsync(console).ConfigureAwait(false);
 

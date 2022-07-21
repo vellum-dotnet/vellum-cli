@@ -13,13 +13,13 @@ namespace Vellum.Cli.Tinify.Commands.Settings
 
     public static class UpdateCommandHandler
     {
-        public static Task<int> Execute(UpdateOptions options, IConsole console, InvocationContext context = null)
+        public static Task<int> Execute(string key, IConsole console, InvocationContext context = null)
         {
             var settingsManager = new TinifySettingsManager(new FileSystemRoamingProfileAppEnvironment());
 
             var settings = new TinifySettings
             {
-                Key = options.Key,
+                Key = key,
             };
             try
             {
