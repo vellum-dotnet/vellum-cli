@@ -16,21 +16,21 @@ namespace Vellum.Cli.Commands.Templates
     public static class TemplatePackageUninstallerHandler
     {
         public static async Task<int> ExecuteAsync(
-            TemplateOptions options,
+            string packageId,
             IConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            console.Out.WriteLine($"Uninstalling template package '{options.PackageId}'");
+            console.Out.WriteLine($"Uninstalling template package '{packageId}'");
 
             var templateSettingsManager = new TemplateSettingsManager(appEnvironment);
             TemplatesSettings currentSettings = templateSettingsManager.LoadSettings() ?? new TemplatesSettings();
 
             var packageManager = new NuGetTemplatePackageManager(appEnvironment);
 
-            if (currentSettings.Packages.Exists(templatePackage => templatePackage.PackageId == options.PackageId))
+            if (currentSettings.Packages.Exists(templatePackage => templatePackage.PackageId == packageId))
             {
-                TemplatePackage package = currentSettings.Packages.Find(templatePackage => templatePackage.Id == options.PackageId);
+                TemplatePackage package = currentSettings.Packages.Find(templatePackage => templatePackage.Id == packageId);
 
                 if (package != null)
                 {

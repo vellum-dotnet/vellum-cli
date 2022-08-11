@@ -56,56 +56,58 @@ public class CloudinaryCommand : ICommandPlugin
             cmd.AddCommand(UpdateSettings());
 
             return cmd;
-        }
 
-        Command ListSettings()
-        {
-            var cmd = new Command("list", "List Cloudinary settings.");
-
-            cmd.SetHandler(context =>
+            Command ListSettings()
             {
-                this.list(context.Console, context);
-            });
+                var cmd = new Command("list", "List Cloudinary settings.");
 
-            return cmd;
-        }
+                cmd.SetHandler(context =>
+                {
+                    this.list(context.Console, context);
+                });
 
-        Command UpdateSettings()
-        {
-            var cloudArg = new Argument<string>
+                return cmd;
+            }
+
+            Command UpdateSettings()
             {
-                Name = "cloud",
-                Description = "Cloudinary Cloud Account PackageId",
-                Arity = ArgumentArity.ExactlyOne,
-            };
-            var keyArg = new Argument<string>
-            {
-                Name = "key",
-                Description = "Cloudinary API Key",
-                Arity = ArgumentArity.ExactlyOne,
-            };
-            var secretArg = new Argument<string>
-            {
-                Name = "secret",
-                Description = "Cloudinary API Secret",
-                Arity = ArgumentArity.ExactlyOne,
-            };
+                var cloudArg = new Argument<string>
+                {
+                    Name = "cloud",
+                    Description = "Cloudinary Cloud Account PackageId",
+                    Arity = ArgumentArity.ExactlyOne,
+                };
 
-            var cmd = new Command("update", "Update Cloudinary settings.")
-            {
-                cloudArg, keyArg, secretArg,
-            };
+                var keyArg = new Argument<string>
+                {
+                    Name = "key",
+                    Description = "Cloudinary API Key",
+                    Arity = ArgumentArity.ExactlyOne,
+                };
 
-            cmd.SetHandler(context =>
-            {
-                string cloud = context.ParseResult.GetValueForArgument(cloudArg);
-                string key = context.ParseResult.GetValueForArgument(keyArg);
-                string secret = context.ParseResult.GetValueForArgument(secretArg);
+                var secretArg = new Argument<string>
+                {
+                    Name = "secret",
+                    Description = "Cloudinary API Secret",
+                    Arity = ArgumentArity.ExactlyOne,
+                };
 
-                this.update(cloud, key, secret, context.Console, context);
-            });
+                var cmd = new Command("update", "Update Cloudinary settings.")
+                {
+                    cloudArg, keyArg, secretArg,
+                };
 
-            return cmd;
+                cmd.SetHandler(context =>
+                {
+                    string cloud = context.ParseResult.GetValueForArgument(cloudArg);
+                    string key = context.ParseResult.GetValueForArgument(keyArg);
+                    string secret = context.ParseResult.GetValueForArgument(secretArg);
+
+                    this.update(cloud, key, secret, context.Console, context);
+                });
+
+                return cmd;
+            }
         }
 
         Command Upload()

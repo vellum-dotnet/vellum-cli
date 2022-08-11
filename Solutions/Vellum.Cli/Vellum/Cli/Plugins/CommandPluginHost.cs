@@ -17,19 +17,17 @@ namespace Vellum.Cli.Plugins
         public IEnumerable<Command> Discover(IEnumerable<IAbsoluteDirectoryPath> pluginPaths)
         {
             var loaders = new List<PluginLoader>();
+            var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll")).DistinctBy(x => x.FileName).ToList();
 
-            foreach (IAbsoluteDirectoryPath dir in pluginPaths)
+            foreach (IAbsoluteFilePath assembly in assemblies)
             {
-                foreach (IAbsoluteFilePath child in dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
-                {
-                    // Enable Hot Reload so that we can delete plugins, otherwise you get an access denied exception
-                    var pluginLoader = PluginLoader.CreateFromAssemblyFile(
-                        child.FileInfo.FullName,
-                        sharedTypes: new[] { typeof(ICommandPlugin) },
-                        config => config.EnableHotReload = true);
+                // Enable Hot Reload so that we can delete plugins, otherwise you get an access denied exception
+                var pluginLoader = PluginLoader.CreateFromAssemblyFile(
+                    assembly.FileInfo.FullName,
+                    sharedTypes: new[] { typeof(ICommandPlugin) },
+                    config => config.EnableHotReload = true);
 
-                    loaders.Add(pluginLoader);
-                }
+                loaders.Add(pluginLoader);
             }
 
             foreach (PluginLoader loader in loaders)

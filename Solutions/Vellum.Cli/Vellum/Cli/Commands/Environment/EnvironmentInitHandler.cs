@@ -5,7 +5,6 @@
 namespace Vellum.Cli.Commands.Environment
 {
     using System.CommandLine;
-    using System.CommandLine.Invocation;
     using System.Threading.Tasks;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;

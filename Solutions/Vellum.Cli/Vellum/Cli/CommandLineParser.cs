@@ -48,9 +48,9 @@ namespace Vellum.Cli
 
     public delegate Task SetEnvironmentSettings(string username, DirectoryInfo workspacePath, DirectoryInfo publishPath, string key, string value, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-    public delegate Task TemplateInstall(TemplateOptions options, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+    public delegate Task TemplateInstall(string packageId, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-    public delegate Task TemplateUninstall(TemplateOptions options, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+    public delegate Task TemplateUninstall(string packageId, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
     public Parser Create(
         EnvironmentInit environmentInit = null,
@@ -206,7 +206,7 @@ namespace Vellum.Cli
             string key = context.ParseResult.GetValueForOption(keyOption);
             string value = context.ParseResult.GetValueForOption(valueOption);
 
-            await setEnvironmentSettings(username, workspacePath, publishPath, key, value,  context.Console, this.appEnvironment, context).ConfigureAwait(false);
+            await setEnvironmentSettings(username, workspacePath, publishPath, key, value, context.Console, this.appEnvironment, context).ConfigureAwait(false);
           });
 
           return setCmd;
@@ -249,95 +249,130 @@ namespace Vellum.Cli
             "plugins",
             "Manage vellum-cli plugins.");
 
-        var installCmd = new Command("install", "Install a vellum-cli plugin.");
-
-        var arg = new Argument<string>
-        {
-          Name = "package-id",
-          Description = "NuGet Package Id",
-          Arity = ArgumentArity.ExactlyOne,
-        };
-
-        installCmd.Add(arg);
-
-        installCmd.SetHandler(async (context) =>
-        {
-          string packageId = context.ParseResult.GetValueForArgument(arg);
-          await pluginInstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
-        });
-
-        var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli plugin.");
-
-        var arg = new Argument<string>
-        {
-          Name = "package-id",
-          Description = "NuGet Package Id",
-          Arity = ArgumentArity.ExactlyOne,
-        },
-
-        uninstallCmd.SetHandler(async (context) =>
-        {
-          await pluginUninstall(null /*options*/, context.Console, this.appEnvironment, context).ConfigureAwait(false);
-        });
-
-        var listCmd = new Command("list", "List installed vellum-cli plugins.");
-
-        listCmd.SetHandler(async (context) =>
-        {
-          await pluginList(context.Console, this.appEnvironment, context).ConfigureAwait(false);
-        });
-
-        cmd.AddCommand(installCmd);
-        cmd.AddCommand(uninstallCmd);
-        cmd.AddCommand(listCmd);
+        cmd.AddCommand(Install());
+        cmd.AddCommand(Uninstall());
+        cmd.AddCommand(List());
 
         return cmd;
+
+        Command Install()
+        {
+            var cmd = new Command("install", "Install a vellum-cli plugin.");
+
+            var arg = new Argument<string>
+            {
+                Name = "package-id",
+                Description = "NuGet Package Id",
+                Arity = ArgumentArity.ExactlyOne,
+            };
+
+            cmd.Add(arg);
+
+            cmd.SetHandler(async (context) =>
+            {
+                string packageId = context.ParseResult.GetValueForArgument(arg);
+                await pluginInstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+            });
+
+            return cmd;
+        }
+
+        Command Uninstall()
+        {
+            var cmd = new Command("uninstall", "Uninstall a vellum-cli plugin.");
+
+            var arg = new Argument<string>
+            {
+                Name = "package-id",
+                Description = "NuGet Package Id",
+                Arity = ArgumentArity.ExactlyOne,
+            };
+
+            cmd.Add(arg);
+
+            cmd.SetHandler(async (context) =>
+            {
+                string packageId = context.ParseResult.GetValueForArgument(arg);
+                await pluginUninstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+            });
+
+            return cmd;
+        }
+
+        Command List()
+        {
+            var cmd = new Command("list", "List installed vellum-cli plugins.");
+
+            cmd.SetHandler(async (context) =>
+            {
+                await pluginList(context.Console, this.appEnvironment, context).ConfigureAwait(false);
+            });
+
+            return cmd;
+        }
       }
 
       Command Templates()
       {
         var cmd = new Command("templates", "Perform operations on Vellum templates.");
 
-        var packagesCmd = new Command("packages", "Perform operations on Vellum template packages.");
-
-        var installCmd = new Command("install", "Install a vellum-cli template package.")
-                {
-                    new Argument<string>
-                    {
-                        Name = "package-id",
-                        Description = "NuGet Package Id",
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                };
-
-        installCmd.SetHandler(async (context) =>
-        {
-          // TemplateOptions
-          await templateInstall(null /*options*/, context.Console, this.appEnvironment, context).ConfigureAwait(false);
-        });
-
-        var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli template package.")
-        {
-            new Argument<string>
-            {
-                Name = "package-id",
-                Description = "NuGet Package Id",
-                Arity = ArgumentArity.ExactlyOne,
-            },
-        };
-
-        uninstallCmd.SetHandler(async (context) =>
-        {
-          // TemplateOptions
-          await templateUninstall(null /*options*/, context.Console, this.appEnvironment, context).ConfigureAwait(false);
-        });
-
-        packagesCmd.AddCommand(installCmd);
-        packagesCmd.AddCommand(uninstallCmd);
-
-        cmd.AddCommand(packagesCmd);
+        cmd.AddCommand(TemplatesPackages());
 
         return cmd;
+
+        Command TemplatesPackages()
+        {
+            var cmd = new Command("packages", "Perform operations on Vellum template packages.");
+
+            cmd.AddCommand(Install());
+            cmd.AddCommand(Uninstall());
+
+            return cmd;
+
+            Command Install()
+            {
+                var cmd = new Command("install", "Install a vellum-cli template package.");
+
+                var arg = new Argument<string>
+                {
+                    Name = "package-id",
+                    Description = "NuGet Package Id",
+                    Arity = ArgumentArity.ExactlyOne,
+                };
+
+                cmd.Add(arg);
+
+                cmd.SetHandler(async (context) =>
+                {
+                    string packageId = context.ParseResult.GetValueForArgument(arg);
+                    await templateInstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                });
+
+                return cmd;
+            }
+
+            Command Uninstall()
+            {
+                var cmd = new Command("uninstall", "Uninstall a vellum-cli template package.");
+
+                var arg = new Argument<string>
+                {
+                    Name = "package-id",
+                    Description = "NuGet Package Id",
+                    Arity = ArgumentArity.ExactlyOne,
+                };
+
+                cmd.Add(arg);
+
+                cmd.SetHandler(async (context) =>
+                {
+                    string packageId = context.ParseResult.GetValueForArgument(arg);
+                    await templateUninstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                });
+
+                return cmd;
+            }
+        }
       }
     }
   }
