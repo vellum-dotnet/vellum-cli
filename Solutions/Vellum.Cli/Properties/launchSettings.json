@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Vellum.Cli": {
-      "commandName": "Project",
-      "commandLineArgs": "tinify settings update \"tLdZrDjwWBltsKT1pPCZgKK02zm1kwWS\""
-    }
-  }
-}
