@@ -10,7 +10,7 @@
     <tags>vellum static cms vellum-cli vellum-cli-plugin tinify endjin</tags>
   </metadata>
   <files>
-    <file src="bin\Release\netstandard2.1\publish\Vellum.Cli.Tinify.dll" target="content\" />
-    <file src="bin\Release\netstandard2.1\publish\Tinify.dll" target="content\" />
+    <file src="bin\Release\net6.0\publish\Vellum.Cli.Tinify.dll" target="content\" />
+    <file src="bin\Release\net6.0\publish\Tinify.dll" target="content\" />
   </files>
 </package>
