@@ -30,6 +30,12 @@
     The path to import the Endjin.RecommendedPractices.Build module from. This is useful when
     testing pre-release versions of the Endjin.RecommendedPractices.Build that are not yet
     available in the PowerShell Gallery.
+.PARAMETER BuildModuleVersion
+    The version of the Endjin.RecommendedPractices.Build module to import. This is useful when
+    testing pre-release versions of the Endjin.RecommendedPractices.Build that are not yet
+    available in the PowerShell Gallery.
+.PARAMETER InvokeBuildModuleVersion
+    The version of the InvokeBuild module to be used.
 #>
 [CmdletBinding()]
 param (
@@ -37,7 +43,7 @@ param (
     [string[]] $Tasks = @("."),
 
     [Parameter()]
-    [string] $Configuration = "Release",
+    [string] $Configuration = "Debug",
 
     [Parameter()]
     [string] $BuildRepositoryUri = "",
@@ -62,17 +68,23 @@ param (
     [switch] $Clean,
 
     [Parameter()]
-    [string] $BuildModulePath
+    [string] $BuildModulePath,
+
+    [Parameter()]
+    [version] $BuildModuleVersion = "0.2.8",
+
+    [Parameter()]
+    [version] $InvokeBuildModuleVersion = "5.7.1"
 )
 
 $ErrorActionPreference = $ErrorActionPreference ? $ErrorActionPreference : 'Stop'
-$InformationPreference = $InformationAction ? $InformationAction : 'Continue'
+$InformationPreference = 'Continue'
 
 $here = Split-Path -Parent $PSCommandPath
 
 #region InvokeBuild setup
 if (!(Get-Module -ListAvailable InvokeBuild)) {
-    Install-Module InvokeBuild -RequiredVersion 5.7.1 -Scope CurrentUser -Force -Repository PSGallery
+    Install-Module InvokeBuild -RequiredVersion $InvokeBuildModuleVersion -Scope CurrentUser -Force -Repository PSGallery
 }
 Import-Module InvokeBuild
 # This handles calling the build engine when this file is run like a normal PowerShell script
@@ -89,34 +101,36 @@ if ($MyInvocation.ScriptName -notlike '*Invoke-Build.ps1') {
 }
 #endregion
 
-# Import shared tasks and initialise build framework
+#region Import shared tasks and initialise build framework
 if (!($BuildModulePath)) {
-    if (!(Get-Module -ListAvailable Endjin.RecommendedPractices.Build)) {
+    if (!(Get-Module -ListAvailable Endjin.RecommendedPractices.Build | ? { $_.Version -eq $BuildModuleVersion })) {
         Write-Information "Installing 'Endjin.RecommendedPractices.Build' module..."
-        Install-Module Endjin.RecommendedPractices.Build -RequiredVersion 0.1.1 -AllowPrerelease -Scope CurrentUser -Force -Repository PSGallery
+        Install-Module Endjin.RecommendedPractices.Build -RequiredVersion $BuildModuleVersion -Scope CurrentUser -Force -Repository PSGallery
     }
     $BuildModulePath = "Endjin.RecommendedPractices.Build"
 }
 else {
     Write-Information "BuildModulePath: $BuildModulePath"
 }
-Import-Module $BuildModulePath -Force
+Import-Module $BuildModulePath -RequiredVersion $BuildModuleVersion -Force
 
 # Load the build process & tasks
 . Endjin.RecommendedPractices.Build.tasks
+#endregion
+
 
 #
 # Build process control options
 #
+$SkipInit = $false
 $SkipVersion = $false
 $SkipBuild = $false
-$CleanBuild = $false
+$CleanBuild = $Clean
 $SkipTest = $true
-$SkipTestReport = $true
+$SkipTestReport = $false
+$SkipAnalysis = $false
 $SkipPackage = $false
 
-# Advanced build settings
-$EnableGitVersionAdoVariableWorkaround = $false
 
 #
 # Build process configuration
@@ -124,22 +138,33 @@ $EnableGitVersionAdoVariableWorkaround = $false
 $SolutionToBuild = (Resolve-Path (Join-Path $here ".\Solutions\Vellum.Cli.sln")).Path
 
 #
-# Specify files to exclude from test coverage
+# Specify files to exclude from code coverage
 # This option is for excluding generated code
+# - Use file path or directory path with globbing (e.g dir1/*.cs)
+# - Use single or multiple paths (separated by comma) (e.g. **/dir1/class1.cs,**/dir2/*.cs,**/dir3/**/*.cs)
+#
 $ExcludeFilesFromCodeCoverage = ""
 
 # Synopsis: Build, Test and Package
 task . FullBuild
 
+
 # build extensibility tasks
+task RunFirst {}
+task PreInit {}
+task PostInit {}
+task PreVersion {}
+task PostVersion {}
 task PreBuild {}
-task PostBuild {
-    dotnet tool install hades -g
-    dotnet hades $SolutionToBuild --report 
-}
+task PostBuild {}
 task PreTest {}
 task PostTest {}
 task PreTestReport {}
 task PostTestReport {}
+task PreAnalysis {}
+task PostAnalysis
 task PrePackage {}
 task PostPackage {}
+task PrePublish {}
+task PostPublish {}
+task RunLast {}
