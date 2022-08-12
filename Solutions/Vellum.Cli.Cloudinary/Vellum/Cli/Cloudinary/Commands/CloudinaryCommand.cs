@@ -50,12 +50,12 @@ public class CloudinaryCommand : ICommandPlugin
 
         Command Settings()
         {
-            var cmd = new Command("settings", "Manage Cloudinary settings.");
+            var settingsCmd = new Command("settings", "Manage Cloudinary settings.");
 
-            cmd.AddCommand(ListSettings());
-            cmd.AddCommand(UpdateSettings());
+            settingsCmd.AddCommand(ListSettings());
+            settingsCmd.AddCommand(UpdateSettings());
 
-            return cmd;
+            return settingsCmd;
 
             Command ListSettings()
             {
@@ -71,37 +71,37 @@ public class CloudinaryCommand : ICommandPlugin
 
             Command UpdateSettings()
             {
-                var cloudArg = new Argument<string>
+                var cloudOption = new Option<string>("--cloud")
                 {
-                    Name = "cloud",
                     Description = "Cloudinary Cloud Account PackageId",
                     Arity = ArgumentArity.ExactlyOne,
+                    IsRequired = true,
                 };
 
-                var keyArg = new Argument<string>
+                var keyOption = new Option<string>("--key")
                 {
-                    Name = "key",
                     Description = "Cloudinary API Key",
                     Arity = ArgumentArity.ExactlyOne,
+                    IsRequired = true,
                 };
 
-                var secretArg = new Argument<string>
+                var secretOption = new Option<string>("--secret")
                 {
-                    Name = "secret",
                     Description = "Cloudinary API Secret",
                     Arity = ArgumentArity.ExactlyOne,
+                    IsRequired = true,
                 };
 
                 var cmd = new Command("update", "Update Cloudinary settings.")
                 {
-                    cloudArg, keyArg, secretArg,
+                    cloudOption, keyOption, secretOption,
                 };
 
                 cmd.SetHandler(context =>
                 {
-                    string cloud = context.ParseResult.GetValueForArgument(cloudArg);
-                    string key = context.ParseResult.GetValueForArgument(keyArg);
-                    string secret = context.ParseResult.GetValueForArgument(secretArg);
+                    string cloud = context.ParseResult.GetValueForOption(cloudOption);
+                    string key = context.ParseResult.GetValueForOption(keyOption);
+                    string secret = context.ParseResult.GetValueForOption(secretOption);
 
                     this.update(cloud, key, secret, context.Console, context);
                 });
@@ -112,19 +112,21 @@ public class CloudinaryCommand : ICommandPlugin
 
         Command Upload()
         {
-            var argument = new Argument<FileInfo>("file-path", "Which file should be uploaded to Cloudinary?")
+            var option = new Option<FileInfo>("--file-path")
             {
                 Arity = ArgumentArity.ExactlyOne,
+                Description = "Which file should be uploaded to Cloudinary?",
+                IsRequired = true,
             };
 
             var cmd = new Command("upload", "Upload media assets in Cloudinary")
             {
-                argument,
+                option,
             };
 
             cmd.SetHandler(async context =>
             {
-                FileInfo file = context.ParseResult.GetValueForArgument(argument);
+                FileInfo file = context.ParseResult.GetValueForOption(option);
                 await this.upload(file, context.Console, context).ConfigureAwait(false);
             });
 
