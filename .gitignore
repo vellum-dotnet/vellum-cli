@@ -351,3 +351,4 @@ MigrationBackup/
 .idea/
 
 *.sbom.*
+/Solutions/Vellum.Cli/Properties/launchSettings.json
