@@ -5,7 +5,6 @@
 namespace Vellum.Cli.Commands.Environment
 {
     using System.CommandLine;
-    using System.CommandLine.Invocation;
     using System.Threading.Tasks;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
@@ -13,10 +12,8 @@ namespace Vellum.Cli.Commands.Environment
     public static class EnvironmentInitHandler
     {
         public static async Task<int> ExecuteAsync(
-            EnvironmentOptions options,
             IConsole console,
-            IAppEnvironment appEnvironment,
-            InvocationContext context = null)
+            IAppEnvironment appEnvironment)
         {
             await appEnvironment.InitializeAsync(console).ConfigureAwait(false);
 

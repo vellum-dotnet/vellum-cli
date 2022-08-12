@@ -17,21 +17,21 @@ namespace Vellum.Cli.Commands.Templates
     public static class TemplatePackageInstallerHandler
     {
         public static async Task<int> ExecuteAsync(
-            TemplateOptions options,
+            string packageId,
             IConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            console.Out.WriteLine($"Installing template from package '{options.PackageId}'");
+            console.Out.WriteLine($"Installing template from package '{packageId}'");
 
             var templateSettingsManager = new TemplateSettingsManager(appEnvironment);
             TemplatesSettings currentSettings = templateSettingsManager.LoadSettings() ?? new TemplatesSettings();
 
             var packageManager = new NuGetTemplatePackageManager(appEnvironment);
 
-            if (currentSettings.Packages.Exists(x => x.PackageId == options.PackageId))
+            if (currentSettings.Packages.Exists(x => x.PackageId == packageId))
             {
-                TemplatePackage package = currentSettings.Packages.Find(x => x.Id == options.PackageId);
+                TemplatePackage package = currentSettings.Packages.Find(x => x.Id == packageId);
 
                 if (package != null)
                 {
@@ -46,8 +46,7 @@ namespace Vellum.Cli.Commands.Templates
                 }
             }
 
-            TemplatePackage templatePackage =
-                await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
+            TemplatePackage templatePackage = await packageManager.InstallLatestAsync(packageId).ConfigureAwait(false);
 
             if (!currentSettings.Packages.Exists(x => x.Id == templatePackage.Id))
             {

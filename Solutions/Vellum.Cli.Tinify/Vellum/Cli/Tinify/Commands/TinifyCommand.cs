@@ -31,9 +31,9 @@ namespace Vellum.Cli.Tinify.Commands
 
         public delegate Task List(IConsole console, InvocationContext invocationContext = null);
 
-        public delegate Task Optimize(OptimizeOptions options, IConsole console, InvocationContext invocationContext = null);
+        public delegate Task Optimize(FileInfo fileInfo, IConsole console, InvocationContext invocationContext = null);
 
-        public delegate Task Update(UpdateOptions options, IConsole console, InvocationContext invocationContext = null);
+        public delegate Task Update(string key, IConsole console, InvocationContext invocationContext = null);
 
         public Command Command()
         {
@@ -52,38 +52,40 @@ namespace Vellum.Cli.Tinify.Commands
             {
                 var settingsCmd = new Command("settings", "Manage Tinify settings.");
 
-                settingsCmd.AddCommand(ListSettings());
-                settingsCmd.AddCommand(UpdateSettings());
+                settingsCmd.AddCommand(List());
+                settingsCmd.AddCommand(Update());
 
                 return settingsCmd;
             }
 
-            Command ListSettings()
+            Command List()
             {
-                return new Command("list", "List Tinify settings.")
+                var listCmd = new Command("list", "List Tinify settings.");
+
+                // https://github.com/dotnet/command-line-api/issues/1537
+                listCmd.SetHandler((context) =>
                 {
-                    Handler = CommandHandler.Create<InvocationContext>((context) =>
-                    {
-                        this.list(context.Console, context);
-                    }),
-                };
+                    this.list(context.Console, context);
+                });
+
+                return listCmd;
             }
 
-            Command UpdateSettings()
+            Command Update()
             {
-                var command = new Command("update", "Update Tinify settings.")
+                var command = new Command("update", "Update Tinify settings.");
+
+                var option = new Option<string>("--key", "Tinify API Key")
                 {
-                    new Argument<string>
-                    {
-                        Name = "key",
-                        Description = "Tinify API Key",
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
+                    Arity = ArgumentArity.ExactlyOne,
                 };
 
-                command.Handler = CommandHandler.Create<UpdateOptions, InvocationContext>((options, context) =>
+                command.Add(option);
+
+                command.SetHandler((context) =>
                 {
-                    this.update(options, context.Console, context);
+                    string key = context.ParseResult.GetValueForOption(option);
+                    this.update(key, context.Console, context);
                 });
 
                 return command;
@@ -91,19 +93,20 @@ namespace Vellum.Cli.Tinify.Commands
 
             Command Optimize()
             {
-                var cmd = new Command("optimize", "Optimise images using Tinify")
+                var option = new Option<FileInfo>("--file-path", "Which image file (jpg|png) are you going to optimize?")
                 {
-                    new Argument<FileInfo>
-                    {
-                        Name = "file-path",
-                        Description = "Which image file (jpg|png) are you going to optimize?",
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
+                    Arity = ArgumentArity.ExactlyOne,
                 };
 
-                cmd.Handler = CommandHandler.Create<OptimizeOptions, InvocationContext>(async (options, context) =>
+                var cmd = new Command("optimize", "Optimise images using Tinify")
                 {
-                    await this.optimizeAsync(options, context.Console, context).ConfigureAwait(false);
+                    option,
+                };
+
+                cmd.SetHandler(async (context) =>
+                {
+                    FileInfo value = context.ParseResult.GetValueForOption(option);
+                    await this.optimizeAsync(value, context.Console, context).ConfigureAwait(false);
                 });
 
                 return cmd;

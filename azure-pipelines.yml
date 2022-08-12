@@ -13,16 +13,15 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: vellum-dotnet-github
-      ref: refs/tags/last-known-good
 
 jobs:
-- template: templates/build.and.release.yml@recommended_practices
+- template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
     vmImage: 'ubuntu-latest'
     service_connection_nuget_org: $(Endjin_Service_Connection_NuGet_Org)
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
-    netSdkVersion: '3.x'
+    netSdkVersion: '6.x'
     prePublishReleaseArtifacts:
       - task: DotNetCoreCLI@2
         displayName: 'Publish Assets for .nuspec Packages'
@@ -40,7 +39,7 @@ jobs:
           command: 'pack'
           packagesToPack: 'Solutions/*/*.nuspec'
           versioningScheme: 'byEnvVar'
-          versionEnvVar: 'GitVersion.SemVer'
+          versionEnvVar: 'Endjin_SemVer'
       - task: CopyFiles@2
         displayName: 'Copy .nuspec Generated NuGet Packages To Release Folder'
         inputs:

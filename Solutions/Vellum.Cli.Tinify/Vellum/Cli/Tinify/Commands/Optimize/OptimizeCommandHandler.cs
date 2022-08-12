@@ -17,9 +17,9 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
 
   public static class OptimizeCommandHandler
     {
-        public static async Task<int> Execute(OptimizeOptions options, IConsole console, InvocationContext context = null)
+        public static async Task<int> Execute(FileInfo fileInfo, IConsole console, InvocationContext context = null)
         {
-            if (options == null)
+            if (fileInfo == null)
             {
                 console.Error.WriteLine("Invalid File TemplateRepositoryPath");
                 return ReturnCodes.Error;
@@ -42,14 +42,14 @@ namespace Vellum.Cli.Tinify.Commands.Optimize
                     return ReturnCodes.Error;
                 }
 
-                long originalSizeInBytes = options.FilePath.Length;
+                long originalSizeInBytes = fileInfo.Length;
 
                 console.Out.WriteLine($"Original size: {originalSizeInBytes / 1024}KB");
 
-                Source source = await Tinify.FromFile(options.FilePath.FullName).ConfigureAwait(false);
-                await source.ToFile(options.FilePath.FullName);
+                Source source = await Tinify.FromFile(fileInfo.FullName).ConfigureAwait(false);
+                await source.ToFile(fileInfo.FullName);
 
-                long newSizeInBytes = new FileInfo(options.FilePath.FullName).Length;
+                long newSizeInBytes = new FileInfo(fileInfo.FullName).Length;
                 double percentChange = (newSizeInBytes - originalSizeInBytes) * 100.0 / originalSizeInBytes;
 
                 console.Out.WriteLine($"New size: {newSizeInBytes / 1024}KB");
