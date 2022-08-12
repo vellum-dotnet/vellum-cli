@@ -39,7 +39,7 @@ jobs:
           command: 'pack'
           packagesToPack: 'Solutions/*/*.nuspec'
           versioningScheme: 'byEnvVar'
-          versionEnvVar: 'GitVersion.SemVer'
+          versionEnvVar: 'Endjin_SemVer'
       - task: CopyFiles@2
         displayName: 'Copy .nuspec Generated NuGet Packages To Release Folder'
         inputs:
