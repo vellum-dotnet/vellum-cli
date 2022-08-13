@@ -67,15 +67,15 @@ Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to e
 
 `vellum-cli environment set --key <KEY> --value <VALUE>` - Store key value pairs in configuration.
 
-`vellum-cli plugins install <PACKAGE ID>` - Install a vellum-cli plugin.
+`vellum-cli plugins install --package-id <PACKAGE ID>` - Install a vellum-cli plugin.
 
-`vellum-cli plugins uninstall <PACKAGE ID>` - Uninstall a vellum-cli plugin.
+`vellum-cli plugins uninstall --package-id <PACKAGE ID>` - Uninstall a vellum-cli plugin.
 
 NOT IMPLEMENTED YET `vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
 
 NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
 
-`vellum-cli new <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
+`vellum-cli new --template-name <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
 
 ## Plugins
 
@@ -87,9 +87,9 @@ NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum
 
 `vellum-cli cloudinary settings list` - lists the current settings.
 
-`vellum-cli cloudinary settings update <CLOUD> <KEY> <SECRET>` - update the settings for Cloudinary authentication.
+`vellum-cli cloudinary settings update --cloud <CLOUD> --key <KEY> --secret <SECRET>` - update the settings for Cloudinary authentication.
 
-`vellum-cli cloudinary upload <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
+`vellum-cli cloudinary upload --file-path <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
 
 ### Tinify
 
@@ -97,9 +97,9 @@ NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum
 
 To use, first you need to register for an [API Key](https://tinypng.com/developers), this will allow you to process 500 images per month.
 
-`vellum-cli tinify settings update <KEY>` - updates tinify setting with your API Key.
+`vellum-cli tinify settings update --key <KEY>` - updates tinify setting with your API Key.
 
-`vellum-cli tinify settings list ` - lists your tinify settings.
+`vellum-cli tinify settings list` - lists your tinify settings.
 
 ## Licenses
 
@@ -125,7 +125,7 @@ Our other Open Source projects can be found on GitHub on our [endjin](https://gi
 
 This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [&#104;&#101;&#108;&#108;&#111;&#064;&#101;&#110;&#100;&#106;&#105;&#110;&#046;&#099;&#111;&#109;](&#109;&#097;&#105;&#108;&#116;&#111;:&#104;&#101;&#108;&#108;&#111;&#064;&#101;&#110;&#100;&#106;&#105;&#110;&#046;&#099;&#111;&#109;) with any additional questions or comments.
 
-## IP Maturity Matrix (IMM)
+## IP Maturity Model (IMM)
 
 The IMM is endjin's IP quality framework.
 
