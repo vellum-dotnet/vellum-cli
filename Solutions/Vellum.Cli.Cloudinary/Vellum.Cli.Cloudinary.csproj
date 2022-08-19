@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.19.0" />
-    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.1">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
