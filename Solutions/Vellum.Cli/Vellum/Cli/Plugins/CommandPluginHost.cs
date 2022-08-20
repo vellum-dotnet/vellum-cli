@@ -37,10 +37,22 @@ namespace Vellum.Cli.Plugins
                     .GetTypes()
                     .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
                 {
-                    // This assumes the implementation of IPlugin has a parameterless constructor
-                    var plugin = Activator.CreateInstance(pluginType) as ICommandPlugin;
+                    ICommandPlugin plugin = null;
 
-                    yield return plugin?.Command();
+                    try
+                    {
+                        // This assumes the implementation of IPlugin has a parameterless constructor
+                        plugin = Activator.CreateInstance(pluginType) as ICommandPlugin;
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                    }
+
+                    if (plugin != null)
+                    {
+                        yield return plugin?.Command();
+                    }
                 }
             }
         }

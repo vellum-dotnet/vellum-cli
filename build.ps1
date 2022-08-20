@@ -43,7 +43,7 @@ param (
     [string[]] $Tasks = @("."),
 
     [Parameter()]
-    [string] $Configuration = "Debug",
+    [string] $Configuration = "Release",
 
     [Parameter()]
     [string] $BuildRepositoryUri = "",

@@ -129,8 +129,7 @@ namespace Vellum.Cli
                 {
                     var initCmd = new Command("init", "Initialize the environment & settings.");
 
-                    initCmd.SetHandler(async (context) =>
-                        await environmentInit(context.Console, this.appEnvironment).ConfigureAwait(false));
+                    initCmd.SetHandler(async (context) => await environmentInit(context.Console, this.appEnvironment).ConfigureAwait(false));
 
                     return initCmd;
                 }
