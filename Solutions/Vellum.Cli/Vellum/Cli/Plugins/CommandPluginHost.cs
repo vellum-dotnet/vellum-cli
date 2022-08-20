@@ -33,25 +33,28 @@ namespace Vellum.Cli.Plugins
             foreach (PluginLoader loader in loaders)
             {
                 foreach (Type pluginType in loader
-                    .LoadDefaultAssembly()
-                    .GetTypes()
-                    .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
+                             .LoadDefaultAssembly()
+                             .GetTypes()
+                             .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
                 {
-                    ICommandPlugin plugin = null;
+                    Command command = null;
 
                     try
                     {
                         // This assumes the implementation of IPlugin has a parameterless constructor
-                        plugin = Activator.CreateInstance(pluginType) as ICommandPlugin;
+                        var plugin = Activator.CreateInstance(pluginType) as ICommandPlugin;
+                        command = plugin?.Command();
                     }
                     catch (Exception exception)
                     {
+                        Console.WriteLine($"Cannot Load {pluginType.FullName}");
+                        Console.WriteLine($"You may need to manually delete the plugin");
                         Console.WriteLine(exception.Message);
                     }
 
-                    if (plugin != null)
+                    if (command != null)
                     {
-                        yield return plugin?.Command();
+                        yield return command;
                     }
                 }
             }
