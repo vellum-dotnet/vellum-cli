@@ -4,15 +4,15 @@
 
 namespace Vellum.Cli.Commands.Environment
 {
-    using System.CommandLine;
     using System.Threading.Tasks;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
 
     public static class EnvironmentInitHandler
     {
         public static async Task<int> ExecuteAsync(
-            IConsole console,
+            ICompositeConsole console,
             IAppEnvironment appEnvironment)
         {
             await appEnvironment.InitializeAsync(console).ConfigureAwait(false);

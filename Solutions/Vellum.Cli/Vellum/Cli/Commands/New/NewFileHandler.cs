@@ -6,7 +6,6 @@ namespace Vellum.Cli.Commands.New
 {
     using System;
     using System.Collections.Generic;
-    using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
     using System.IO;
@@ -16,13 +15,14 @@ namespace Vellum.Cli.Commands.New
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Conventions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
 
     public static class NewFileHandler
     {
         public static async Task<int> ExecuteAsync(
             string templateName,
             FileInfo filePath,
-            IConsole console,
+            ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
@@ -46,7 +46,8 @@ namespace Vellum.Cli.Commands.New
             ContentTypeConventionsRoot contentTypeConventionsRoot = conventions.FirstOrDefault(x => x.Conventions.Any(y => y.Conventions.Any(z => z.Value == templateName)));
 
             // Now find the filepath..
-            Convention convention = contentTypeConventionsRoot?.Conventions.SelectMany(x => x.Conventions).FirstOrDefault(x => x.ContentType.StartsWith(ConventionContentTypes.FilePaths, StringComparison.CurrentCultureIgnoreCase));
+            Convention convention = contentTypeConventionsRoot?.Conventions.SelectMany(x => x.Conventions)
+                .FirstOrDefault(x => x.ContentType.StartsWith(ConventionContentTypes.FilePaths, StringComparison.CurrentCultureIgnoreCase));
 
             if (convention != null)
             {

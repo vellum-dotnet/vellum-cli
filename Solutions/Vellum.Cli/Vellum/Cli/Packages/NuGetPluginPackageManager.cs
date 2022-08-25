@@ -4,6 +4,7 @@
 
 namespace Vellum.Cli.Packages
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -20,7 +21,6 @@ namespace Vellum.Cli.Packages
     using NuGet.Resolver;
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Abstractions.Plugins;
-    using Vellum.Cli.Abstractions.Templates;
 
     public class NuGetPluginPackageManager
     {
@@ -43,14 +43,21 @@ namespace Vellum.Cli.Packages
             return Task.CompletedTask;
         }
 
-        public async Task<PluginPackage> InstallLatestAsync(string packageId)
+        public async Task<PluginPackage> InstallVersionAsync(string packageId, string version)
         {
-            PluginPackage packageMetaData = await this.GetLatestTemplatePackage(packageId, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
+            PluginPackage packageMetaData = await this.GetLatestTemplatePackage(packageId, version, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
 
             return packageMetaData;
         }
 
-        private async Task<PluginPackage> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath pluginRepositoryPath)
+        public async Task<PluginPackage> InstallLatestAsync(string packageId)
+        {
+            PluginPackage packageMetaData = await this.GetLatestTemplatePackage(packageId, string.Empty, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
+
+            return packageMetaData;
+        }
+
+        private async Task<PluginPackage> GetLatestTemplatePackage(string packageId, string version, string frameworkVersion, IAbsoluteDirectoryPath pluginRepositoryPath)
         {
             var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
             ISettings settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
@@ -82,12 +89,25 @@ namespace Vellum.Cli.Packages
                     availablePackages.AddRange(dependencyInfo);
                 }
 
+                DependencyBehavior dependencyBehavior = DependencyBehavior.Highest;
+                List<PackageIdentity> packageIdentities = new();
+                SourcePackageDependencyInfo matchingPackage = availablePackages.FirstOrDefault(p => p.Version.OriginalVersion == version);
+
+                if (matchingPackage != null)
+                {
+                    var pi = new PackageIdentity(packageId, matchingPackage.Version);
+                    packageIdentities.Add(pi);
+
+                    // Allow preview versions to be resolved.
+                    dependencyBehavior = DependencyBehavior.Ignore;
+                }
+
                 var resolverContext = new PackageResolverContext(
-                    DependencyBehavior.Highest,
+                    dependencyBehavior,
                     new[] { packageId },
                     Enumerable.Empty<string>(),
                     Enumerable.Empty<PackageReference>(),
-                    Enumerable.Empty<PackageIdentity>(),
+                    packageIdentities,
                     availablePackages,
                     sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
                     NullLogger.Instance);
@@ -96,9 +116,11 @@ namespace Vellum.Cli.Packages
 
                 try
                 {
+                    IEnumerable<PackageIdentity> matches = resolver.Resolve(resolverContext, CancellationToken.None);
+
                     SourcePackageDependencyInfo packageToInstall = resolver
-                        .Resolve(resolverContext, CancellationToken.None).Select(p =>
-                            availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
+                        .Resolve(resolverContext, CancellationToken.None)
+                        .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
                         .FirstOrDefault();
 
                     var packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
@@ -113,10 +135,9 @@ namespace Vellum.Cli.Packages
                     string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
                     PackageReaderBase packageReader;
 
-                    if (installedPath == null && packageToInstall != null)
+                    if (string.IsNullOrEmpty(installedPath) && packageToInstall != null)
                     {
-                        DownloadResource downloadResource = await packageToInstall.Source
-                            .GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
+                        DownloadResource downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
 
                         DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                             packageToInstall,
@@ -164,9 +185,18 @@ namespace Vellum.Cli.Packages
                         NullLogger.Instance,
                         CancellationToken.None).ConfigureAwait(false);
 
-                    foreach (IAbsoluteFilePath file in packageMetaData.PluginPath.GetChildDirectoryWithName("content").ChildrenFilesPath)
+                    try
                     {
-                        File.Copy(file.ToString(), Path.Join(packageMetaData.PluginPath.ToString(), file.FileName), overwrite: true);
+                        foreach (IAbsoluteFilePath file in packageMetaData.PluginPath.GetChildDirectoryWithName("content").ChildrenFilesPath)
+                        {
+                            File.Copy(file.ToString(), Path.Join(packageMetaData.PluginPath.ToString(), file.FileName), overwrite: true);
+                        }
+                    }
+                    catch (IOException exception)
+                    {
+                        throw new InvalidOperationException(
+                            "Are you trying to install a .nupkg which doesn't have a payload in its 'content' folder? Have you created a standard .nupkg or a custom 'plugin' using a .nuspec file?",
+                            exception);
                     }
 
                     packageMetaData.Plugins.Clear();

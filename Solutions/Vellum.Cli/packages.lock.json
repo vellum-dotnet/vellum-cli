@@ -71,6 +71,12 @@
           "NuGet.Protocol": "6.3.0"
         }
       },
+      "Spectre.Console": {
+        "type": "Direct",
+        "requested": "[0.44.0, )",
+        "resolved": "0.44.0",
+        "contentHash": "QMpKtn5QV1j2nklqDwuRE/XwbDn5jxww+Mt5J6Jn3EeQIzaLcuLyUhCLh/mS8giN6uXbqOV1ep5HlUGxrV1ujQ=="
+      },
       "System.CommandLine": {
         "type": "Direct",
         "requested": "[2.0.0-beta4.22272.1, )",
@@ -534,6 +540,7 @@
         "dependencies": {
           "NDepend.Path": "[2.0.0, )",
           "Newtonsoft.Json": "[13.0.1, )",
+          "Spectre.Console": "[0.44.0, )",
           "System.CommandLine": "[2.0.0-beta4.22272.1, )"
         }
       }

@@ -3,7 +3,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <IsPackable>true</IsPackable>
+    <!--We use nuspec files to generate the nupkg files as assemblies are delivered as content rather than as "packages" -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
