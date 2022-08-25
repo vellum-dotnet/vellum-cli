@@ -4,7 +4,6 @@
 
 namespace Vellum.Cli.Commands.Templates
 {
-    using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
     using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace Vellum.Cli.Commands.Templates
     {
         public static async Task<int> ExecuteAsync(
             string packageId,
-            IConsole console,
+            Vellum.Cli.Abstractions.Infrastructure.ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {

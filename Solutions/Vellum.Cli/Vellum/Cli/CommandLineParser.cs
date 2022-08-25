@@ -14,6 +14,7 @@ namespace Vellum.Cli
     using Microsoft.Extensions.DependencyInjection;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
     using Vellum.Cli.Commands.Environment;
     using Vellum.Cli.Commands.New;
     using Vellum.Cli.Commands.Plugins;
@@ -24,30 +25,32 @@ namespace Vellum.Cli
     {
         private readonly IAppEnvironment appEnvironment;
         private readonly ICommandPluginHost commandPluginHost;
+        private readonly ICompositeConsole console;
         private readonly IServiceCollection services;
 
-        public CommandLineParser(IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost, IServiceCollection services)
+        public CommandLineParser(ICompositeConsole console, IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost, IServiceCollection services)
         {
+            this.console = console;
             this.services = services;
             this.commandPluginHost = commandPluginHost;
             this.appEnvironment = appEnvironment;
         }
 
-        public delegate Task EnvironmentInit(IConsole console, IAppEnvironment appEnvironment);
+        public delegate Task EnvironmentInit(ICompositeConsole console, IAppEnvironment appEnvironment);
 
-        public delegate Task NewFile(string templateName, FileInfo filePath, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task NewFile(string templateName, FileInfo filePath, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginInstall(string packageId, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginInstall(string packageId, string version, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginUninstall(string packageId, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginUninstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginList(IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginList(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task SetEnvironmentSettings(string username, DirectoryInfo workspacePath, DirectoryInfo publishPath, string key, string value, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task SetEnvironmentSettings(string username, DirectoryInfo workspacePath, DirectoryInfo publishPath, string key, string value, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task TemplateInstall(string packageId, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task TemplateInstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task TemplateUninstall(string packageId, IConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task TemplateUninstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public Parser Create(
             EnvironmentInit environmentInit = null,
@@ -129,7 +132,7 @@ namespace Vellum.Cli
                 {
                     var initCmd = new Command("init", "Initialize the environment & settings.");
 
-                    initCmd.SetHandler(async (context) => await environmentInit(context.Console, this.appEnvironment).ConfigureAwait(false));
+                    initCmd.SetHandler(async (context) => await environmentInit(this.console, this.appEnvironment).ConfigureAwait(false));
 
                     return initCmd;
                 }
@@ -204,7 +207,7 @@ namespace Vellum.Cli
                         string key = context.ParseResult.GetValueForOption(keyOption);
                         string value = context.ParseResult.GetValueForOption(valueOption);
 
-                        await setEnvironmentSettings(username, workspacePath, publishPath, key, value, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                        await setEnvironmentSettings(username, workspacePath, publishPath, key, value, this.console, this.appEnvironment, context).ConfigureAwait(false);
                     });
 
                     return setCmd;
@@ -237,7 +240,7 @@ namespace Vellum.Cli
                     string templateName = context.ParseResult.GetValueForOption(templateNameOption);
                     FileInfo filePath = context.ParseResult.GetValueForOption(filePathOption);
 
-                    await newFile(templateName, filePath, context.Console, this.appEnvironment, context)
+                    await newFile(templateName, filePath, this.console, this.appEnvironment, context)
                         .ConfigureAwait(false);
                 });
 
@@ -258,6 +261,37 @@ namespace Vellum.Cli
                 {
                     var cmd = new Command("install", "Install a vellum-cli plugin.");
 
+                    var packageIdOption = new Option<string>("--package-id")
+                    {
+                        Description = "NuGet Package Id",
+                        Arity = ArgumentArity.ExactlyOne,
+                        IsRequired = true,
+                    };
+
+                    var versionOption = new Option<string>("--version")
+                    {
+                        Description = "NuGet Version",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    cmd.Add(packageIdOption);
+                    cmd.Add(versionOption);
+
+                    cmd.SetHandler(async (context) =>
+                    {
+                        string packageId = context.ParseResult.GetValueForOption(packageIdOption);
+                        string version = context.ParseResult.GetValueForOption(versionOption);
+
+                        await pluginInstall(packageId, version, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
+
+                    return cmd;
+                }
+
+                Command Uninstall()
+                {
+                    var cmd = new Command("uninstall", "Uninstall a vellum-cli plugin.");
+
                     var option = new Option<string>("--package-id")
                     {
                         Description = "NuGet Package Id",
@@ -270,29 +304,7 @@ namespace Vellum.Cli
                     cmd.SetHandler(async (context) =>
                     {
                         string packageId = context.ParseResult.GetValueForOption(option);
-                        await pluginInstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
-                    });
-
-                    return cmd;
-                }
-
-                Command Uninstall()
-                {
-                    var cmd = new Command("uninstall", "Uninstall a vellum-cli plugin.");
-
-                    var option = new Option<string>("--package-id")
-                    {
-                      Description = "NuGet Package Id",
-                      Arity = ArgumentArity.ExactlyOne,
-                      IsRequired = true,
-                    };
-
-                    cmd.Add(option);
-
-                    cmd.SetHandler(async (context) =>
-                    {
-                        string packageId = context.ParseResult.GetValueForOption(option);
-                        await pluginUninstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                        await pluginUninstall(packageId, this.console, this.appEnvironment, context).ConfigureAwait(false);
                     });
 
                     return cmd;
@@ -304,7 +316,7 @@ namespace Vellum.Cli
 
                     cmd.SetHandler(async (context) =>
                     {
-                        await pluginList(context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                        await pluginList(this.console, this.appEnvironment, context).ConfigureAwait(false);
                     });
 
                     return cmd;
@@ -344,7 +356,7 @@ namespace Vellum.Cli
                         cmd.SetHandler(async (context) =>
                         {
                             string packageId = context.ParseResult.GetValueForOption(option);
-                            await templateInstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                            await templateInstall(packageId, this.console, this.appEnvironment, context).ConfigureAwait(false);
                         });
 
                         return cmd;
@@ -366,7 +378,7 @@ namespace Vellum.Cli
                         cmd.SetHandler(async (context) =>
                         {
                             string packageId = context.ParseResult.GetValueForOption(option);
-                            await templateUninstall(packageId, context.Console, this.appEnvironment, context).ConfigureAwait(false);
+                            await templateUninstall(packageId, this.console, this.appEnvironment, context).ConfigureAwait(false);
                         });
 
                         return cmd;

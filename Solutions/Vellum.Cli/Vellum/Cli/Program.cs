@@ -4,11 +4,10 @@
 
 namespace Vellum.Cli
 {
-    using System;
     using System.CommandLine.Parsing;
-    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
+    using Vellum.Cli.Abstractions.Infrastructure;
     using Vellum.Cli.Environment;
     using Vellum.Cli.Plugins;
 
@@ -18,9 +17,10 @@ namespace Vellum.Cli
 
         public static async Task<int> Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             return await new CommandLineParser(
+                new CompositeConsole(),
                 new FileSystemRoamingProfileAppEnvironment(),
                 new CommandPluginHost(),
                 ServiceCollection).Create().InvokeAsync(args).ConfigureAwait(false);
