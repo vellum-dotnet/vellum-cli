@@ -132,10 +132,10 @@ namespace Vellum.Cli.Packages
                         NullLogger.Instance);
 
                     var frameworkReducer = new FrameworkReducer();
-                    string installPath = packagePathResolver.GetInstallPath(packageToInstall);
+                    string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
                     PackageReaderBase packageReader;
 
-                    if (string.IsNullOrEmpty(installPath) && packageToInstall != null)
+                    if (string.IsNullOrEmpty(installedPath) && packageToInstall != null)
                     {
                         DownloadResource downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
 
@@ -157,7 +157,7 @@ namespace Vellum.Cli.Packages
                     }
                     else
                     {
-                        packageReader = new PackageFolderReader(installPath);
+                        packageReader = new PackageFolderReader(installedPath);
                     }
 
                     PackageIdentity identity = await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
