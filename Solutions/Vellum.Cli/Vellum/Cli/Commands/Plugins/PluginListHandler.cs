@@ -8,6 +8,7 @@ namespace Vellum.Cli.Commands.Plugins
     using System.Threading.Tasks;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Packages;
 
     public static class PluginListHandler
     {
@@ -16,8 +17,7 @@ namespace Vellum.Cli.Commands.Plugins
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            /*var packageManager = new NuGetPluginPackageManager(appEnvironment);
-            TemplatePackage result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);*/
+            var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
             return Task.FromResult(ReturnCodes.Ok);
         }

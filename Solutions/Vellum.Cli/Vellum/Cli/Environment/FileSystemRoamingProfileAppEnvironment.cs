@@ -58,7 +58,8 @@ namespace Vellum.Cli.Environment
         {
             get
             {
-                if (Debugger.IsAttached)
+                bool run = false;
+                if (run)
                 {
                     string directory = AppContext.BaseDirectory;
 

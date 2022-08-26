@@ -46,6 +46,8 @@ namespace Vellum.Cli
 
         public delegate Task PluginList(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
+        public delegate Task PluginClear(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
         public delegate Task SetEnvironmentSettings(string username, DirectoryInfo workspacePath, DirectoryInfo publishPath, string key, string value, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task TemplateInstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
@@ -58,6 +60,7 @@ namespace Vellum.Cli
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
             PluginList pluginList = null,
+            PluginClear pluginClear = null,
             SetEnvironmentSettings setEnvironmentSettings = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
@@ -68,6 +71,7 @@ namespace Vellum.Cli
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
             pluginList ??= PluginListHandler.ExecuteAsync;
+            pluginClear ??= PluginClearHandler.ExecuteAsync;
             setEnvironmentSettings ??= SetEnvironmentSettingHandler.ExecuteAsync;
             templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
             templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
@@ -251,11 +255,24 @@ namespace Vellum.Cli
             {
                 var command = new Command("plugins", "Manage vellum-cli plugins.");
 
+                command.AddCommand(Clear());
                 command.AddCommand(Install());
-                command.AddCommand(Uninstall());
                 command.AddCommand(List());
+                command.AddCommand(Uninstall());
 
                 return command;
+
+                Command Clear()
+                {
+                    var cmd = new Command("clear", "Clear installed vellum-cli plugins.");
+
+                    cmd.SetHandler(async (context) =>
+                    {
+                        await pluginClear(this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
+
+                    return cmd;
+                }
 
                 Command Install()
                 {
