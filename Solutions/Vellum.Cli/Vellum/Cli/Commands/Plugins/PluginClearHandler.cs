@@ -4,9 +4,12 @@
 
 namespace Vellum.Cli.Commands.Plugins;
 
+using System;
+using System.Collections.Generic;
 using System.CommandLine.Invocation;
 using System.Threading.Tasks;
 using NDepend.Path;
+using Spectre.Console;
 using Vellum.Cli.Abstractions.Environment;
 using Vellum.Cli.Abstractions.Infrastructure;
 using Vellum.Cli.Packages;
@@ -20,11 +23,12 @@ public static class PluginClearHandler
     {
         var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
-        var paths = appEnvironment.PluginPaths;
+        IEnumerable<IAbsoluteDirectoryPath> paths = appEnvironment.PluginPaths;
 
         foreach (IAbsoluteDirectoryPath directoryPath in paths)
         {
-            directoryPath.DirectoryInfo.Delete(recursive: true);
+            console.MarkupLineInterpolated($"❌ DELETED: [red]{directoryPath.DirectoryInfo?.Parent?.FullName}[/]");
+            directoryPath.DirectoryInfo?.Parent?.Delete(recursive: true);
         }
 
         return Task.FromResult(Vellum.Cli.Abstractions.ReturnCodes.Ok);
