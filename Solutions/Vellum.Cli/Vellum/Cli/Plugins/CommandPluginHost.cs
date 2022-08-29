@@ -41,14 +41,14 @@ namespace Vellum.Cli.Plugins
 
                     try
                     {
-                        // This assumes the implementation of IPlugin has a parameterless constructor
+                        // This assumes the implementation of IPlugin has a parameter-less constructor
                         var plugin = Activator.CreateInstance(pluginType) as ICommandPlugin;
                         command = plugin?.Command();
                     }
                     catch (Exception exception)
                     {
                         Console.WriteLine($"Cannot Load {pluginType.FullName}");
-                        Console.WriteLine($"You may need to manually delete the plugin");
+                        Console.WriteLine($"You may need to manually delete the plugin or run the plugins clear command.");
                         Console.WriteLine(exception.Message);
                     }
 
