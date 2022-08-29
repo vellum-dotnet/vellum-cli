@@ -1,6 +1,7 @@
 # vellum-cli
-[![Build Status](https://dev.azure.com/endjin-labs/vellum.cli/_apis/build/status/vellum-dotnet.vellum.cli?branchName=master)](https://dev.azure.com/endjin-labs/vellum.cli/_build/latest?definitionId=4&branchName=master)
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/vellum-dotnet/vellum-cli/master/LICENSE)
+
+[![Build Status](https://dev.azure.com/endjin-labs/vellum.cli/_apis/build/status/vellum-dotnet.vellum.cli?branchName=main)](https://dev.azure.com/endjin-labs/vellum.cli/_build/latest?definitionId=4&branchName=main)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/vellum-dotnet/vellum-cli/main/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum.cli/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/total?cache=false)
 
 `Vellum` is a Static Content Management System, available as a .NET Global Tool, and is built using Microsoft's `System.CommandLine` [libraries](https://github.com/dotnet/command-line-api). These packages, while still marked as experimental, are seeing lots of real-world usage, including tools such as [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet) and [.NET Interactive](https://github.com/dotnet/interactive). A useful blog post for understanding `System.CommandLine` is [Radu Matei's](https://twitter.com/matei_radu) blog post "[Building self-contained, single executable .NET Core 3 CLI tools](https://radu-matei.com/blog/self-contained-dotnet-cli/)".
@@ -73,7 +74,7 @@ Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to e
 
 NOT IMPLEMENTED YET `vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
 
-NOT IMPLEMENTED YET `vellum-cli plugins list installed` - Lists installed vellum-cli plugins.
+`vellum-cli plugins list` - Lists installed vellum-cli plugins.
 
 `vellum-cli new --template-name <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
 
@@ -103,7 +104,7 @@ To use, first you need to register for an [API Key](https://tinypng.com/develope
 
 ## Licenses
 
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/vellum.cli/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/vellum.cli/main/LICENSE)
 
 vellum.cli is available under the Apache 2.0 open source license.
 
