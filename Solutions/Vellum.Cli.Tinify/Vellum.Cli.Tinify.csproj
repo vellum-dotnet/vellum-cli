@@ -3,8 +3,11 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <!--We use nuspec files to generate the nupkg files as assemblies are delivered as content rather than as "packages" -->
+    <!-- We use nuspec files to generate the nupkg files as assemblies are delivered as content rather than as "packages" -->
     <IsPackable>false</IsPackable>
+    <!-- This plugin package does not need symbols and source link -->
+    <IncludeSymbols>false</IncludeSymbols>
+    <IncludeSource>false</IncludeSource>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,11 +31,11 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
+    <NoWarn>RCS1029; CS1591; SA1600; NU5100</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
+    <NoWarn>RCS1029; CS1591; SA1600; NU5100</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
