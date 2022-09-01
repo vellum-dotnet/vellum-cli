@@ -71,7 +71,7 @@ param (
     [string] $BuildModulePath,
 
     [Parameter()]
-    [version] $BuildModuleVersion = "0.2.8",
+    [version] $BuildModuleVersion = "0.2.10",
 
     [Parameter()]
     [version] $InvokeBuildModuleVersion = "5.7.1"
@@ -135,7 +135,15 @@ $SkipPackage = $false
 #
 # Build process configuration
 #
-$SolutionToBuild = (Resolve-Path (Join-Path $here ".\Solutions\Vellum.Cli.sln")).Path
+$SolutionToBuild = (Resolve-Path (Join-Path $here "./Solutions/Vellum.Cli.sln")).Path
+$ProjectsToPublish = @(
+    "Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj"
+    "Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.csproj"
+)
+$NuSpecFilesToPackage = @(
+    "Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec"
+    "Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.nuspec"
+)
 
 #
 # Specify files to exclude from code coverage
