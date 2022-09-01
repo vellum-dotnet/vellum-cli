@@ -71,7 +71,7 @@ param (
     [string] $BuildModulePath,
 
     [Parameter()]
-    [version] $BuildModuleVersion = "0.2.9",
+    [version] $BuildModuleVersion = "0.2.10",
 
     [Parameter()]
     [version] $InvokeBuildModuleVersion = "5.7.1"
@@ -135,14 +135,14 @@ $SkipPackage = $false
 #
 # Build process configuration
 #
-$SolutionToBuild = (Resolve-Path (Join-Path $here ".\Solutions\Vellum.Cli.sln")).Path
+$SolutionToBuild = (Resolve-Path (Join-Path $here "./Solutions/Vellum.Cli.sln")).Path
 $ProjectsToPublish = @(
-    "Solutions\Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.csproj"
-    "Solutions\Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj"
+    "Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj"
+    "Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.csproj"
 )
-$NuspecFilesToPackage = @(
-    "Solutions\Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.nuspec"
-    "Solutions\Vellum.Cli.Tinify\Vellum.Cli.Tinify.nuspec"
+$NuSpecFilesToPackage = @(
+    "Solutions/Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.nuspec"
+    "Solutions/Vellum.Cli.Tinify/Vellum.Cli.Tinify.nuspec"
 )
 
 #
@@ -172,42 +172,7 @@ task PostTestReport {}
 task PreAnalysis {}
 task PostAnalysis
 task PrePackage {}
-task PostPackage BuildNuspecPackages
+task PostPackage {}
 task PrePublish {}
 task PostPublish {}
 task RunLast {}
-
-
-$SkipNuspecPackages = $false
-task BuildNuspecPackages -If {!$SkipNuspecPackages -and $SolutionToBuild -and $NuspecFilesToPackage} Version,{
-
-    foreach ($nuspec in $NuspecFilesToPackage) {
-
-        # Assumes a convention that the .nuspec file is alongside the .csproj file with a matching name
-        $nuspecFilePath = (Resolve-Path (Join-Path $here $nuspec)).Path
-        $projectFilePath = $nuspecFilePath.Replace(".nuspec", ".csproj")
-
-        Write-Verbose "Building Nuspec: $nuspecFilePath [ProjectPath=$projectFilePath; BasePath=$basePath]"
-
-        $packArgs = @(
-            $projectFilePath
-            "--configuration"
-            $Configuration
-            "--no-build"
-            "--no-restore"
-            "--output"
-            $PackagesDir
-            # this property needs to be overridden as its default value should be 'false', to ensure that the project
-            # is not built without using the .nuspec file
-            "-p:IsPackable=true"
-            "-p:NuspecFile=$nuspecFilePath"
-            "-p:NuspecProperties=version=`"$(($script:GitVersion).SemVer)`""
-            "--verbosity"
-            $LogLevel
-        )
-        Write-Verbose "CmdLine: dotnet pack $packArgs"
-        exec {
-            & dotnet pack $packArgs
-        }
-    }
-}
