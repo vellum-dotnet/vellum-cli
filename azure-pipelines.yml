@@ -13,7 +13,6 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: vellum-dotnet-github
-      ref: feature/sbom-publishing-updates
 
 jobs:
 - template: templates/build.and.release.scripted.yml@recommended_practices
