@@ -42,9 +42,7 @@ namespace Vellum.Abstractions
                 return true;
             }
 
-            var list = result as List<object>;
-
-            if (list != null)
+            if (result is List<object> list)
             {
                 result = list.Select(x => x.ToString()).ToList();
             }

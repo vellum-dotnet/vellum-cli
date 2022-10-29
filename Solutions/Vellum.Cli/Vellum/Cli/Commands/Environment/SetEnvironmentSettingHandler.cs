@@ -4,16 +4,21 @@
 
 namespace Vellum.Cli.Commands.Environment
 {
-    using System.CommandLine;
     using System.CommandLine.Invocation;
+    using System.IO;
     using System.Threading.Tasks;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
 
     public static class SetEnvironmentSettingHandler
     {
         public static Task<int> ExecuteAsync(
-            SetOptions options,
+            string username,
+            DirectoryInfo workspacePath,
+            DirectoryInfo publishPath,
+            string key,
+            string value,
             ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
@@ -22,30 +27,30 @@ namespace Vellum.Cli.Commands.Environment
 
             EnvironmentSettings settings = settingsManager.LoadSettings() ?? new EnvironmentSettings();
 
-            if (options.Username != null)
+            if (username != null)
             {
-                settings.Username = options.Username.ToLowerInvariant();
+                settings.Username = username.ToLowerInvariant();
             }
 
-            if (options.WorkspacePath != null)
+            if (workspacePath != null)
             {
-                settings.WorkspacePath = options.WorkspacePath.FullName;
+                settings.WorkspacePath = workspacePath.FullName;
             }
 
-            if (options.PublishPath != null)
+            if (publishPath != null)
             {
-                settings.PublishPath = options.PublishPath.FullName;
+                settings.PublishPath = publishPath.FullName;
             }
 
-            if (options.Key != null && options.Value != null)
+            if (key != null && value != null)
             {
-                if (settings.Configuration.ContainsKey(options.Key))
+                if (settings.Configuration.ContainsKey(key))
                 {
-                    settings.Configuration[options.Key] = options.Value;
+                    settings.Configuration[key] = value;
                 }
                 else
                 {
-                    settings.Configuration.Add(options.Key, options.Value);
+                    settings.Configuration.Add(key, value);
                 }
             }
 

@@ -10,6 +10,6 @@ namespace Vellum.Abstractions.Content.Parsers
 
     public interface IContentBlockParser
     {
-        Task<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock);
+        ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock);
     }
 }

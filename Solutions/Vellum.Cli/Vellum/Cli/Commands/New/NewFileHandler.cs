@@ -6,7 +6,6 @@ namespace Vellum.Cli.Commands.New
 {
     using System;
     using System.Collections.Generic;
-    using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
     using System.IO;
@@ -16,11 +15,13 @@ namespace Vellum.Cli.Commands.New
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Conventions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
 
     public static class NewFileHandler
     {
         public static async Task<int> ExecuteAsync(
-            NewFileOptions fileOptions,
+            string templateName,
+            FileInfo filePath,
             ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
@@ -28,24 +29,25 @@ namespace Vellum.Cli.Commands.New
             var settingsManager = new EnvironmentSettingsManager(appEnvironment);
             EnvironmentSettings environmentSettings = settingsManager.LoadSettings();
 
-            if (environmentSettings.WorkspacePath != null && fileOptions.FilePath != null)
+            if (environmentSettings == null || (environmentSettings?.WorkspacePath != null && filePath != null))
             {
                 console.Error.WriteLine("You must either set a workspace via the environment command or supply a filepath.");
                 return ReturnCodes.Error;
             }
 
-            if (fileOptions.FilePath != null)
+            if (filePath != null)
             {
-                environmentSettings.WorkspacePath = fileOptions.FilePath.FullName;
+                environmentSettings.WorkspacePath = filePath.FullName;
             }
 
             List<ContentTypeConventionsRoot> conventions = await FindAllConventions(appEnvironment);
 
             // Select the convention that matches the template name specified
-            ContentTypeConventionsRoot contentTypeConventionsRoot = conventions.FirstOrDefault(x => x.Conventions.Any(y => y.Conventions.Any(z => z.Value == fileOptions.TemplateName)));
+            ContentTypeConventionsRoot contentTypeConventionsRoot = conventions.FirstOrDefault(x => x.Conventions.Any(y => y.Conventions.Any(z => z.Value == templateName)));
 
             // Now find the filepath..
-            Convention convention = contentTypeConventionsRoot?.Conventions.SelectMany(x => x.Conventions).FirstOrDefault(x => x.ContentType.StartsWith(ConventionContentTypes.FilePaths, StringComparison.CurrentCultureIgnoreCase));
+            Convention convention = contentTypeConventionsRoot?.Conventions.SelectMany(x => x.Conventions)
+                .FirstOrDefault(x => x.ContentType.StartsWith(ConventionContentTypes.FilePaths, StringComparison.CurrentCultureIgnoreCase));
 
             if (convention != null)
             {

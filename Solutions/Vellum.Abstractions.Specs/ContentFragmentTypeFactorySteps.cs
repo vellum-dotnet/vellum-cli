@@ -1,24 +1,31 @@
-﻿using System;
-using TechTalk.SpecFlow;
-
-namespace Vellum.Cli.Specs
+﻿namespace Vellum.Abstractions.Specs
 {
+    using System.IO;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public class ContentFragmentTypeFactorySteps
     {
-        [Given(@"I have entered (.*) into the calculator")]
-        public void GivenIHaveEnteredIntoTheCalculator(int p0)
+        private readonly MarkdownDocumentRegistry markdownDocumentRegistry;
+    
+        public ContentFragmentTypeFactorySteps(MarkdownDocumentRegistry markdownDocumentRegistry)
         {
+            this.markdownDocumentRegistry = markdownDocumentRegistry;
         }
 
-        [When(@"I press add")]
-        public void WhenIPressAdd()
+        [Given(@"the following markdown files")]
+        public void GivenTheFollowingMarkdownFiles(Table table)
         {
+            foreach (TableRow row in table.Rows)
+            {
+                this.markdownDocumentRegistry.Register(row["document"], row["file"]);
+            }
         }
 
-        [Then(@"the result should be (.*) on the screen")]
-        public void ThenTheResultShouldBeOnTheScreen(int p0)
+        [Given(@"the ""([^""]*)"" document")]
+        public void GivenTheDocument(string documentName)
         {
+            Stream stream = this.markdownDocumentRegistry.GetTemplateStream(documentName);
         }
     }
 }

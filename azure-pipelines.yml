@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-    - master
+    - main
     - feature/*
   tags:
     include:
@@ -13,37 +13,13 @@ resources:
       type: github
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: vellum-dotnet-github
-#      ref: refs/tags/last-known-good
 
 jobs:
-- template: templates/build.and.release.yml@recommended_practices
+- template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
     vmImage: 'ubuntu-latest'
     service_connection_nuget_org: $(Endjin_Service_Connection_NuGet_Org)
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
-    netSdkVersion: '3.x'
-    prePublishReleaseArtifacts:
-      - task: DotNetCoreCLI@2
-        displayName: 'Publish Assets for .nuspec Packages'
-        inputs:
-          command: 'publish'
-          zipAfterPublish: False
-          projects: '**/*/*.csproj'
-          arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer) --no-build --no-restore'
-          publishWebProjects: False
-          versioningScheme: byBuildNumber
-          buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
-      - task: NuGetCommand@2
-        displayName: 'Create .nuspec based NuGet Packages'
-        inputs:
-          command: 'pack'
-          packagesToPack: '**/*/*.nuspec'
-          versioningScheme: 'byEnvVar'
-          versionEnvVar: 'GitVersion.SemVer'
-      - task: CopyFiles@2
-        displayName: 'Copy .nuspec Generated NuGet Packages To Release Folder'
-        inputs:
-          SourceFolder: '$(Build.ArtifactStagingDirectory)'
-          Contents: '*.nupkg'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/Release/NuGet/Packages/$(Build.BuildID)'
+    netSdkVersion: '6.x'
+    compileTasksServiceConnection: endjin-acr-reader

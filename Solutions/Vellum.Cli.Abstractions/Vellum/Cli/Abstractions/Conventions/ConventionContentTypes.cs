@@ -4,7 +4,7 @@
 
 namespace Vellum.Cli.Abstractions.Conventions
 {
-    public class ConventionContentTypes
+    public static class ConventionContentTypes
     {
         public const string FilePaths = "application/vnd.vellum.conventions.file-path";
     }

@@ -13,23 +13,19 @@ namespace Vellum.Cli
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
-
     using NDepend.Path;
-
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+
     using Vellum.Cli.Commands.Content;
-    using Vellum.Cli.Commands.Environment;
-    using Vellum.Cli.Commands.New;
-    using Vellum.Cli.Commands.Plugins;
-    using Vellum.Cli.Commands.Templates;
+
     using Vellum.Cli.Plugins;
 
     public class CommandLineParser
     {
-        private readonly ICompositeConsole console;
         private readonly IAppEnvironment appEnvironment;
         private readonly ICommandPluginHost commandPluginHost;
+        private readonly ICompositeConsole console;
         private readonly IServiceCollection services;
 
         public CommandLineParser(ICompositeConsole console, IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost, IServiceCollection services)
@@ -40,23 +36,25 @@ namespace Vellum.Cli
             this.appEnvironment = appEnvironment;
         }
 
-        public delegate Task ContentList(IServiceCollection services, ListOptions options, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task ContentList(bool draft, bool published, IAbsoluteDirectoryPath siteTaxonomyDirectoryPath, IServiceCollection services, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task EnvironmentInit(EnvironmentOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task EnvironmentInit(ICompositeConsole console, IAppEnvironment appEnvironment);
 
-        public delegate Task NewFile(NewFileOptions fileOptions, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task NewFile(string templateName, FileInfo filePath, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginInstall(PluginOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginInstall(string packageId, string version, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginUninstall(PluginOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginUninstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginList(ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginList(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task SetEnvironmentSetting(SetOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginClear(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task TemplateInstall(TemplateOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task SetEnvironmentSettings(string username, DirectoryInfo workspacePath, DirectoryInfo publishPath, string key, string value, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task TemplateUninstall(TemplateOptions options, ICompositeConsole console,  IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task TemplateInstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+
+        public delegate Task TemplateUninstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public Parser Create(
             ContentList contentList = null,
@@ -64,21 +62,25 @@ namespace Vellum.Cli
             NewFile newFile = null,
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
+            PluginList pluginList = null,
+            PluginClear pluginClear = null,
             PluginList pluginListInstalled = null,
-            SetEnvironmentSetting setEnvironmentSetting = null,
+            SetEnvironmentSettings setEnvironmentSettings = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
         {
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
             contentList ??= ContentListHandler.ExecuteAsync;
-            environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
-            newFile ??= NewFileHandler.ExecuteAsync;
-            pluginInstall ??= PluginInstallHandler.ExecuteAsync;
-            pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
-            pluginListInstalled ??= PluginListInstalledHandler.ExecuteAsync;
-            setEnvironmentSetting ??= SetEnvironmentSettingHandler.ExecuteAsync;
-            templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
-            templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
+
+            // environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
+            // newFile ??= NewFileHandler.ExecuteAsync;
+            // pluginInstall ??= PluginInstallHandler.ExecuteAsync;
+            // pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
+            // pluginListInstalled ??= PluginListInstalledHandler.ExecuteAsync;
+            // pluginClear ??= PluginClearHandler.ExecuteAsync;
+            // setEnvironmentSettings ??= SetEnvironmentSettingHandler.ExecuteAsync;
+            // templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
+            // templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
 
             // Set up intrinsic commands that will always be available.
             RootCommand rootCommand = Root();
@@ -90,11 +92,11 @@ namespace Vellum.Cli
 
             var commandBuilder = new CommandLineBuilder(rootCommand);
 
-            try
+            /*try
             {
                 foreach (Command command in this.commandPluginHost.Discover(this.appEnvironment.PluginPaths))
                 {
-                    commandBuilder.AddCommand(command);
+                    commandBuilder.Command.AddCommand(command);
                 }
             }
             catch (DirectoryNotFoundException)
@@ -110,10 +112,10 @@ namespace Vellum.Cli
                     // Now the environment has been re-initialized, try to discover the plugins again.
                     foreach (Command command in this.commandPluginHost.Discover(this.appEnvironment.PluginPaths))
                     {
-                        commandBuilder.AddCommand(command);
+                        commandBuilder.Command.AddCommand(command);
                     }
                 }
-            }
+            }*/
 
             return commandBuilder.UseDefaults().Build();
 
@@ -132,23 +134,39 @@ namespace Vellum.Cli
                     "content",
                     "Edit, preview, publish and promote content.");
 
-                var listCmd = new Command("list", "List content in your repository.")
+                var listCmd = new Command("list", "List content in your repository.");
+
+                var draftOption = new Option<bool>("--draft")
                 {
-                    Handler = CommandHandler.Create<ListOptions, InvocationContext>(async (options, context) =>
-                    {
-                        await contentList(this.services, options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                    }),
+                    Description = "whether draft or not",
+                    Arity = ArgumentArity.ExactlyOne,
                 };
 
-                listCmd.AddArgument(new Argument<DirectoryInfo>
+                var publishedOption = new Option<bool>("--published")
+                {
+                    Description = "whether published or not",
+                    Arity = ArgumentArity.ZeroOrOne,
+                };
+
+                Argument<DirectoryInfo> directoryArgument = new Argument<DirectoryInfo>
                 {
                     Name = "site-taxonomy-directory-path",
                     Description = "Path to the site template directory.",
                     Arity = ArgumentArity.ZeroOrOne,
-                }.ExistingOnly());
+                }.ExistingOnly();
 
-                listCmd.AddOption(new Option<bool>("--published", "Show only published content."));
-                listCmd.AddOption(new Option<bool>("--draft", "Show only draft content."));
+                listCmd.Add(draftOption);
+                listCmd.Add(publishedOption);
+                listCmd.Add(directoryArgument);
+
+                listCmd.SetHandler(async (context) =>
+                {
+                    bool draft = context.ParseResult.GetValueForOption(draftOption);
+                    bool published = context.ParseResult.GetValueForOption(publishedOption);
+                    DirectoryInfo directoryPath = context.ParseResult.GetValueForArgument(directoryArgument);
+
+                    await contentList(draft, published, directoryPath.FullName.ToAbsoluteDirectoryPath(), this.services, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                });
 
                 cmd.AddCommand(listCmd);
 
@@ -161,115 +179,125 @@ namespace Vellum.Cli
                     "environment",
                     "Manipulate the vellum-cli environment & settings.");
 
-                var initCmd = new Command("init", "Initialize the environment & settings.")
-                {
-                    Handler = CommandHandler.Create<EnvironmentOptions, InvocationContext>(async (options, context) =>
-                    {
-                        await environmentInit(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                    }),
-                };
-
-                var setCmd = new Command(
-                    "set",
-                    "Set vellum-cli environment configuration.");
-
-                setCmd.AddOption(new Option("--username", "Username for the current user.")
-                {
-                    Argument =  new Argument<string>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--workspace-path", "The location of your vellum workspace.")
-                {
-                    Argument =  new Argument<DirectoryInfo>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--publish-path", "The location for generated output.")
-                {
-                    Argument =  new Argument<DirectoryInfo>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--key", "A user-defined setting key.")
-                {
-                    Argument =  new Argument<string>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-                setCmd.AddOption(new Option("--value", "A user-defined setting value for the specified key.")
-                {
-                    Argument =  new Argument<string>
-                    {
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                });
-
-               // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
-/*
-               ValueForOption has been removed see https://github.com/dotnet/command-line-api/issues/1119
-               setCmd.AddValidator(commandResult =>
-                {
-                    DirectoryInfo workspace = commandResult.ValueForOption <DirectoryInfo>("workspace-path");
-                    DirectoryInfo publish = commandResult.ValueForOption<DirectoryInfo>("publish-path");
-                    string username = commandResult.ValueForOption<string>("username");
-                    string key = commandResult.ValueForOption<string>("key");
-                    string value = commandResult.ValueForOption<string>("value");
-
-                    if (workspace == null && publish == null && username == null && key == null && value == null)
-                    {
-                        return "Please specify at least one option.";
-                    }
-
-                    if ((key != null && value == null) || (key == null && value != null))
-                    {
-                        return "--key & --value are mutually inclusive. Please specify a value for --key AND --value";
-                    }
-
-                    return null;
-                });
-*/
-
-                setCmd.Handler = CommandHandler.Create<SetOptions, InvocationContext>(async (options, context) =>
-                {
-                    await setEnvironmentSetting(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                });
-
-                cmd.AddCommand(initCmd);
-                cmd.AddCommand(setCmd);
+                cmd.AddCommand(InitCommand());
+                cmd.AddCommand(SetCommand());
 
                 return cmd;
+
+                Command InitCommand()
+                {
+                    var initCmd = new Command("init", "Initialize the environment & settings.");
+
+                    initCmd.SetHandler(async (context) => await environmentInit(this.console, this.appEnvironment).ConfigureAwait(false));
+
+                    return initCmd;
+                }
+
+                Command SetCommand()
+                {
+                    var setCmd = new Command(
+                        "set",
+                        "Set vellum-cli environment configuration.");
+
+                    var usernameOption = new Option<string>("--username")
+                    {
+                        Description = "Username for the current user.",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    var workspacePathOption = new Option<DirectoryInfo>("--workspace-path")
+                    {
+                        Description = "The location of your vellum workspace.",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    var publishPathOption = new Option<DirectoryInfo>("--publish-path")
+                    {
+                        Description = "The location for generated output.",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    var keyOption = new Option<string>("--key")
+                    {
+                        Description = "A user-defined setting key.",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    var valueOption = new Option<string>("--value")
+                    {
+                        Description = "A user-defined setting value for the specified key.",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    setCmd.Add(usernameOption);
+                    setCmd.Add(workspacePathOption);
+                    setCmd.Add(publishPathOption);
+                    setCmd.Add(keyOption);
+                    setCmd.Add(valueOption);
+
+                    // System.CommandLine doesn't support mutually inclusive fileOptions, so you need to enforce this behaviour with a validator.
+                    setCmd.AddValidator(commandResult =>
+                    {
+                        DirectoryInfo workspace = commandResult.GetValueForOption(workspacePathOption);
+                        DirectoryInfo publish = commandResult.GetValueForOption(publishPathOption);
+                        string username = commandResult.GetValueForOption(usernameOption);
+                        string key = commandResult.GetValueForOption(keyOption);
+                        string value = commandResult.GetValueForOption(valueOption);
+
+                        if (workspace == null && publish == null && username == null && key == null && value == null)
+                        {
+                            commandResult.ErrorMessage = "Please specify at least one option.";
+                        }
+
+                        if ((key != null && value == null) || (key == null && value != null))
+                        {
+                            commandResult.ErrorMessage = "--key & --value are mutually inclusive. Please specify a value for --key AND --value";
+                        }
+                    });
+
+                    setCmd.SetHandler(async (context) =>
+                    {
+                        string username = context.ParseResult.GetValueForOption(usernameOption);
+                        DirectoryInfo workspacePath = context.ParseResult.GetValueForOption(workspacePathOption);
+                        DirectoryInfo publishPath = context.ParseResult.GetValueForOption(publishPathOption);
+                        string key = context.ParseResult.GetValueForOption(keyOption);
+                        string value = context.ParseResult.GetValueForOption(valueOption);
+
+                        await setEnvironmentSettings(username, workspacePath, publishPath, key, value, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
+
+                    return setCmd;
+                }
             }
 
             Command NewFile()
             {
-                var cmd = new Command(
-                    "new",
-                    "Create new files based on templates.")
+                var cmd = new Command("new", "Create new files based on templates.");
+
+                var templateNameOption = new Option<string>("--template-name")
                 {
-                    new Argument<string>("template-name")
-                    {
-                        Description = "Name of the template, as defined by the template convention",
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                    new Argument<FileInfo>("file-path")
-                    {
-                        Description = "Where do you want the new file to be created?",
-                        Arity = ArgumentArity.ZeroOrOne,
-                    },
+                    Description = "Name of the template, as defined by the template convention",
+                    Arity = ArgumentArity.ExactlyOne,
+                    IsRequired = true,
                 };
 
-                cmd.Handler = CommandHandler.Create<NewFileOptions, InvocationContext>(async (options, context) =>
+                var filePathOption = new Option<FileInfo>("--file-path")
                 {
-                    await newFile(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    Description = "Where do you want the new file to be created?",
+                    Arity = ArgumentArity.ZeroOrOne,
+                    IsRequired = true,
+                };
+
+                cmd.Add(templateNameOption);
+                cmd.Add(filePathOption);
+
+                cmd.SetHandler(async (context) =>
+                {
+                    string templateName = context.ParseResult.GetValueForOption(templateNameOption);
+                    FileInfo filePath = context.ParseResult.GetValueForOption(filePathOption);
+
+                    await newFile(templateName, filePath, this.console, this.appEnvironment, context)
+                        .ConfigureAwait(false);
                 });
 
                 return cmd;
@@ -277,103 +305,154 @@ namespace Vellum.Cli
 
             Command Plugins()
             {
-                var cmd = new Command(
-                    "plugins",
-                    "Manage vellum-cli plugins.");
+                var command = new Command("plugins", "Manage vellum-cli plugins.");
 
-                var installCmd = new Command("install", "Install a vellum-cli plugin.")
+                command.AddCommand(Clear());
+                command.AddCommand(Install());
+                command.AddCommand(List());
+                command.AddCommand(Uninstall());
+
+                return command;
+
+                Command Clear()
                 {
-                    new Argument<string>
+                    var cmd = new Command("clear", "Clear installed vellum-cli plugins.");
+
+                    cmd.SetHandler(async (context) =>
                     {
-                        Name = "package-id",
+                        await pluginClear(this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
+
+                    return cmd;
+                }
+
+                Command Install()
+                {
+                    var cmd = new Command("install", "Install a vellum-cli plugin.");
+
+                    var packageIdOption = new Option<string>("--package-id")
+                    {
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
-                    },
-                };
+                        IsRequired = true,
+                    };
 
-                installCmd.Handler = CommandHandler.Create<PluginOptions, InvocationContext>(async (options, context) =>
-                {
-                    await pluginInstall(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                });
-
-                var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli plugin.")
-                {
-                    new Argument<string>
+                    var versionOption = new Option<string>("--version")
                     {
-                        Name = "package-id",
+                        Description = "NuGet Version",
+                        Arity = ArgumentArity.ExactlyOne,
+                    };
+
+                    cmd.Add(packageIdOption);
+                    cmd.Add(versionOption);
+
+                    cmd.SetHandler(async (context) =>
+                    {
+                        string packageId = context.ParseResult.GetValueForOption(packageIdOption);
+                        string version = context.ParseResult.GetValueForOption(versionOption);
+
+                        await pluginInstall(packageId, version, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
+
+                    return cmd;
+                }
+
+                Command Uninstall()
+                {
+                    var cmd = new Command("uninstall", "Uninstall a vellum-cli plugin.");
+
+                    var option = new Option<string>("--package-id")
+                    {
                         Description = "NuGet Package Id",
                         Arity = ArgumentArity.ExactlyOne,
-                    },
-                };
+                        IsRequired = true,
+                    };
 
-                uninstallCmd.Handler = CommandHandler.Create<PluginOptions, InvocationContext>(async (options, context) =>
-                {
-                    await pluginUninstall(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                });
+                    cmd.Add(option);
 
-                var listCmd = new Command("list", "List vellum-cli plugins.")
-                {
-                };
-
-                var listInstalledCmd = new Command("installed", "List installed vellum-cli plugins.")
-                {
-                    Handler = CommandHandler.Create<InvocationContext>(async (context) =>
+                    cmd.SetHandler(async (context) =>
                     {
-                        await pluginListInstalled(this.console, this.appEnvironment, context).ConfigureAwait(false);
-                    }),
-                };
+                        string packageId = context.ParseResult.GetValueForOption(option);
+                        await pluginUninstall(packageId, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
 
-                listCmd.AddCommand(listInstalledCmd);
+                    return cmd;
+                }
 
-                cmd.AddCommand(installCmd);
-                cmd.AddCommand(uninstallCmd);
-                cmd.AddCommand(listCmd);
+                Command List()
+                {
+                    var cmd = new Command("list", "List installed vellum-cli plugins.");
 
-                return cmd;
+                    cmd.SetHandler(async (context) =>
+                    {
+                        await pluginList(this.console, this.appEnvironment, context).ConfigureAwait(false);
+                    });
+
+                    return cmd;
+                }
             }
 
             Command Templates()
             {
-                var cmd = new Command("templates", "Perform operations on Vellum templates.");
+                var templatesCmd = new Command("templates", "Perform operations on Vellum templates.");
 
-                var packagesCmd = new Command("packages", "Perform operations on Vellum template packages.");
+                templatesCmd.AddCommand(TemplatesPackages());
 
-                var installCmd = new Command("install", "Install a vellum-cli template package.")
+                return templatesCmd;
+
+                Command TemplatesPackages()
                 {
-                    new Argument<string>
+                    var command = new Command("packages", "Perform operations on Vellum template packages.");
+
+                    command.AddCommand(Install());
+                    command.AddCommand(Uninstall());
+
+                    return command;
+
+                    Command Install()
                     {
-                        Name = "package-id",
-                        Description = "NuGet Package Id",
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                };
+                        var cmd = new Command("install", "Install a vellum-cli template package.");
 
-                installCmd.Handler = CommandHandler.Create<TemplateOptions, InvocationContext>(async (options, context) =>
-                {
-                    await templateInstall(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                });
+                        var option = new Option<string>("--package-id")
+                        {
+                            Description = "NuGet Package Id",
+                            Arity = ArgumentArity.ExactlyOne,
+                            IsRequired = true,
+                        };
 
-                var uninstallCmd = new Command("uninstall", "Uninstall a vellum-cli template package.")
-                {
-                    new Argument<string>
+                        cmd.Add(option);
+
+                        cmd.SetHandler(async (context) =>
+                        {
+                            string packageId = context.ParseResult.GetValueForOption(option);
+                            await templateInstall(packageId, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                        });
+
+                        return cmd;
+                    }
+
+                    Command Uninstall()
                     {
-                        Name = "package-id",
-                        Description = "NuGet Package Id",
-                        Arity = ArgumentArity.ExactlyOne,
-                    },
-                };
+                        var cmd = new Command("uninstall", "Uninstall a vellum-cli template package.");
 
-                uninstallCmd.Handler = CommandHandler.Create<TemplateOptions, InvocationContext>(async (options, context) =>
-                {
-                    await templateUninstall(options, this.console, this.appEnvironment, context).ConfigureAwait(false);
-                });
+                        var option = new Option<string>("--package-id")
+                        {
+                            Description = "NuGet Package Id",
+                            Arity = ArgumentArity.ExactlyOne,
+                            IsRequired = true,
+                        };
 
-                packagesCmd.AddCommand(installCmd);
-                packagesCmd.AddCommand(uninstallCmd);
+                        cmd.Add(option);
 
-                cmd.AddCommand(packagesCmd);
+                        cmd.SetHandler(async (context) =>
+                        {
+                            string packageId = context.ParseResult.GetValueForOption(option);
+                            await templateUninstall(packageId, this.console, this.appEnvironment, context).ConfigureAwait(false);
+                        });
 
-                return cmd;
+                        return cmd;
+                    }
+                }
             }
         }
     }

@@ -5,8 +5,6 @@
 namespace Vellum.Cli
 {
     using System;
-    using System.CommandLine;
-    using System.CommandLine.IO;
     using System.CommandLine.Parsing;
     using System.Text;
     using System.Threading.Tasks;
@@ -16,7 +14,7 @@ namespace Vellum.Cli
 
     public static class Program
     {
-        private static readonly ServiceCollection ServiceCollection = new ServiceCollection();
+        private static readonly ServiceCollection ServiceCollection = new();
 
         public static async Task<int> Main(string[] args)
         {
@@ -24,13 +22,11 @@ namespace Vellum.Cli
 
             ServiceCollection.AddCommonServices();
 
-            ICompositeConsole console = new CompositeConsole();
-
             return await new CommandLineParser(
-                console,
+                new CompositeConsole(),
                 new FileSystemRoamingProfileAppEnvironment(),
                 new CommandPluginHost(),
-                ServiceCollection).Create().InvokeAsync(args, console).ConfigureAwait(false);
+                ServiceCollection).Create().InvokeAsync(args).ConfigureAwait(false);
         }
     }
 }

@@ -4,10 +4,11 @@
 
 namespace Vellum.Cli.Commands.Plugins
 {
-    using System.CommandLine;
+    using System;
     using System.CommandLine.Invocation;
     using System.CommandLine.IO;
     using System.Threading.Tasks;
+    using Spectre.Console;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Abstractions.Plugins;
@@ -16,18 +17,35 @@ namespace Vellum.Cli.Commands.Plugins
     public static class PluginInstallHandler
     {
         public static async Task<int> ExecuteAsync(
-            PluginOptions options,
-            ICompositeConsole console,
+            string packageId,
+            string version,
+            Vellum.Cli.Abstractions.Infrastructure.ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            console.Out.WriteLine($"Installing plugin from package '{options.PackageId}'");
+            string message = $"Installing plugin from package '{packageId}'";
+
+            if (!string.IsNullOrEmpty(version))
+            {
+                message += " version " + version;
+            }
+
+            console.Out.WriteLine(message);
 
             var packageManager = new NuGetPluginPackageManager(appEnvironment);
 
             try
             {
-                PluginPackage result = await packageManager.InstallLatestAsync(options.PackageId).ConfigureAwait(false);
+                PluginPackage result = null;
+
+                if (string.IsNullOrEmpty(version))
+                {
+                    result = await packageManager.InstallLatestAsync(packageId).ConfigureAwait(false);
+                }
+                else
+                {
+                    result = await packageManager.InstallVersionAsync(packageId, version).ConfigureAwait(false);
+                }
 
                 console.Out.WriteLine($"Using plugin version {result.Version}");
                 console.Out.WriteLine($"Installed plugin {result.Name} to {result.PluginPath}");
@@ -35,6 +53,11 @@ namespace Vellum.Cli.Commands.Plugins
             catch (System.IO.IOException)
             {
                 console.Out.WriteLine("The latest version of this plugin is already installed.");
+                return ReturnCodes.Error;
+            }
+            catch (InvalidOperationException exception)
+            {
+                console.MarkupLineInterpolated($"⚠️ [red]ERROR! {exception.Message}[/]");
                 return ReturnCodes.Error;
             }
 

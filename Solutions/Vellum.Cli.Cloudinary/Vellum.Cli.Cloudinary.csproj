@@ -3,16 +3,27 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <!-- We use nuspec files to generate the nupkg files as assemblies are delivered as content rather than as "packages" -->
     <IsPackable>false</IsPackable>
+    <!-- This plugin package does not need symbols and source link -->
+    <IncludeSymbols>false</IncludeSymbols>
+    <IncludeSource>false</IncludeSource>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageDescription>Cloudinary plugin for Vellum - the Static Content Management System.</PackageDescription>
+    <PackageTags>vellum static cms vellum-cli endjin</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
-    <PackageReference Include="Endjin.RecommendedPractices" Version="1.2.0">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,11 +31,11 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
+    <NoWarn>RCS1029; CS1591; SA1600; NU5100</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
+    <NoWarn>RCS1029; CS1591; SA1600; NU5100</NoWarn>
   </PropertyGroup>
 
 </Project>

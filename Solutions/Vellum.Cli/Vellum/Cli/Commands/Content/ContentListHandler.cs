@@ -12,6 +12,8 @@ namespace Vellum.Cli.Commands.Content
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
 
+    using NDepend.Path;
+
     using Spectre.Console;
 
     using Vellum.Abstractions;
@@ -26,8 +28,10 @@ namespace Vellum.Cli.Commands.Content
     public static class ContentListHandler
     {
         public static async Task<int> ExecuteAsync(
+            bool draft,
+            bool published,
+            IAbsoluteDirectoryPath siteTaxonomyDirectoryPath,
             IServiceCollection services,
-            ListOptions options,
             ICompositeConsole console,
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
@@ -42,12 +46,12 @@ namespace Vellum.Cli.Commands.Content
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
             var siteTaxonomyRepository = new SiteDetailsRepository();
-            SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
+            SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(siteTaxonomyDirectoryPath).ConfigureAwait(false);
 
             var taxonomyDocumentRepository = new TaxonomyDocumentRespository(services);
             var siteTaxonomyParser = new SiteTaxonomyParser();
 
-            IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(options.SiteTaxonomyDirectoryPath);
+            IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(siteTaxonomyDirectoryPath);
             IAsyncEnumerable<TaxonomyDocument> loaded = taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments);
 
             var table = new Table();
@@ -70,7 +74,8 @@ namespace Vellum.Cli.Commands.Content
                         IEnumerable<string> categories = cf.Category;
                         IEnumerable<Faq> faqs = cf.Faqs;
 
-                        table.AddRow(cf.Title,
+                        table.AddRow(
+                            cf.Title,
                             cf.Author.ToString(),
                             cf.Date.ToShortDateString(),
                             cf.PublicationStatus.ToString());

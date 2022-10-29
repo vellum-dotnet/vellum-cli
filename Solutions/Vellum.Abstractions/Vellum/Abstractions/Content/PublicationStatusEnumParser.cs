@@ -13,7 +13,7 @@ namespace Vellum.Abstractions.Content
                 "publish" => PublicationStatus.Published,
                 "published" => PublicationStatus.Published,
                 "draft" => PublicationStatus.Draft,
-                _ => PublicationStatus.Unknown
+                _ => PublicationStatus.Unknown,
             };
         }
     }
