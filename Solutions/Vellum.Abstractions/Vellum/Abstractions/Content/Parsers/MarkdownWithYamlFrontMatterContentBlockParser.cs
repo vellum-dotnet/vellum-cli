@@ -9,17 +9,12 @@ namespace Vellum.Abstractions.Content.Parsers
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Markdig;
-    using Markdig.Extensions.Yaml;
-    using Markdig.Renderers;
-    using Markdig.Syntax;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.FileSystemGlobbing;
     using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
     using NDepend.Path;
     using Vellum.Abstractions.Content.Formatting;
     using Vellum.Abstractions.Taxonomy;
-    using YamlDotNet.Serialization;
 
     public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
     {
@@ -48,7 +43,7 @@ namespace Vellum.Abstractions.Content.Parsers
                     {
                         string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()).ConfigureAwait(false);
 
-                        ContentFragment contentFragment = new ContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath);
+                        ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath);
 
                         contentFragments.Add(contentFragment);
 
@@ -69,7 +64,8 @@ namespace Vellum.Abstractions.Content.Parsers
             if (contentBlock.Spec.Tags.Count > 0)
             {
                 contentFragments = contentFragments.Where(x => x.MetaData.ContainsKey("Tags"))
-                    .Where(t => ((List<object>)t.MetaData["Tags"]).Intersect(contentBlock.Spec.Tags).Any()).ToList();
+                                                   .Where(t => ((List<object>)t.MetaData["Tags"])
+                                                   .Intersect(contentBlock.Spec.Tags).Any()).ToList();
             }
 
             if (contentBlock.Spec.Count > 0)

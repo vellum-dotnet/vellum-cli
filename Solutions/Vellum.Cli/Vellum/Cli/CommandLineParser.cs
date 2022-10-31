@@ -14,7 +14,6 @@ namespace Vellum.Cli
 
     using Microsoft.Extensions.DependencyInjection;
     using NDepend.Path;
-    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
 
     using Vellum.Cli.Commands.Content;

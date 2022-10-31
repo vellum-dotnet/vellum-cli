@@ -44,7 +44,7 @@ namespace Vellum.Abstractions
 
             if (result is List<object> list)
             {
-                result = list.Select(x => x.ToString()).ToList();
+                result = list.ConvertAll(x => x.ToString());
             }
 
             return true;

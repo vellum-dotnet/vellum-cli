@@ -4,24 +4,21 @@
 
 namespace Vellum.Abstractions.Content.Formatting
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.Extensions.DependencyInjection;
 
-    public class ContentFormatter
+    public class ContentFormatter : IContentFormatter
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IEnumerable<IContentTransform> transforms;
 
-        public ContentFormatter(IServiceProvider serviceProvider)
+        public ContentFormatter(IEnumerable<IContentTransform> transforms)
         {
-            this.serviceProvider = serviceProvider;
+            this.transforms = transforms;
         }
 
         public string Apply(string html)
         {
-            IEnumerable<IContentTransform> transforms = this.serviceProvider.GetServices<IContentTransform>();
-            return transforms.Aggregate(html, (current, transform) => transform.Apply(current));
+            return this.transforms.Aggregate(html, (current, transform) => transform.Apply(current));
         }
     }
 }

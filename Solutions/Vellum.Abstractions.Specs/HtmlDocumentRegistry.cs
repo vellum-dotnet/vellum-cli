@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-public class MarkdownDocumentRegistry
+public class HtmlDocumentRegistry
 {
     private readonly Dictionary<string, string> documents = new();
 
@@ -23,10 +23,15 @@ public class MarkdownDocumentRegistry
             throw new InvalidOperationException($"Template not registered: {documentName}");
         }
 
-        return new FileInfo(Path.Combine(GetRepoRoot(), "Solutions", "Vellum.Abstractions.Specs", "MarkdownDocuments", templateFileName));
+        return new FileInfo(Path.Combine(GetRepoRoot(), "Solutions", "Vellum.Abstractions.Specs", "HtmlDocuments", templateFileName));
     }
 
-    private static string GetRepoRoot()
+    public string GetFileContent(string documentName)
+    {
+        return File.ReadAllText(this.GetFile(documentName).FullName);
+    }
+
+  private static string GetRepoRoot()
     {
         string directory = AppContext.BaseDirectory;
 

@@ -86,6 +86,26 @@ namespace Vellum.Abstractions.Specs
 #line 5
   testRunner.Given("the following markdown files", ((string)(null)), table1, "Given ");
 #line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "document",
+                        "file"});
+            table2.AddRow(new string[] {
+                        "How serverless is replacing the data warehouse",
+                        "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse.html"});
+#line 9
+  testRunner.Given("the following html files", ((string)(null)), table2, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ContentType",
+                        "Id",
+                        "SpecPath"});
+            table3.AddRow(new string[] {
+                        "application/vnd.vellum.content.blogs+md",
+                        "Blogs",
+                        "../../azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse.md"});
+#line 13
+  testRunner.Given("the following content blocks", ((string)(null)), table3, "Given ");
+#line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
@@ -95,7 +115,7 @@ namespace Vellum.Abstractions.Specs
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting a blog post", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 9
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -108,14 +128,131 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 10
-  testRunner.Given("the \"How serverless is replacing the data warehouse\" document", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
+  testRunner.Given("the \"Blogs\" ContentBlocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 11
-  testRunner.When("I press add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+  testRunner.And("the \"How serverless is replacing the data warehouse\" document", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
-  testRunner.Then("the result should be 120 on the screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
+  testRunner.When("Create a Content Fragment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                            "ContentType",
+                            "Date",
+                            "Hash",
+                            "Id",
+                            "Position",
+                            "PublicationStatus",
+                            "BodyHtmlDocumentName"});
+                table4.AddRow(new string[] {
+                            "application/vnd.vellum.content.blogs+md",
+                            "7/15/2020 6:30:00 AM",
+                            "6c52e2a15f812f646885bc2ef0e04a82dffe97ef8cf1af5a8a15817656c7f915",
+                            "Blogs",
+                            "0",
+                            "Published",
+                            "How serverless is replacing the data warehouse"});
+#line 21
+  testRunner.Then("Content Fragment should contain", ((string)(null)), table4, "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Title",
+                            "Slug",
+                            "Author",
+                            "HeaderImageUrl",
+                            "Excerpt",
+                            "FilePath"});
+                table5.AddRow(new string[] {
+                            "Azure Synapse Analytics: How serverless is replacing the data warehouse",
+                            "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse",
+                            "James.Broome",
+                            "/assets/images/blog/2020/07/header-azure-synapse-analytics-how-severless-is-repla" +
+                                "cing-the-data-warehouse.png",
+                            "Serverless data architectures enable leaner data insights and operations. How do " +
+                                "you reap the rewards while avoiding the potential pitfalls?",
+                            "C:\\_Projects\\OSS\\vellum-dotnet\\vellum-cli\\Solutions\\Vellum.Abstractions.Specs\\Mar" +
+                                "kdownDocuments\\azure-synapse-analytics-how-serverless-is-replacing-the-data-ware" +
+                                "house.md"});
+#line 24
+  testRunner.And("the Content Fragment MetaData should contain", ((string)(null)), table5, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Value"});
+                table6.AddRow(new string[] {
+                            "Azure"});
+                table6.AddRow(new string[] {
+                            "Analytics"});
+                table6.AddRow(new string[] {
+                            "Big Compute"});
+                table6.AddRow(new string[] {
+                            "Big Data"});
+                table6.AddRow(new string[] {
+                            "Azure Synapse Analytics"});
+                table6.AddRow(new string[] {
+                            "Innovation"});
+                table6.AddRow(new string[] {
+                            "Architecture"});
+                table6.AddRow(new string[] {
+                            "Strategy"});
+#line 27
+  testRunner.And("the Content Fragment MetaData Category should contain", ((string)(null)), table6, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Key"});
+                table7.AddRow(new string[] {
+                            "Azure"});
+                table7.AddRow(new string[] {
+                            "Data"});
+                table7.AddRow(new string[] {
+                            "Analytics"});
+                table7.AddRow(new string[] {
+                            "Serverless"});
+                table7.AddRow(new string[] {
+                            "Azure Synapse"});
+                table7.AddRow(new string[] {
+                            "Azure Synapse Analytics"});
+                table7.AddRow(new string[] {
+                            "Azure Synapse Pipelines"});
+                table7.AddRow(new string[] {
+                            "Synapse Pipelines"});
+                table7.AddRow(new string[] {
+                            "Azure Data Factory"});
+                table7.AddRow(new string[] {
+                            "Data Factory"});
+                table7.AddRow(new string[] {
+                            "SQL Serverless"});
+                table7.AddRow(new string[] {
+                            "SQL on-Demand"});
+                table7.AddRow(new string[] {
+                            "Synapse Studio"});
+                table7.AddRow(new string[] {
+                            "Data Engineering"});
+                table7.AddRow(new string[] {
+                            "Data Prep"});
+                table7.AddRow(new string[] {
+                            "Azure Synapse Analytics Jumpstart"});
+                table7.AddRow(new string[] {
+                            "CSV"});
+                table7.AddRow(new string[] {
+                            "Parquet"});
+                table7.AddRow(new string[] {
+                            "Json"});
+                table7.AddRow(new string[] {
+                            "Azure Data Lake Store"});
+                table7.AddRow(new string[] {
+                            "ADLS"});
+#line 37
+  testRunner.And("the Content Fragment MetaData Tags should contain", ((string)(null)), table7, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Question",
+                            "Answer"});
+                table8.AddRow(new string[] {
+                            "How do you run an Azure Synapse SQL on-Demand query from Azure Data Factory?",
+                            @"Azure Synapse Analytics comes with tabular data stream (TDS) endpoint for SQL on-Demand, meaning you can run SQL queries as if you were talking to any SQL Server or Azure SQL Database. It's therefore possible to use a standard <a href=""https://docs.microsoft.com/en-us/azure/data-factory/copy-activity-overview"">Copy Activity</a> in the same way as you would were you to copy data from <a href=""https://docs.microsoft.com/en-us/azure/data-factory/connector-sql-server"">a Azure SQL Database</a>. The TDS endpoint can be found on the workspace overview tab of your Synapse workspace and is in the format <code><workspace-name>-ondemand.sql.azuresynapse.net</code>. Note that you will be constrained by the language features available with SQL on-Demand. In the future, it is likely that there will be tighter workspace integration along with stored procedure support. This means that you will be able to take advantage of SQL on-Demand features such as <a href=""https://docs.microsoft.com/en-us/azure/synapse-analytics/sql/develop-tables-cetas"">CETAS</a>."});
+#line 60
+    testRunner.And("the Content Fragment MetaData FAQs should contain", ((string)(null)), table8, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

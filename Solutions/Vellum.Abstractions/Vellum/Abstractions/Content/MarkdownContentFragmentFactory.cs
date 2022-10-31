@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentFragmentFactory.cs" company="Endjin Limited">
+﻿// <copyright file="MarkdownContentFragmentFactory.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -18,13 +18,13 @@ namespace Vellum.Abstractions.Content
     using Vellum.Abstractions.Content.Parsers;
     using YamlDotNet.Serialization;
 
-    public class ContentFragmentFactory
+    public class MarkdownContentFragmentFactory
     {
         private readonly MarkdownPipeline pipeline;
-        private readonly ContentFormatter contentFormatter;
+        private readonly IContentFormatter contentFormatter;
         private readonly IDeserializer deserializer;
 
-        public ContentFragmentFactory(ContentFormatter contentFormatter)
+        public MarkdownContentFragmentFactory(IContentFormatter contentFormatter)
         {
             this.contentFormatter = contentFormatter;
             this.deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().IgnoreFields().Build();
@@ -59,9 +59,7 @@ namespace Vellum.Abstractions.Content
             };
         }
 
-        private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(
-            MarkdownDocument markdown,
-            IAbsoluteFilePath contentFragmentAbsoluteFilePath)
+        private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(MarkdownDocument markdown, IAbsoluteFilePath contentFragmentAbsoluteFilePath)
         {
             YamlFrontMatterBlock yamlBlock = markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
