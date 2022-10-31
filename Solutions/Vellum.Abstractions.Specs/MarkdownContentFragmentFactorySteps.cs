@@ -9,10 +9,11 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using Vellum.Abstractions.Content;
+    using Vellum.Abstractions.Content.ContentFactories;
     using Vellum.Abstractions.Content.Formatting;
 
     [Binding]
-    public class ContentFragmentTypeFactorySteps
+    public class MarkdownContentFragmentFactorySteps
     {
         private readonly ScenarioContext scenarioContext;
         private readonly HtmlDocumentRegistry htmlDocumentRegistry;
@@ -20,7 +21,7 @@
         private readonly ContentBlockRegistry contentBlockRegistry;
         private readonly IServiceProvider serviceProvider;
 
-        public ContentFragmentTypeFactorySteps(
+        public MarkdownContentFragmentFactorySteps(
             MarkdownDocumentRegistry markdownDocumentRegistry,
             HtmlDocumentRegistry htmlDocumentRegistry,
             ContentBlockRegistry contentBlockRegistry,
@@ -80,6 +81,7 @@
             this.scenarioContext.Set(filePath);
         }
 
+        [Given(@"we Create a Content Fragment")]
         [When(@"Create a Content Fragment")]
         public void WhenCreateAContentFragment()
         {
@@ -196,6 +198,23 @@
             }
 
             expected.ShouldBe(actuals);
+        }
+
+        [Given(@"we obtain a ContentFragmentTypeFactory for the Content Fragment Content Type")]
+        public void GivenWeObtainAContentFragmentTypeFactoryForTheContentFragmentContentType()
+        {
+            ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
+            ContentFragmentTypeFactory<IBlogPost> cff = this.serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(cf.ContentType.AsContentFragmentFactory());
+
+            this.scenarioContext.Set(cff);
+        }
+
+        [When(@"we create the BlogPost")]
+        public void WhenWeCreateTheBlogPost()
+        {
+            ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
+            ContentFragmentTypeFactory<IBlogPost> cff = this.scenarioContext.Get<ContentFragmentTypeFactory<IBlogPost>>();
+            IBlogPost blogPost = cff.Create(cf);
         }
     }
 }

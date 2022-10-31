@@ -1,11 +1,10 @@
 ﻿namespace Vellum.Abstractions.Specs;
 
 using System;
-
 using BoDi;
 using Microsoft.Extensions.DependencyInjection;
 using TechTalk.SpecFlow;
-
+using Vellum.Abstractions.Content.ContentFactories;
 using Vellum.Abstractions.Content.Formatting;
 using Vellum.Abstractions.Specs.Abstractions.Content.Formatting;
 
@@ -27,7 +26,7 @@ public class ContainerSetup
         services.AddScoped<IContentFormatter, ContentFormatter>();
         services.AddScoped<IContentTransform, EchoContentTransform>();
         services.AddScoped<IContentTransform, EmptyContentTransform>();
-
+        services.AddWellKnownContentFragmentTypeFactories();
         ServiceProvider serviceProvider = services.BuildServiceProvider();
 
         this.objectContainer.RegisterInstanceAs(serviceProvider, typeof(IServiceProvider));
