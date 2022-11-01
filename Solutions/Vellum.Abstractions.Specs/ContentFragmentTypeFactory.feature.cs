@@ -143,6 +143,29 @@ this.FeatureBackground();
 #line 23
   testRunner.When("we create the BlogPost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Title",
+                            "Slug",
+                            "Author",
+                            "Date",
+                            "PublicationStatus",
+                            "HeaderImageUrl",
+                            "BodyHtmlDocumentName",
+                            "Excerpt"});
+                table4.AddRow(new string[] {
+                            "Azure Synapse Analytics: How serverless is replacing the data warehouse",
+                            "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse",
+                            "James.Broome",
+                            "7/15/2020 6:30:00 AM",
+                            "Published",
+                            "/assets/images/blog/2020/07/header-azure-synapse-analytics-how-severless-is-repla" +
+                                "cing-the-data-warehouse.png",
+                            "How serverless is replacing the data warehouse",
+                            "Serverless data architectures enable leaner data insights and operations. How do " +
+                                "you reap the rewards while avoiding the potential pitfalls?"});
+#line 24
+  testRunner.Then("the BlogPost should contain", ((string)(null)), table4, "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

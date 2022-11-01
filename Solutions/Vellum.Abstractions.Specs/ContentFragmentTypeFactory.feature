@@ -21,4 +21,6 @@ Background:
 Scenario: Converting a ContentFragment into a BlogPost using ContentFragmentTypeFactory
   Given we obtain a ContentFragmentTypeFactory for the Content Fragment Content Type
   When we create the BlogPost
-  
+  Then the BlogPost should contain
+      | Title                                                                   | Slug                                                                   | Author       | Date                 | PublicationStatus | HeaderImageUrl                                                                                               | BodyHtmlDocumentName                           | Excerpt                                                                                                                                      |
+      | Azure Synapse Analytics: How serverless is replacing the data warehouse | azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse | James.Broome | 7/15/2020 6:30:00 AM | Published         | /assets/images/blog/2020/07/header-azure-synapse-analytics-how-severless-is-replacing-the-data-warehouse.png | How serverless is replacing the data warehouse | Serverless data architectures enable leaner data insights and operations. How do you reap the rewards while avoiding the potential pitfalls? |

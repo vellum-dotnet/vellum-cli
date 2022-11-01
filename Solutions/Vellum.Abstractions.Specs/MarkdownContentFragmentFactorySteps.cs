@@ -215,6 +215,28 @@
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
             ContentFragmentTypeFactory<IBlogPost> cff = this.scenarioContext.Get<ContentFragmentTypeFactory<IBlogPost>>();
             IBlogPost blogPost = cff.Create(cf);
+
+            this.scenarioContext.Set(blogPost);
+        }
+
+        [Then(@"the BlogPost should contain")]
+        public void ThenTheBlogPostShouldContain(Table table)
+        {
+            IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
+            TableRow firstRow = table.Rows[0];
+
+            string bodyHtmlDocumentName = firstRow["BodyHtmlDocumentName"];
+            string bodyHtml = this.htmlDocumentRegistry.GetFileContent(bodyHtmlDocumentName);
+
+            blogPost.Title.ShouldBe(firstRow["Title"]);
+            blogPost.Slug.ShouldBe(firstRow["Slug"]);
+            //blogPost.UserName.ShouldBe(firstRow["Author"]);
+            blogPost.HeaderImageUrl.ShouldBe(firstRow["HeaderImageUrl"]);
+            blogPost.Excerpt.ShouldBe(firstRow["Excerpt"]);
+            blogPost.Date.ShouldBe(DateTime.Parse(firstRow["Date"]));
+            blogPost.PublicationStatus.ShouldBe(PublicationStatusEnumParser.Parse(firstRow["PublicationStatus"]));
+            blogPost.Excerpt.ShouldBe(firstRow["Excerpt"]);
+            blogPost.Body.ShouldBe(bodyHtml);
         }
     }
 }
