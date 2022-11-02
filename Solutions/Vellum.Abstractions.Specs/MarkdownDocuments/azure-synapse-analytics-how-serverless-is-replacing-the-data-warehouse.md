@@ -39,6 +39,8 @@ Tags:
 FAQs:
     - Q: "How do you run an Azure Synapse SQL on-Demand query from Azure Data Factory?"
       A: Azure Synapse Analytics comes with tabular data stream (TDS) endpoint for SQL on-Demand, meaning you can run SQL queries as if you were talking to any SQL Server or Azure SQL Database. It's therefore possible to use a standard <a href="https://docs.microsoft.com/en-us/azure/data-factory/copy-activity-overview">Copy Activity</a> in the same way as you would were you to copy data from <a href="https://docs.microsoft.com/en-us/azure/data-factory/connector-sql-server">a Azure SQL Database</a>. The TDS endpoint can be found on the workspace overview tab of your Synapse workspace and is in the format <code><workspace-name>-ondemand.sql.azuresynapse.net</code>. Note that you will be constrained by the language features available with SQL on-Demand. In the future, it is likely that there will be tighter workspace integration along with stored procedure support. This means that you will be able to take advantage of SQL on-Demand features such as <a href="https://docs.microsoft.com/en-us/azure/synapse-analytics/sql/develop-tables-cetas">CETAS</a>.
+    - Q: Question 2
+      A: Answer 2
 HeaderImageUrl: "/assets/images/blog/2020/07/header-azure-synapse-analytics-how-severless-is-replacing-the-data-warehouse.png"
 Excerpt: "Serverless data architectures enable leaner data insights and operations. How do you reap the rewards while avoiding the potential pitfalls?"
 ---

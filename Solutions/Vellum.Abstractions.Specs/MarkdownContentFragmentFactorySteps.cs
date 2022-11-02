@@ -181,23 +181,13 @@
                 expected.Add(new KeyValuePair<string, string>("A", row["Answer"]));
             }
 
-            List<object> actual = cf.MetaData["FAQs"];
+            List<object> faqs = cf.MetaData["FAQs"];
 
-            IEnumerable<Dictionary<object, object>> output = actual.Cast<Dictionary<object, object>>();
+            IEnumerable<KeyValuePair<string, string>> actual = faqs.Cast<Dictionary<object, object>>()
+                .SelectMany(x => x)
+                .Select(x => new KeyValuePair<string, string>((string)x.Key, (string)x.Value));
 
-            List<KeyValuePair<string, string>> actuals = new();
-
-            foreach (Dictionary<object, object> dictionary in output)
-            {
-                foreach (KeyValuePair<object, object> keyValuePair in dictionary)
-                {
-                    string key = keyValuePair.Key as string;
-                    string value = keyValuePair.Value as string;
-                    actuals.Add(new KeyValuePair<string, string>(key, value));
-                }
-            }
-
-            expected.ShouldBe(actuals);
+            expected.ShouldBe(actual);
         }
 
         [Given(@"we obtain a ContentFragmentTypeFactory for the Content Fragment Content Type")]
@@ -235,8 +225,52 @@
             blogPost.Excerpt.ShouldBe(firstRow["Excerpt"]);
             blogPost.Date.ShouldBe(DateTime.Parse(firstRow["Date"]));
             blogPost.PublicationStatus.ShouldBe(PublicationStatusEnumParser.Parse(firstRow["PublicationStatus"]));
-            blogPost.Excerpt.ShouldBe(firstRow["Excerpt"]);
             blogPost.Body.ShouldBe(bodyHtml);
+        }
+
+        [Then(@"the BlogPost Category should contain")]
+        public void ThenTheBlogPostCategoryShouldContain(Table table)
+        {
+            IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
+
+            List<string> expected = new();
+
+            foreach (TableRow row in table.Rows)
+            {
+                expected.Add(row["Value"].Trim());
+            }
+
+            blogPost.Category.ShouldBe(expected);
+        }
+
+        [Then(@"the BlogPost Tags should contain")]
+        public void ThenTheBlogPostTagsShouldContain(Table table)
+        {
+            IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
+
+            List<string> expected = new();
+
+            foreach (TableRow row in table.Rows)
+            {
+                expected.Add(row["Key"].Trim());
+            }
+
+            blogPost.Tags.ShouldBe(expected);
+        }
+
+        [Then(@"the BlogPost FAQs should contain")]
+        public void ThenTheBlogPostFAQsShouldContain(Table table)
+        {
+            IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
+
+            List<(string, string)> expected = new();
+
+            foreach (TableRow row in table.Rows)
+            {
+                expected.Add(new (row["Question"], row["Answer"]));
+            }
+
+            blogPost.Faqs.ShouldBe(expected);
         }
     }
 }

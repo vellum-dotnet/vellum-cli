@@ -5,6 +5,7 @@
 namespace Vellum.Cli.Commands.Content
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.CommandLine.Invocation;
     using System.Diagnostics;
@@ -72,7 +73,7 @@ namespace Vellum.Cli.Commands.Content
                         IBlogPost cf = cff.Create(contentFragment);
 
                         IEnumerable<string> categories = cf.Category;
-                        IEnumerable<Faq> faqs = cf.Faqs;
+                        IEnumerable<(string Question, string Answer)> faqs = cf.Faqs;
 
                         table.AddRow(
                             cf.Title,

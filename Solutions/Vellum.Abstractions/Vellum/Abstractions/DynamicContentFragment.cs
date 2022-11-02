@@ -4,22 +4,25 @@
 
 namespace Vellum.Abstractions
 {
+    using System;
     using System.Collections.Generic;
     using System.Dynamic;
     using System.Linq;
-
+    using Microsoft.Extensions.DependencyInjection;
     using Vellum.Abstractions.Content;
+    using Vellum.Abstractions.Content.ContentFactories;
 
     public class DynamicContentFragment : DynamicObject
     {
-        // The inner dictionary.
-        private readonly Dictionary<string, dynamic> dictionary;
         private readonly ContentFragment contentFragment;
+        private readonly Dictionary<string, dynamic> dictionary;
+        private readonly IServiceProvider serviceProvider;
 
-        public DynamicContentFragment(ContentFragment contentFragment)
+        public DynamicContentFragment(ContentFragment contentFragment, IServiceProvider serviceProvider)
         {
             this.contentFragment = contentFragment;
-            this.dictionary = contentFragment.MetaData;
+            this.serviceProvider = serviceProvider;
+            this.dictionary = new Dictionary<string, dynamic>(contentFragment.MetaData, StringComparer.InvariantCultureIgnoreCase);
         }
 
         // This property returns the number of elements
@@ -44,6 +47,23 @@ namespace Vellum.Abstractions
 
             if (result is List<object> list)
             {
+                if (list[0] is Dictionary<object, object>)
+                {
+                    List<object> converted = new();
+                    foreach (object item in list)
+                    {
+                        if (item is Dictionary<object, object> entry)
+                        {
+                            IConverter<Dictionary<object, object>> converter = this.serviceProvider.GetContent<IConverter<Dictionary<object, object>>>(binder.Name.AsConverter());
+                            converted.Add(converter.Convert(entry));
+                        }
+                    }
+
+                    result = converted;
+
+                    return true;
+                }
+
                 result = list.ConvertAll(x => x.ToString());
             }
 

@@ -6,6 +6,11 @@ namespace Vellum.Abstractions.Content.ContentFactories
 {
     public static class ContentTypeExtensions
     {
+        public static string AsConverter(this string contentType)
+        {
+            return contentType.ToLowerInvariant() + "+converter";
+        }
+
         public static string AsRenderer(this string contentType)
         {
             return contentType + "+renderer";
