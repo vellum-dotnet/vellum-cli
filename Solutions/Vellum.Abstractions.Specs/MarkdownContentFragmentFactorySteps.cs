@@ -255,6 +255,7 @@
                 expected.Add(row["Key"].Trim());
             }
 
+            blogPost.Tags.ShouldBeAssignableTo<List<string>>();
             blogPost.Tags.ShouldBe(expected);
         }
 
@@ -270,6 +271,7 @@
                 expected.Add(new (row["Question"], row["Answer"]));
             }
 
+            blogPost.Faqs.ShouldBeAssignableTo<IEnumerable<(string, string)>>();
             blogPost.Faqs.ShouldBe(expected);
         }
     }

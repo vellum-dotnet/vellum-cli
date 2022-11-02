@@ -47,7 +47,7 @@ namespace Vellum.Abstractions
 
             if (result is List<object> list)
             {
-                if (list[0] is Dictionary<object, object>)
+                if (!list.IsEmpty() && list[0] is Dictionary<object, object>)
                 {
                     List<object> converted = new();
                     foreach (object item in list)
@@ -55,6 +55,12 @@ namespace Vellum.Abstractions
                         if (item is Dictionary<object, object> entry)
                         {
                             IConverter<Dictionary<object, object>> converter = this.serviceProvider.GetContent<IConverter<Dictionary<object, object>>>(binder.Name.AsConverter());
+
+                            if (converter is null)
+                            {
+                                throw new InvalidOperationException($"No converter for content type '{binder.Name.AsConverter()}' is registered with the container.");
+                            }
+
                             converted.Add(converter.Convert(entry));
                         }
                     }

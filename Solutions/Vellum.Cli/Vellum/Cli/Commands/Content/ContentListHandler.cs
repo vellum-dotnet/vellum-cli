@@ -12,17 +12,13 @@ namespace Vellum.Cli.Commands.Content
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
-
     using NDepend.Path;
-
     using Spectre.Console;
-
     using Vellum.Abstractions;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
     using Vellum.Abstractions.Content.Primitives;
     using Vellum.Abstractions.Taxonomy;
-
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
 
@@ -43,6 +39,7 @@ namespace Vellum.Cli.Commands.Content
             services.AddWellKnownTaxonomyContentTypes();
             services.AddWellKnownContentFragmentTypeFactories();
             services.AddWellKnownContentBlockContentTypes();
+            services.AddWellKnownConverterFactories();
 
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
@@ -69,17 +66,21 @@ namespace Vellum.Cli.Commands.Content
                 {
                     if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
                     {
-                        ContentFragmentTypeFactory<IBlogPost> cff = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
-                        IBlogPost cf = cff.Create(contentFragment);
+                        var contentFragmentTypeFactory = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
+                        IBlogPost post = contentFragmentTypeFactory.Create(contentFragment);
 
-                        IEnumerable<string> categories = cf.Category;
-                        IEnumerable<(string Question, string Answer)> faqs = cf.Faqs;
+                        IEnumerable<string> categories = post.Category;
+
+                        if (post.Faqs is not null)
+                        {
+                            IEnumerable<(string Question, string Answer)> faqs = post.Faqs;
+                        }
 
                         table.AddRow(
-                            cf.Title,
-                            cf.Author.ToString(),
-                            cf.Date.ToShortDateString(),
-                            cf.PublicationStatus.ToString());
+                            post.Title,
+                            post.Author.ToString(),
+                            post.Date.ToShortDateString(),
+                            post.PublicationStatus.ToString());
 
                         // break;
                     }
