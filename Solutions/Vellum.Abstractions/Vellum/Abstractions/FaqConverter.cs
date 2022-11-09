@@ -4,7 +4,6 @@
 
 namespace Vellum.Abstractions;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +15,7 @@ public class FaqConverter : IConverter<Dictionary<object, object>>
 
         if (item.ElementAt(0).Value is string question && item.ElementAt(1).Value is string answer)
         {
-            faq = new(question, answer);
+            faq = (question, answer);
         }
 
         return faq;
