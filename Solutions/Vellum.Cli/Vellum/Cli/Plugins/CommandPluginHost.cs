@@ -7,7 +7,6 @@ namespace Vellum.Cli.Plugins
     using System;
     using System.Collections.Generic;
     using System.CommandLine;
-    using System.CommandLine.Rendering;
     using System.Linq;
     using McMaster.NETCore.Plugins;
     using NDepend.Path;
