@@ -121,6 +121,21 @@
             cf.Body.ShouldBe(bodyHtml);
         }
 
+        [Then(@"the Content Fragment should contain the following Extensions:")]
+        public void ThenTheContentFragmentShouldContainTheFollowingExtensions(Table table)
+        {
+            List<string> extensions = new();
+
+            foreach (TableRow row in table.Rows)
+            {
+                extensions.Add(row["ContentType"]);
+            }
+
+            ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
+
+            cf.Extensions.ShouldBe(extensions, ignoreOrder:true);
+        }
+
         [Then(@"the Content Fragment MetaData should contain")]
         public void ThenTheContentFragmentMetaDataShouldContain(Table table)
         {
@@ -194,17 +209,17 @@
         public void GivenWeObtainAContentFragmentTypeFactoryForTheContentFragmentContentType()
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
-            ContentFragmentTypeFactory<IBlogPost> cff = this.serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(cf.ContentType.AsContentFragmentFactory());
+            ContentFragmentTypeFactory<IBlogPost> typeFactory = this.serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(cf.ContentType.AsContentFragmentFactory());
 
-            this.scenarioContext.Set(cff);
+            this.scenarioContext.Set(typeFactory);
         }
 
         [When(@"we create the BlogPost")]
         public void WhenWeCreateTheBlogPost()
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
-            ContentFragmentTypeFactory<IBlogPost> cff = this.scenarioContext.Get<ContentFragmentTypeFactory<IBlogPost>>();
-            IBlogPost blogPost = cff.Create(cf);
+            ContentFragmentTypeFactory<IBlogPost> typeFactory = this.scenarioContext.Get<ContentFragmentTypeFactory<IBlogPost>>();
+            IBlogPost blogPost = typeFactory.Create(cf);
 
             this.scenarioContext.Set(blogPost);
         }
@@ -268,7 +283,7 @@
 
             foreach (TableRow row in table.Rows)
             {
-                expected.Add(new (row["Question"], row["Answer"]));
+                expected.Add(new(row["Question"], row["Answer"]));
             }
 
             blogPost.Faqs.ShouldBeAssignableTo<IEnumerable<(string, string)>>();

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using Corvus.ContentHandling;
 using Microsoft.Extensions.DependencyInjection;
+using Vellum.Abstractions.Content.Converters;
 
 public static class ConverterFactoryExtensions
 {

@@ -14,9 +14,9 @@ ContentTasks.Generate
     - Set CDN Options
     - Start Razor ViewEngine warmup task
     - If in preview mode, spin up WebHost to serve content
-    - If in watch mode, configure SystemFileWatcher (which calls GenerateInternal), then call GenerateInternal, and wait on a loop.
+    - If in watch mode, configure SystemFileWatcher (which calls GenerateInternal()), then call GenerateInternal(), and wait on a loop.
 
-ContentTasks.GenerateInternal
+ContentTasks.GenerateInternal()
     - Flush Cache
     - Load Template File MetaData
     - Load Page Template Meta Data
@@ -24,17 +24,17 @@ ContentTasks.GenerateInternal
     - Convert Site Taxonomy into Site Navigation
     - Discover Asset Path
     - Create SiteContext
-    - If in Preview Mode, copy assets to the output directory and call CompileSass
-    - Render the site
+    - If in Preview Mode, copy assets to the output directory and call CompileSass()
+    - Call RenderSiteAsync
   
-  ContentTasks.CompileSass
+ ContentTasks.CompileSass()
     - Set ScssOptions, import files
     - Add paths
     - Read top level sass file
     - Compile
     - Write rendered output and map.
   
-  ContentTasks.RenderSiteAsync
+ ContentTasks.RenderSiteAsync()
     - Convert from PageContext to RenderItems via Mappers
     - Generate MoreLikeThese recommendations
     - If watch mode, call cachingTasks.GenerateAndPersistSiteHashMapIfNotExistsAsync & cachingTasks.DetectChangedPagesAsync and filter to changes files.

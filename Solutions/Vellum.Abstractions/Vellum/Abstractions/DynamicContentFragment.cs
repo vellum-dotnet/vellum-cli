@@ -11,6 +11,7 @@ namespace Vellum.Abstractions
     using Microsoft.Extensions.DependencyInjection;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
+    using Vellum.Abstractions.Content.Converters;
 
     public class DynamicContentFragment : DynamicObject
     {

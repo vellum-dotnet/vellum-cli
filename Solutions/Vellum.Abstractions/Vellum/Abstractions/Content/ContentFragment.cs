@@ -7,13 +7,15 @@ namespace Vellum.Abstractions.Content
     using System;
     using System.Collections.Generic;
 
-    public record ContentFragment : IContent
-    {
+    public record ContentFragment : IContent, IExtensible
+  {
         public int Position { get; set; }
 
         public string Id { get; set; }
 
         public string ContentType { get; set; }
+
+        public IEnumerable<string> Extensions { get; set; }
 
         public Dictionary<string, dynamic> MetaData { get; set; } = new();
 
@@ -24,5 +26,5 @@ namespace Vellum.Abstractions.Content
         public DateTime Date { get; set; }
 
         public PublicationStatus PublicationStatus { get; set; }
-    }
+  }
 }

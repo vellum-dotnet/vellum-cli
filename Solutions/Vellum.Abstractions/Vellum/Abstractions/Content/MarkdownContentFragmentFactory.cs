@@ -45,13 +45,14 @@ namespace Vellum.Abstractions.Content
                 body = this.RenderMarkdown(doc);
             }
 
-            (string ContentType, PublicationStatus PublicationStatus, DateTime Date, Dictionary<string, dynamic> MetaData) result = this.ConvertFrontMatterToMetaData(doc, contentFragmentAbsoluteFilePath);
+            (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) result = this.ConvertFrontMatterToMetaData(doc, contentFragmentAbsoluteFilePath);
 
             return new ContentFragment
             {
                 Body = body,
                 ContentType = result.ContentType ?? contentBlock.ContentType,
                 Date = result.Date,
+                Extensions = result.Extensions,
                 Hash = ContentHashing.Hash(content),
                 Id = contentBlock.Id,
                 MetaData = result.MetaData,
@@ -59,13 +60,13 @@ namespace Vellum.Abstractions.Content
             };
         }
 
-        private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(MarkdownDocument markdown, IAbsoluteFilePath contentFragmentAbsoluteFilePath)
+        private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(MarkdownDocument markdown, IAbsoluteFilePath contentFragmentAbsoluteFilePath)
         {
             YamlFrontMatterBlock yamlBlock = markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
             if (yamlBlock == null)
             {
-                return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath.ToString() } });
+                return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, Enumerable.Empty<string>(), new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath.ToString() } });
             }
 
             string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
@@ -74,11 +75,22 @@ namespace Vellum.Abstractions.Content
             frontMatter.Add("FilePath", contentFragmentAbsoluteFilePath.ToString());
 
             string contentType = string.Empty;
+            IEnumerable<string> extensions = Enumerable.Empty<string>();
 
             if (frontMatter.TryGetValue("ContentType", out dynamic contentTypeDynamic))
             {
                 contentType = contentTypeDynamic;
                 frontMatter.Remove("ContentType");
+            }
+
+            if (frontMatter.TryGetValue("Extensions", out dynamic extensionsDynamic))
+            {
+                if (extensionsDynamic is IEnumerable<object> objects)
+                {
+                    extensions = objects.Cast<string>();
+                }
+
+                frontMatter.Remove("Extensions");
             }
 
             PublicationStatus status = PublicationStatus.Unknown;
@@ -99,7 +111,7 @@ namespace Vellum.Abstractions.Content
                 }
             }
 
-            return (contentType, status, date, frontMatter);
+            return (contentType, status, date, extensions, frontMatter);
         }
 
         private string RenderMarkdown(MarkdownDocument doc)

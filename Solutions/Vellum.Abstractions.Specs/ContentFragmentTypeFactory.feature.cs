@@ -77,34 +77,34 @@ namespace Vellum.Abstractions.Specs
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "document",
                         "file"});
-            table1.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "How serverless is replacing the data warehouse",
                         "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse.md"});
 #line 5
-  testRunner.Given("the following markdown files", ((string)(null)), table1, "Given ");
+  testRunner.Given("the following markdown files", ((string)(null)), table6, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "document",
                         "file"});
-            table2.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "How serverless is replacing the data warehouse",
                         "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse.html"});
 #line 9
-  testRunner.Given("the following html files", ((string)(null)), table2, "Given ");
+  testRunner.Given("the following html files", ((string)(null)), table7, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "ContentType",
                         "Id",
                         "SpecPath"});
-            table3.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "application/vnd.vellum.content.blogs+md",
                         "Blogs",
                         "../../azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse.md"});
 #line 13
-  testRunner.Given("the following content blocks", ((string)(null)), table3, "Given ");
+  testRunner.Given("the following content blocks", ((string)(null)), table8, "Given ");
 #line hidden
 #line 17
   testRunner.Given("the \"Blogs\" ContentBlocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -143,7 +143,7 @@ this.FeatureBackground();
 #line 23
   testRunner.When("we create the BlogPost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                             "Title",
                             "Slug",
                             "Author",
@@ -152,7 +152,7 @@ this.FeatureBackground();
                             "HeaderImageUrl",
                             "BodyHtmlDocumentName",
                             "Excerpt"});
-                table4.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "Azure Synapse Analytics: How serverless is replacing the data warehouse",
                             "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse",
                             "James.Broome",
@@ -164,87 +164,87 @@ this.FeatureBackground();
                             "Serverless data architectures enable leaner data insights and operations. How do " +
                                 "you reap the rewards while avoiding the potential pitfalls?"});
 #line 24
-  testRunner.Then("the BlogPost should contain", ((string)(null)), table4, "Then ");
+  testRunner.Then("the BlogPost should contain", ((string)(null)), table9, "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Azure"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Analytics"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Big Compute"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Big Data"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Azure Synapse Analytics"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Innovation"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Architecture"});
-                table5.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Strategy"});
 #line 27
-  testRunner.And("the BlogPost Category should contain", ((string)(null)), table5, "And ");
+  testRunner.And("the BlogPost Category should contain", ((string)(null)), table10, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Key"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Data"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Analytics"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Serverless"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure Synapse"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure Synapse Analytics"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure Synapse Pipelines"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Synapse Pipelines"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure Data Factory"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Data Factory"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "SQL Serverless"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "SQL on-Demand"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Synapse Studio"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Data Engineering"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Data Prep"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure Synapse Analytics Jumpstart"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "CSV"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Parquet"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Json"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Azure Data Lake Store"});
-                table6.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "ADLS"});
 #line 37
-  testRunner.And("the BlogPost Tags should contain", ((string)(null)), table6, "And ");
+  testRunner.And("the BlogPost Tags should contain", ((string)(null)), table11, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                             "Question",
                             "Answer"});
-                table7.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "How do you run an Azure Synapse SQL on-Demand query from Azure Data Factory?",
                             @"Azure Synapse Analytics comes with tabular data stream (TDS) endpoint for SQL on-Demand, meaning you can run SQL queries as if you were talking to any SQL Server or Azure SQL Database. It's therefore possible to use a standard <a href=""https://docs.microsoft.com/en-us/azure/data-factory/copy-activity-overview"">Copy Activity</a> in the same way as you would were you to copy data from <a href=""https://docs.microsoft.com/en-us/azure/data-factory/connector-sql-server"">a Azure SQL Database</a>. The TDS endpoint can be found on the workspace overview tab of your Synapse workspace and is in the format <code><workspace-name>-ondemand.sql.azuresynapse.net</code>. Note that you will be constrained by the language features available with SQL on-Demand. In the future, it is likely that there will be tighter workspace integration along with stored procedure support. This means that you will be able to take advantage of SQL on-Demand features such as <a href=""https://docs.microsoft.com/en-us/azure/synapse-analytics/sql/develop-tables-cetas"">CETAS</a>."});
-                table7.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "Question 2",
                             "Answer 2"});
 #line 60
-  testRunner.And("the BlogPost FAQs should contain", ((string)(null)), table7, "And ");
+  testRunner.And("the BlogPost FAQs should contain", ((string)(null)), table12, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

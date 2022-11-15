@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions;
+namespace Vellum.Abstractions.Content.Converters;
 
 public interface IConverter<in T>
 {
