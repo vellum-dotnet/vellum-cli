@@ -23,5 +23,5 @@ namespace Vellum.Abstractions.Content
 
             return cf.ActLike<T>();
         }
-    }
+  }
 }

@@ -118,13 +118,13 @@ namespace Vellum.Abstractions.Specs
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("A markdown file with extensions gets converted into a Content Fragment with Exten" +
+        [NUnit.Framework.DescriptionAttribute("A markdown file with extensions gets converted into a Content Fragment with exten" +
             "sions")]
         public void AMarkdownFileWithExtensionsGetsConvertedIntoAContentFragmentWithExtensions()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A markdown file with extensions gets converted into a Content Fragment with Exten" +
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A markdown file with extensions gets converted into a Content Fragment with exten" +
                     "sions", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 18
 this.ScenarioInitialize(scenarioInfo);
@@ -150,7 +150,7 @@ this.FeatureBackground();
                 table4.AddRow(new string[] {
                             "application/vnd.vellum.content.blogs+md",
                             "11/5/2022 6:30:00 AM",
-                            "b749b45d87d8b06b2a64afaf9f1a0c0498cb317144eff241a45584444b35c262",
+                            "58754666f4d7b6578f70dea23f2a24a3aa2d6771a91e8baed08874501557e9b2",
                             "Blogs",
                             "0",
                             "Published",
@@ -163,9 +163,36 @@ this.FeatureBackground();
                 table5.AddRow(new string[] {
                             "application/vnd.vellum.content.series+md"});
                 table5.AddRow(new string[] {
-                            "application/vnd.vellum.content.recommendations+md"});
+                            "application/vnd.vellum.content.promotion+md"});
 #line 22
   testRunner.And("the Content Fragment should contain the following Extensions:", ((string)(null)), table5, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("A Content Fragment with extensions generates a new dynamic extension type")]
+        public void AContentFragmentWithExtensionsGeneratesANewDynamicExtensionType()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A Content Fragment with extensions generates a new dynamic extension type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 27
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 28
+  testRunner.When("we do something", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();

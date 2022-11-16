@@ -74,6 +74,11 @@ namespace Vellum.Abstractions
                 result = list.ConvertAll(x => x.ToString());
             }
 
+            if (bool.TryParse(result.ToString(), out bool resultAsBool))
+            {
+                result = resultAsBool;
+            }
+
             return true;
         }
 

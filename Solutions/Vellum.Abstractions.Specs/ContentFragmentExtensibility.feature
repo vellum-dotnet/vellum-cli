@@ -15,11 +15,14 @@ Background:
   And the "Blog with extensions" document
   And we Create a Content Fragment
 
-Scenario: A markdown file with extensions gets converted into a Content Fragment with Extensions
+Scenario: A markdown file with extensions gets converted into a Content Fragment with extensions
   Then Content Fragment should contain
     | ContentType                             | Date                 | Hash                                                             | Id    | Position | PublicationStatus | BodyHtmlDocumentName |
-    | application/vnd.vellum.content.blogs+md | 11/5/2022 6:30:00 AM | b749b45d87d8b06b2a64afaf9f1a0c0498cb317144eff241a45584444b35c262 | Blogs | 0        | Published         | Blog with extensions |
+    | application/vnd.vellum.content.blogs+md | 11/5/2022 6:30:00 AM | 58754666f4d7b6578f70dea23f2a24a3aa2d6771a91e8baed08874501557e9b2 | Blogs | 0        | Published         | Blog with extensions |
   And the Content Fragment should contain the following Extensions:
-    | ContentType                                       |
-    | application/vnd.vellum.content.series+md          |
-    | application/vnd.vellum.content.recommendations+md |
+    | ContentType                                 |
+    | application/vnd.vellum.content.series+md    |
+    | application/vnd.vellum.content.promotion+md |
+
+Scenario: A Content Fragment with extensions generates a new dynamic extension type
+  When we do something

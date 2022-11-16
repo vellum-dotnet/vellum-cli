@@ -8,7 +8,7 @@ namespace Vellum.Abstractions.Content
 
 #pragma warning disable CS8632
 
-    public interface IBlogPost : IContent, IExtensible, ISeries, IArticle, IPublishable, ICategorizable, ITaggable, IFaqable
+    public interface IBlogPost : IContent, IExtensible, IArticle, IPublishable, ICategorizable, ITaggable, IFaqable
     {
         Dates? Dates { get; set; }
 

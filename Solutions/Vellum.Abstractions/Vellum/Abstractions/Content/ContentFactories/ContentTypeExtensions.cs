@@ -21,6 +21,11 @@ namespace Vellum.Abstractions.Content.ContentFactories
             return contentType + "+mapper";
         }
 
+        public static string AsInterface(this string contentType)
+        {
+            return contentType + "+interface";
+        }
+
         public static string AsContentFragmentFactory(this string contentType)
         {
             return contentType + "+content-fragment-factory";

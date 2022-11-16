@@ -4,12 +4,15 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using NDepend.Path;
     using Shouldly;
     using TechTalk.SpecFlow;
+    using Vellum.Abstractions.Caching;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
+    using Vellum.Abstractions.Content.Extensions;
     using Vellum.Abstractions.Content.Formatting;
 
     [Binding]
@@ -133,7 +136,7 @@
 
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
 
-            cf.Extensions.ShouldBe(extensions, ignoreOrder:true);
+            cf.Extensions.ShouldBe(extensions, ignoreOrder: true);
         }
 
         [Then(@"the Content Fragment MetaData should contain")]
@@ -211,7 +214,36 @@
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
             ContentFragmentTypeFactory<IBlogPost> typeFactory = this.serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(cf.ContentType.AsContentFragmentFactory());
 
+
             this.scenarioContext.Set(typeFactory);
+        }
+
+        [When(@"we do something")]
+        public async Task WhenWeDoSomething()
+        {
+            ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
+            Type interfaceType = ContentTypeInterfaceFactory.Resolve(cf.ContentType);
+            List<Type> extensionTypes = new();
+
+            foreach (string contentType in cf.Extensions)
+            {
+                Type result = ContentTypeInterfaceFactory.Resolve(contentType);
+                if (result != null)
+                {
+                    extensionTypes.Add(result);
+                }
+            }
+
+            Type type = ExtensionTypeGenerator.Generate(interfaceType, extensionTypes);
+
+            Type cftfType = typeof(ContentFragmentTypeFactory<>);
+            Type[] typeArgs = { type };
+            Type cftfTyped = cftfType.MakeGenericType(typeArgs);
+            dynamic cfTypeFactory = Activator.CreateInstance(cftfTyped, args: this.serviceProvider);
+
+            IBlogPost blogPost = cfTypeFactory.Create(cf);
+
+            ((IPromotions)blogPost).Promote.ShouldBeTrue();
         }
 
         [When(@"we create the BlogPost")]
