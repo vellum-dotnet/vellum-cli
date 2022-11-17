@@ -1,4 +1,4 @@
-﻿// <copyright file="ExtensionTypeGenerator.cs" company="Endjin Limited">
+﻿// <copyright file="ExtensionDynamicProxyTypeFactory.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -17,9 +16,9 @@ using Microsoft.CodeAnalysis.Emit;
 using Vellum.Abstractions.Caching;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-public static class ExtensionTypeGenerator
+public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactory
 {
-    public static Type Generate(Type baseType, List<Type> extensionTypes)
+    public Type Create(Type baseType, IEnumerable<Type> extensionTypes)
     {
         IEnumerable<string> extensionNamespaces = extensionTypes.DistinctBy(x => x.Namespace).Select(x => x.Namespace);
         string extensionNames = string.Join("_", extensionTypes.OrderBy(x => x.FullName).Distinct(x => x.FullName));
@@ -37,9 +36,7 @@ public static class ExtensionTypeGenerator
 
         InterfaceDeclarationSyntax interfaceBlock = InterfaceDeclaration(dynamicTypeName)
             .AddModifiers(Token(SyntaxKind.PublicKeyword))
-            .WithBaseList(
-                BaseList(
-                    Token(SyntaxKind.ColonToken), baseTypes));
+            .WithBaseList(BaseList(Token(SyntaxKind.ColonToken), baseTypes));
 
         NamespaceDeclarationSyntax ns = NamespaceDeclaration(ParseName(baseType.Namespace)).AddMembers(interfaceBlock);
 

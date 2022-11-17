@@ -1,12 +1,13 @@
 ﻿namespace Vellum.Abstractions.Specs;
 
 using System;
-using System.Collections.Generic;
-
 using BoDi;
+using Castle.Core;
 using Microsoft.Extensions.DependencyInjection;
 using TechTalk.SpecFlow;
+using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.ContentFactories;
+using Vellum.Abstractions.Content.Extensions;
 using Vellum.Abstractions.Content.Formatting;
 using Vellum.Abstractions.Specs.Abstractions.Content.Formatting;
 
@@ -28,6 +29,9 @@ public class ContainerSetup
         services.AddScoped<IContentFormatter, ContentFormatter>();
         services.AddScoped<IContentTransform, EchoContentTransform>();
         services.AddScoped<IContentTransform, EmptyContentTransform>();
+        services.AddScoped<IExtensionTypeFactory, ExtensionTypeFactory>();
+        services.AddScoped<IExtensionDynamicProxyTypeFactory, ExtensionDynamicProxyTypeFactory>();
+        services.AddScoped<IContentTypeInterfaceFactory, ContentTypeInterfaceFactory>();
         services.AddWellKnownContentFragmentTypeFactories();
         services.AddWellKnownConverterFactories();
         ServiceProvider serviceProvider = services.BuildServiceProvider();

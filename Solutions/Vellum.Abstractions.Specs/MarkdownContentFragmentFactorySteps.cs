@@ -9,7 +9,6 @@
     using NDepend.Path;
     using Shouldly;
     using TechTalk.SpecFlow;
-    using Vellum.Abstractions.Caching;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
     using Vellum.Abstractions.Content.Extensions;
@@ -71,7 +70,6 @@
             ContentBlock contentBlock = this.contentBlockRegistry.Get(id);
             this.scenarioContext.Set(contentBlock);
         }
-
 
         [Given(@"the ""([^""]*)"" document")]
         public void GivenTheDocument(string documentName)
@@ -214,7 +212,6 @@
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
             ContentFragmentTypeFactory<IBlogPost> typeFactory = this.serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(cf.ContentType.AsContentFragmentFactory());
 
-
             this.scenarioContext.Set(typeFactory);
         }
 
@@ -222,28 +219,29 @@
         public async Task WhenWeDoSomething()
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
-            Type interfaceType = ContentTypeInterfaceFactory.Resolve(cf.ContentType);
-            List<Type> extensionTypes = new();
+            IExtensionTypeFactory extensionTypeFactory = this.serviceProvider.GetService<IExtensionTypeFactory>();
 
-            foreach (string contentType in cf.Extensions)
+            extensionTypeFactory.ShouldNotBeNull();
+            cf.Extensions.Count().ShouldBeGreaterThan(0);
+
+            IBlogPost blogPost = extensionTypeFactory.Create(cf) as IBlogPost;
+
+            // We can use pattern matching
+            if (blogPost is IPromotions promotions)
             {
-                Type result = ContentTypeInterfaceFactory.Resolve(contentType);
-                if (result != null)
-                {
-                    extensionTypes.Add(result);
-                }
+                promotions.Promote.ShouldBeTrue();
             }
 
-            Type type = ExtensionTypeGenerator.Generate(interfaceType, extensionTypes);
+            if (blogPost is ISeries series)
+            {
+                series.PartTitle.ShouldBe("Part One");
+                series.Series.ShouldBe("Blog Post Series");
+            }
 
-            Type cftfType = typeof(ContentFragmentTypeFactory<>);
-            Type[] typeArgs = { type };
-            Type cftfTyped = cftfType.MakeGenericType(typeArgs);
-            dynamic cfTypeFactory = Activator.CreateInstance(cftfTyped, args: this.serviceProvider);
-
-            IBlogPost blogPost = cfTypeFactory.Create(cf);
-
+            // We can also do standard casting.
             ((IPromotions)blogPost).Promote.ShouldBeTrue();
+            ((ISeries)blogPost).PartTitle.ShouldBe("Part One");
+            ((ISeries)blogPost).Series.ShouldBe("Blog Post Series");
         }
 
         [When(@"we create the BlogPost")]

@@ -7,9 +7,9 @@ namespace Vellum.Abstractions.Content;
 using System;
 using Vellum.Abstractions.Content.Extensions;
 
-public static class ContentTypeInterfaceFactory
+public class ContentTypeInterfaceFactory : IContentTypeInterfaceFactory
 {
-    public static Type Resolve(string contentType)
+    public Type Resolve(string contentType)
     {
         switch (contentType)
         {
