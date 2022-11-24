@@ -2,7 +2,6 @@
 
 using System;
 using BoDi;
-using Castle.Core;
 using Microsoft.Extensions.DependencyInjection;
 using TechTalk.SpecFlow;
 using Vellum.Abstractions.Content;
