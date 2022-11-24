@@ -70,7 +70,7 @@ namespace Vellum.Abstractions.Content
             }
 
             string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
-            Dictionary<string, dynamic> frontMatter = this.deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
+            var frontMatter = this.deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
 
             frontMatter.Add("FilePath", contentFragmentAbsoluteFilePath.ToString());
 
