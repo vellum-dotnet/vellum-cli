@@ -9,6 +9,7 @@ namespace Vellum.Cli
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
+    using Vellum.Cli.Abstractions.Infrastructure;
     using Vellum.Cli.Environment;
     using Vellum.Cli.Plugins;
 

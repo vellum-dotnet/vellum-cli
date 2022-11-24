@@ -17,7 +17,9 @@ namespace Vellum.Cli.Plugins
         public IEnumerable<Command> Discover(IEnumerable<IAbsoluteDirectoryPath> pluginPaths)
         {
             var loaders = new List<PluginLoader>();
-            var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll")).DistinctBy(x => x.FileName).ToList();
+            var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
+                                                             .DistinctBy(x => x.FileName)
+                                                             .ToList();
 
             foreach (IAbsoluteFilePath assembly in assemblies)
             {

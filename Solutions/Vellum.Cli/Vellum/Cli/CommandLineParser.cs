@@ -14,10 +14,14 @@ namespace Vellum.Cli
 
     using Microsoft.Extensions.DependencyInjection;
     using NDepend.Path;
+    using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
-
+    using Vellum.Cli.Abstractions.Infrastructure;
     using Vellum.Cli.Commands.Content;
-
+    using Vellum.Cli.Commands.Environment;
+    using Vellum.Cli.Commands.New;
+    using Vellum.Cli.Commands.Plugins;
+    using Vellum.Cli.Commands.Templates;
     using Vellum.Cli.Plugins;
 
     public class CommandLineParser
@@ -45,7 +49,7 @@ namespace Vellum.Cli
 
         public delegate Task PluginUninstall(string packageId, ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
-        public delegate Task PluginList(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
+        public delegate Task PluginListInstalled(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
         public delegate Task PluginClear(ICompositeConsole console, IAppEnvironment appEnvironment, InvocationContext invocationContext = null);
 
@@ -61,9 +65,8 @@ namespace Vellum.Cli
             NewFile newFile = null,
             PluginInstall pluginInstall = null,
             PluginUninstall pluginUninstall = null,
-            PluginList pluginList = null,
             PluginClear pluginClear = null,
-            PluginList pluginListInstalled = null,
+            PluginListInstalled pluginListInstalled = null,
             SetEnvironmentSettings setEnvironmentSettings = null,
             TemplateInstall templateInstall = null,
             TemplateUninstall templateUninstall = null)
@@ -71,15 +74,15 @@ namespace Vellum.Cli
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
             contentList ??= ContentListHandler.ExecuteAsync;
 
-            // environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
-            // newFile ??= NewFileHandler.ExecuteAsync;
-            // pluginInstall ??= PluginInstallHandler.ExecuteAsync;
-            // pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
-            // pluginListInstalled ??= PluginListInstalledHandler.ExecuteAsync;
-            // pluginClear ??= PluginClearHandler.ExecuteAsync;
-            // setEnvironmentSettings ??= SetEnvironmentSettingHandler.ExecuteAsync;
-            // templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
-            // templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
+            environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
+            newFile ??= NewFileHandler.ExecuteAsync;
+            pluginInstall ??= PluginInstallHandler.ExecuteAsync;
+            pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;
+            pluginListInstalled ??= PluginListInstalledHandler.ExecuteAsync;
+            pluginClear ??= PluginClearHandler.ExecuteAsync;
+            setEnvironmentSettings ??= SetEnvironmentSettingHandler.ExecuteAsync;
+            templateInstall ??= TemplatePackageInstallerHandler.ExecuteAsync;
+            templateUninstall ??= TemplatePackageUninstallerHandler.ExecuteAsync;
 
             // Set up intrinsic commands that will always be available.
             RootCommand rootCommand = Root();
@@ -91,7 +94,7 @@ namespace Vellum.Cli
 
             var commandBuilder = new CommandLineBuilder(rootCommand);
 
-            /*try
+            try
             {
                 foreach (Command command in this.commandPluginHost.Discover(this.appEnvironment.PluginPaths))
                 {
@@ -114,7 +117,7 @@ namespace Vellum.Cli
                         commandBuilder.Command.AddCommand(command);
                     }
                 }
-            }*/
+            }
 
             return commandBuilder.UseDefaults().Build();
 
@@ -295,8 +298,7 @@ namespace Vellum.Cli
                     string templateName = context.ParseResult.GetValueForOption(templateNameOption);
                     FileInfo filePath = context.ParseResult.GetValueForOption(filePathOption);
 
-                    await newFile(templateName, filePath, this.console, this.appEnvironment, context)
-                        .ConfigureAwait(false);
+                    await newFile(templateName, filePath, this.console, this.appEnvironment, context).ConfigureAwait(false);
                 });
 
                 return cmd;
@@ -384,7 +386,7 @@ namespace Vellum.Cli
 
                     cmd.SetHandler(async (context) =>
                     {
-                        await pluginList(this.console, this.appEnvironment, context).ConfigureAwait(false);
+                        await pluginListInstalled(this.console, this.appEnvironment, context).ConfigureAwait(false);
                     });
 
                     return cmd;

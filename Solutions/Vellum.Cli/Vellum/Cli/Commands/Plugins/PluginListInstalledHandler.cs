@@ -11,6 +11,7 @@ namespace Vellum.Cli.Commands.Plugins
 
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
     using Vellum.Cli.Abstractions.Plugins;
     using Vellum.Cli.Packages;
 
