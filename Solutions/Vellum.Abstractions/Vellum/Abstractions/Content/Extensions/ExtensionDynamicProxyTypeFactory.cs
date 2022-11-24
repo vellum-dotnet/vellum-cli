@@ -56,8 +56,8 @@ public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactor
         EmitResult emitResult = compilation.Emit(ms);
 
         var ourAssembly = Assembly.Load(ms.ToArray());
-        Type type = ourAssembly.ExportedTypes.FirstOrDefault(x => x.Name == dynamicTypeName);
-        return type;
+        return ourAssembly.ExportedTypes.FirstOrDefault(x => x.Name == dynamicTypeName);
+
         /*Directory.CreateDirectory(@"c:\code-gen");
         await using var streamWriter = new StreamWriter(@"c:\code-gen\generated.cs", false);
         ns.NormalizeWhitespace().WriteTo(streamWriter);*/
