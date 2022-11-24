@@ -21,6 +21,7 @@ namespace Vellum.Cli.Commands.Content
     using Vellum.Abstractions.Taxonomy;
     using Vellum.Cli.Abstractions;
     using Vellum.Cli.Abstractions.Environment;
+    using Vellum.Cli.Abstractions.Infrastructure;
 
     public static class ContentListHandler
     {
