@@ -103,7 +103,7 @@
             TableRow firstRow = table.Rows[0];
 
             string contentType = firstRow["ContentType"];
-            DateTime date = DateTime.Parse(firstRow["Date"]);
+            var date = DateTime.Parse(firstRow["Date"]);
             string hash = firstRow["Hash"];
             string id = firstRow["Id"];
             int position = int.Parse(firstRow["Position"]);
@@ -216,7 +216,7 @@
         }
 
         [When(@"we do something")]
-        public async Task WhenWeDoSomething()
+        public void WhenWeDoSomething()
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
             IExtensionTypeFactory extensionTypeFactory = this.serviceProvider.GetService<IExtensionTypeFactory>();
@@ -224,7 +224,7 @@
             extensionTypeFactory.ShouldNotBeNull();
             cf.Extensions.Count().ShouldBeGreaterThan(0);
 
-            IBlogPost blogPost = extensionTypeFactory.Create(cf) as IBlogPost;
+            var blogPost = extensionTypeFactory.Create(cf) as IBlogPost;
 
             // We can use pattern matching
             if (blogPost is IPromotions promotions)
