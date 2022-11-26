@@ -2,7 +2,7 @@
   "profiles": {
     "Vellum.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "plugins list"
+      "commandLineArgs": "content list \"C:\\_Projects\\OSS\\vellum-dotnet\\endjin-com\" --published"
     }
   }
 }

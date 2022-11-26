@@ -5,7 +5,6 @@
 namespace Vellum.Cli.Commands.Content
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.CommandLine.Invocation;
     using System.Diagnostics;
@@ -67,7 +66,7 @@ namespace Vellum.Cli.Commands.Content
                 {
                     if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
                     {
-                        var contentFragmentTypeFactory = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
+                        ContentFragmentTypeFactory<IBlogPost> contentFragmentTypeFactory = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
                         IBlogPost post = contentFragmentTypeFactory.Create(contentFragment);
 
                         IEnumerable<string> categories = post.Category;
