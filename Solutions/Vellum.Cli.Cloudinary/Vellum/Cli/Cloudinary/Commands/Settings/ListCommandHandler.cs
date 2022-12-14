@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+#pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
+
 namespace Vellum.Cli.Cloudinary.Commands.Settings
 {
     using System.CommandLine;
@@ -22,15 +24,15 @@ namespace Vellum.Cli.Cloudinary.Commands.Settings
 
             if (settings != null)
             {
-                console.Out.WriteLine($"Cloudinary Value:");
+                console.Out.WriteLine("Cloudinary Value:");
                 console.Out.WriteLine($"cloud: {settings.Cloud}");
                 console.Out.WriteLine($"key: {settings.Key}");
                 console.Out.WriteLine($"secret: {settings.Secret}");
             }
             else
             {
-                console.Out.WriteLine($"Cloudinary Value cannot be found. Please Run:");
-                console.Out.WriteLine($"vellum cloudinary setting update --cloud <VALUE> --key <VALUE> --secret <VALUE>");
+                console.Out.WriteLine("Cloudinary Value cannot be found. Please Run:");
+                console.Out.WriteLine("vellum cloudinary setting update --cloud <VALUE> --key <VALUE> --secret <VALUE>");
             }
 
             return Task.FromResult(ReturnCodes.Ok);

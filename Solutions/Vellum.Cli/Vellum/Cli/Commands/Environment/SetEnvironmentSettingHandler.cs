@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+#pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
+
 namespace Vellum.Cli.Commands.Environment
 {
     using System.CommandLine.Invocation;
@@ -44,14 +46,7 @@ namespace Vellum.Cli.Commands.Environment
 
             if (key != null && value != null)
             {
-                if (settings.Configuration.ContainsKey(key))
-                {
-                    settings.Configuration[key] = value;
-                }
-                else
-                {
-                    settings.Configuration.Add(key, value);
-                }
+                settings.Configuration[key] = value;
             }
 
             settingsManager.SaveSettings(settings);

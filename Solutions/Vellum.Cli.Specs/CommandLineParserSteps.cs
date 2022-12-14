@@ -1,8 +1,9 @@
-﻿using System;
-using TechTalk.SpecFlow;
-
-namespace Vellum.Cli.Specs
+﻿namespace Vellum.Cli.Specs
 {
+    using System;
+
+    using TechTalk.SpecFlow;
+
     [Binding]
     public class CommandLineParserSteps
     {
