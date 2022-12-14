@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+#pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
+
 namespace Vellum.Cli.Tinify.Commands.Settings
 {
     using System.CommandLine;
@@ -25,8 +27,8 @@ namespace Vellum.Cli.Tinify.Commands.Settings
             }
             else
             {
-                console.Out.WriteLine($"Tinify Value cannot be found. Please Run:");
-                console.Out.WriteLine($"vellum-cli tinify setting update <VALUE>");
+                console.Out.WriteLine("Tinify Value cannot be found. Please Run:");
+                console.Out.WriteLine("vellum-cli tinify setting update <VALUE>");
             }
 
             return Task.FromResult(0);

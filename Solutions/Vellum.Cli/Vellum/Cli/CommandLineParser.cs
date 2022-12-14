@@ -26,12 +26,10 @@ namespace Vellum.Cli
         private readonly IAppEnvironment appEnvironment;
         private readonly ICommandPluginHost commandPluginHost;
         private readonly ICompositeConsole console;
-        private readonly IServiceCollection services;
 
-        public CommandLineParser(ICompositeConsole console, IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost, IServiceCollection services)
+        public CommandLineParser(ICompositeConsole console, IAppEnvironment appEnvironment, ICommandPluginHost commandPluginHost)
         {
             this.console = console;
-            this.services = services;
             this.commandPluginHost = commandPluginHost;
             this.appEnvironment = appEnvironment;
         }
@@ -136,7 +134,7 @@ namespace Vellum.Cli
                 {
                     var initCmd = new Command("init", "Initialize the environment & settings.");
 
-                    initCmd.SetHandler(async (context) => await environmentInit(this.console, this.appEnvironment).ConfigureAwait(false));
+                    initCmd.SetHandler(async _ => await environmentInit(this.console, this.appEnvironment).ConfigureAwait(false));
 
                     return initCmd;
                 }

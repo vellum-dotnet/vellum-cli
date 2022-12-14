@@ -5,6 +5,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>vellum-cli</AssemblyName>
+
+    <!--
+    Disable warnings
+    RCS1021 - Roslynator is a bit too attached to expression-bodied lambdas
+    -->
+    <NoWarn>$(NoWarn);RCS1021</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -44,11 +50,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.2">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Markdig" Version="0.30.3" />
+    <PackageReference Include="Markdig" Version="0.30.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Spectre.Console" Version="0.45.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
@@ -57,10 +63,10 @@
     <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageReference Include="NDepend.Path" Version="2.0.0" />
-    <PackageReference Include="NuGet.Common" Version="6.3.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="6.3.0" />
-    <PackageReference Include="NuGet.Resolver" Version="6.3.0" />
-    <PackageReference Include="YamlDotNet" Version="12.0.1" />
+    <PackageReference Include="NuGet.Common" Version="6.4.0" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="6.4.0" />
+    <PackageReference Include="NuGet.Resolver" Version="6.4.0" />
+    <PackageReference Include="YamlDotNet" Version="12.2.0" />
   </ItemGroup>
 
   <ItemGroup>

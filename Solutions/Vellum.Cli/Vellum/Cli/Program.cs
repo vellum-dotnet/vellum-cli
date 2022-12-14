@@ -13,8 +13,6 @@ namespace Vellum.Cli
 
     public static class Program
     {
-        private static readonly ServiceCollection ServiceCollection = new ServiceCollection();
-
         public static async Task<int> Main(string[] args)
         {
             System.Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -22,8 +20,7 @@ namespace Vellum.Cli
             return await new CommandLineParser(
                 new CompositeConsole(),
                 new FileSystemRoamingProfileAppEnvironment(),
-                new CommandPluginHost(),
-                ServiceCollection).Create().InvokeAsync(args).ConfigureAwait(false);
+                new CommandPluginHost()).Create().InvokeAsync(args).ConfigureAwait(false);
         }
     }
 }

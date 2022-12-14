@@ -48,7 +48,7 @@ namespace Vellum.Cli.Plugins
                     catch (Exception exception)
                     {
                         Console.WriteLine($"Cannot Load {pluginType.FullName}");
-                        Console.WriteLine($"You may need to manually delete the plugin or run the plugins clear command.");
+                        Console.WriteLine("You may need to manually delete the plugin or run the plugins clear command.");
                         Console.WriteLine(exception.Message);
                     }
 
