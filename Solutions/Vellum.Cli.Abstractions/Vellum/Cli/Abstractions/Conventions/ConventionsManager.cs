@@ -4,6 +4,7 @@
 
 namespace Vellum.Cli.Abstractions.Conventions
 {
+    using System;
     using System.IO;
     using System.Threading.Tasks;
     using NDepend.Path;
@@ -13,12 +14,15 @@ namespace Vellum.Cli.Abstractions.Conventions
     {
         public async Task<ContentTypeConventionsRoot> LoadAsync(IAbsoluteFilePath path)
         {
-            return path.Exists ?
-                JsonConvert.DeserializeObject<ContentTypeConventionsRoot>(await File.ReadAllTextAsync(path.ToString()).ConfigureAwait(false)) : null;
+            ArgumentNullException.ThrowIfNull(path);
+
+            return path.Exists ? JsonConvert.DeserializeObject<ContentTypeConventionsRoot>(await File.ReadAllTextAsync(path.ToString()).ConfigureAwait(false)) : null;
         }
 
         public async Task SaveAsync(IAbsoluteFilePath path, ContentTypeConventionsRoot conventionsRoot)
         {
+            ArgumentNullException.ThrowIfNull(path);
+
             string json = JsonConvert.SerializeObject(conventionsRoot, Formatting.Indented);
 
             await File.WriteAllTextAsync(path.ToString(), json).ConfigureAwait(false);

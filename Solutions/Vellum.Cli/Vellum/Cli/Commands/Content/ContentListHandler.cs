@@ -58,10 +58,8 @@ namespace Vellum.Cli.Commands.Content
             table.AddColumn("Date");
             table.AddColumn("Status");
 
-            // List<TaxonomyDocument> documents = await loaded.Select(x => x).ToListAsync();
             await foreach (TaxonomyDocument doc in loaded)
             {
-                // Console.WriteLine(doc.Path.ToString());
                 foreach (ContentFragment contentFragment in doc.ContentFragments.OrderBy(cf => cf.Date))
                 {
                     if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
@@ -81,8 +79,6 @@ namespace Vellum.Cli.Commands.Content
                             post.Author.ToString(),
                             post.Date.ToShortDateString(),
                             post.PublicationStatus.ToString());
-
-                        // break;
                     }
                 }
             }
@@ -103,14 +99,6 @@ namespace Vellum.Cli.Commands.Content
 
             stopwatch.Stop();
 
-            /*
-            var siteTaxonomyRepository = new SiteDetailsRepository();
-
-            SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
-
-            console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
-            */
-
             Console.WriteLine("Rendering Took: {0}", stopwatch.Elapsed);
             Console.ReadKey();
             return ReturnCodes.Ok;
@@ -118,7 +106,13 @@ namespace Vellum.Cli.Commands.Content
     }
 }
 
-/*await foreach (TaxonomyDocument doc in loaded)
+/*
+List<TaxonomyDocument> documents = await loaded.Select(x => x).ToListAsync();
+var siteTaxonomyRepository = new SiteDetailsRepository();
+SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
+console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
+
+await foreach (TaxonomyDocument doc in loaded)
 {
     Console.WriteLine(doc.Path.ToString());
     foreach (ContentFragment contentFragment in doc.ContentFragments)
