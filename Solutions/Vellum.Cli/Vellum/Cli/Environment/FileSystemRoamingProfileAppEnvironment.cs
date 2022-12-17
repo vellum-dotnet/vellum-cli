@@ -23,6 +23,7 @@ namespace Vellum.Cli.Environment
         public const string PluginsDirectoryName = "plugins";
         public const string TemplatesDirectoryName = "templates";
         public const string NuGetFileName = "NuGet.Config";
+
         public const string DefaultNuGetConfig = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <configuration>
     <packageSources>
@@ -58,8 +59,7 @@ namespace Vellum.Cli.Environment
         {
             get
             {
-                bool run = false;
-                if (run)
+                if (Debugger.IsAttached)
                 {
                     string directory = AppContext.BaseDirectory;
 
@@ -68,9 +68,7 @@ namespace Vellum.Cli.Environment
                         directory = Directory.GetParent(directory).FullName;
                     }
 
-                    IEnumerable<string> dirs = Directory
-                        .EnumerateDirectories(directory, "*.*", SearchOption.AllDirectories)
-                        .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net6.0"));
+                    IEnumerable<string> dirs = Directory.GetDirectories(directory, "*", System.IO.SearchOption.AllDirectories).Where(d => d.EndsWith(@"bin\Debug\net6.0"));
 
                     foreach (string dir in dirs)
                     {
