@@ -119,10 +119,10 @@
             cf.Position.ShouldBe(position);
             cf.Date.ShouldBe(date);
             cf.PublicationStatus.ShouldBe(publicationStatus);
-            cf.Body.ShouldBe(bodyHtml);
+            cf.Body.NormalizeLineEndings().ShouldBe(bodyHtml.NormalizeLineEndings());
         }
 
-        [Then(@"the Content Fragment should contain the following Extensions:")]
+    [Then(@"the Content Fragment should contain the following Extensions:")]
         public void ThenTheContentFragmentShouldContainTheFollowingExtensions(Table table)
         {
             List<string> extensions = new();
@@ -270,7 +270,7 @@
             blogPost.Excerpt.ShouldBe(firstRow["Excerpt"]);
             blogPost.Date.ShouldBe(DateTime.Parse(firstRow["Date"]));
             blogPost.PublicationStatus.ShouldBe(PublicationStatusEnumParser.Parse(firstRow["PublicationStatus"]));
-            blogPost.Body.ShouldBe(bodyHtml);
+            blogPost.Body.NormalizeLineEndings().ShouldBe(bodyHtml.NormalizeLineEndings());
         }
 
         [Then(@"the BlogPost Category should contain")]
