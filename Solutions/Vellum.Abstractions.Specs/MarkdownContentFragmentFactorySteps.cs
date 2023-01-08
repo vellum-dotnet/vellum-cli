@@ -117,7 +117,7 @@
             cf.Hash.ShouldBe(hash);
             cf.Id.ShouldBe(id);
             cf.Position.ShouldBe(position);
-            cf.Date.ToUniversalTime().ShouldBe(date.ToUniversalTime());
+            new DateTimeOffset(cf.Date).ShouldBe(new DateTimeOffset(date));
             cf.PublicationStatus.ShouldBe(publicationStatus);
             cf.Body.NormalizeLineEndings().ShouldBe(bodyHtml.NormalizeLineEndings());
         }
@@ -268,7 +268,7 @@
             //blogPost.UserName.ShouldBe(firstRow["Author"]);
             blogPost.HeaderImageUrl.ShouldBe(firstRow["HeaderImageUrl"]);
             blogPost.Excerpt.ShouldBe(firstRow["Excerpt"]);
-            blogPost.Date.ToUniversalTime().ShouldBe(DateTime.Parse(firstRow["Date"]).ToUniversalTime());
+            new DateTimeOffset(blogPost.Date).ShouldBe(new DateTimeOffset(DateTime.Parse(firstRow["Date"])));
             blogPost.PublicationStatus.ShouldBe(PublicationStatusEnumParser.Parse(firstRow["PublicationStatus"]));
             blogPost.Body.NormalizeLineEndings().ShouldBe(bodyHtml.NormalizeLineEndings());
         }
