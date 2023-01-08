@@ -21,7 +21,7 @@ public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactor
     public Type Create(Type baseType, IEnumerable<Type> extensionTypes)
     {
         IEnumerable<string> extensionNamespaces = extensionTypes.DistinctBy(x => x.Namespace).Select(x => x.Namespace);
-        string extensionNames = string.Join("_", extensionTypes.OrderBy(x => x.FullName).Distinct(x => x.FullName));
+        string extensionNames = string.Join("_", extensionTypes.Select(x => x.FullName).Distinct().Order());
         string hash = ContentHashing.Hash(extensionNames);
         string dynamicTypeName = baseType.Name + "_Extensions_" + hash;
 
