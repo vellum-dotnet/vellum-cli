@@ -1,8 +1,12 @@
-﻿namespace Vellum.Abstractions.Specs;
+﻿// <copyright file="StringExtensions.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
+// </copyright>
+
+namespace Vellum.Abstractions.Content.Extensions;
 
 using System;
 
-public static class SpecExtensions
+public static class StringExtensions
 {
     /// <summary>
     /// Normalize line endings to the current platform.

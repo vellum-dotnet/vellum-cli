@@ -14,6 +14,7 @@ namespace Vellum.Abstractions.Content
     using Markdig.Syntax;
     using NDepend.Path;
     using Vellum.Abstractions.Caching;
+    using Vellum.Abstractions.Content.Extensions;
     using Vellum.Abstractions.Content.Formatting;
     using Vellum.Abstractions.Content.Parsers;
     using YamlDotNet.Serialization;
@@ -53,7 +54,7 @@ namespace Vellum.Abstractions.Content
                 ContentType = result.ContentType ?? contentBlock.ContentType,
                 Date = result.Date,
                 Extensions = result.Extensions,
-                Hash = ContentHashing.Hash(content),
+                Hash = ContentHashing.Hash(content.NormalizeLineEndings()),
                 Id = contentBlock.Id,
                 MetaData = result.MetaData,
                 PublicationStatus = result.PublicationStatus,
