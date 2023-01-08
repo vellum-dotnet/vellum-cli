@@ -15,6 +15,6 @@ public static class SpecExtensions
 
         return content.Replace(PlatformLineEndings.WindowsLineEnding, PlatformLineEndings.UnixLineEnding)
                       .Replace(PlatformLineEndings.MacOsLineEnding, PlatformLineEndings.UnixLineEnding)
-                      .Replace(PlatformLineEndings.UnixLineEnding, Environment.NewLine);
+                      .Replace(PlatformLineEndings.UnixLineEnding, PlatformLineEndings.WindowsLineEnding);
     }
 }
