@@ -48,7 +48,7 @@ namespace Vellum.Abstractions
 
             if (result is List<object> list)
             {
-                if (!list.IsEmpty() && list[0] is Dictionary<object, object>)
+                if (list.Count() != 0 && list[0] is Dictionary<object, object>)
                 {
                     List<object> converted = new();
                     foreach (object item in list)
