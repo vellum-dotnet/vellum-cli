@@ -76,10 +76,12 @@
         {
             FileInfo file = this.markdownDocumentRegistry.GetFile(documentName);
             string content = File.ReadAllText(file.FullName);
-            IAbsoluteFilePath filePath = file.FullName.ToAbsoluteFilePath();
+            //IAbsoluteFilePath filePath = file.FullName.ToAbsoluteFilePath();
+
+            string filePath = Path.GetFullPath(file.FullName);
 
             this.scenarioContext.Set(content);
-            this.scenarioContext.Set(filePath);
+            this.scenarioContext.Set(filePath, nameof(filePath));
         }
 
         [Given(@"we Create a Content Fragment")]
@@ -88,7 +90,7 @@
         {
             string content = this.scenarioContext.Get<string>();
             ContentBlock contentBlock = this.scenarioContext.Get<ContentBlock>();
-            IAbsoluteFilePath filePath = this.scenarioContext.Get<IAbsoluteFilePath>();
+            string filePath = this.scenarioContext.Get<string>("filePath");
             IContentFormatter contentFormatter = this.serviceProvider.GetRequiredService<IContentFormatter>();
 
             MarkdownContentFragmentFactory markdownContentFragmentFactory = new(contentFormatter);

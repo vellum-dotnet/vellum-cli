@@ -43,7 +43,7 @@ namespace Vellum.Abstractions.Content.Parsers
                     {
                         string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()).ConfigureAwait(false);
 
-                        ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath);
+                        ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath.ToString());
 
                         contentFragments.Add(contentFragment);
 

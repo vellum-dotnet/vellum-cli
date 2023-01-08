@@ -35,7 +35,7 @@ namespace Vellum.Abstractions.Content
                 .Build();
         }
 
-        public ContentFragment Create(ContentBlock contentBlock, string content, IAbsoluteFilePath contentFragmentAbsoluteFilePath)
+        public ContentFragment Create(ContentBlock contentBlock, string content, string contentFragmentAbsoluteFilePath)
         {
             MarkdownDocument doc = Markdown.Parse(content, this.pipeline);
 
@@ -60,19 +60,19 @@ namespace Vellum.Abstractions.Content
             };
         }
 
-        private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(MarkdownDocument markdown, IAbsoluteFilePath contentFragmentAbsoluteFilePath)
+        private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(MarkdownDocument markdown, string contentFragmentAbsoluteFilePath)
         {
             YamlFrontMatterBlock yamlBlock = markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
             if (yamlBlock == null)
             {
-                return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, Enumerable.Empty<string>(), new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath.ToString() } });
+                return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, Enumerable.Empty<string>(), new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath } });
             }
 
             string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
-            var frontMatter = this.deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
+            Dictionary<string, dynamic> frontMatter = this.deserializer.Deserialize<Dictionary<string, dynamic>>(yaml);
 
-            frontMatter.Add("FilePath", contentFragmentAbsoluteFilePath.ToString());
+            frontMatter.Add("FilePath", contentFragmentAbsoluteFilePath);
 
             string contentType = string.Empty;
             IEnumerable<string> extensions = Enumerable.Empty<string>();
