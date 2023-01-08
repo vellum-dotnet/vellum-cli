@@ -71,7 +71,7 @@ param (
     [string] $BuildModulePath,
 
     [Parameter()]
-    [version] $BuildModuleVersion = "1.0.0",
+    [version] $BuildModuleVersion = "1.2.2",
 
     [Parameter()]
     [version] $InvokeBuildModuleVersion = "5.7.1"
@@ -126,10 +126,10 @@ $SkipInit = $false
 $SkipVersion = $false
 $SkipBuild = $false
 $CleanBuild = $Clean
-$SkipTest = $true
-$SkipTestReport = $false
-$SkipAnalysis = $false
+$SkipTest = $false
+$SkipTestReport = $true     # Temporarily skip the test report due .NET 7 MSBuild issue
 $SkipPackage = $false
+$SkipAnalysis = $false
 
 
 #
@@ -153,6 +153,12 @@ $NuSpecFilesToPackage = @(
 #
 $ExcludeFilesFromCodeCoverage = ""
 
+#
+# Update to the latest report generator versions
+#
+$ReportGeneratorToolVersion = "5.1.10"
+
+
 # Synopsis: Build, Test and Package
 task . FullBuild
 
@@ -170,9 +176,10 @@ task PostTest {}
 task PreTestReport {}
 task PostTestReport {}
 task PreAnalysis {}
-task PostAnalysis
+task PostAnalysis {}
 task PrePackage {}
 task PostPackage {}
 task PrePublish {}
 task PostPublish {}
 task RunLast {}
+
