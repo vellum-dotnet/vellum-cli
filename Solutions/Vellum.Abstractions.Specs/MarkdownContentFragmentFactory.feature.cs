@@ -147,8 +147,8 @@ this.FeatureBackground();
                             "BodyHtmlDocumentName"});
                 table16.AddRow(new string[] {
                             "application/vnd.vellum.content.blogs+md",
-                            "7/15/2020 6:30:00 AM",
-                            "4563a46c876e45092f0436fb6a3363fe7af78fde38d8e0827af21cd6473511f4",
+                            "2020-07-15 06:30:00",
+                            "a8297eeb1841adf4d4f71efe2d7a43f5cba3a357eda570feeb02f5527619a130",
                             "Blogs",
                             "0",
                             "Published",

@@ -117,7 +117,7 @@
             cf.Hash.ShouldBe(hash);
             cf.Id.ShouldBe(id);
             cf.Position.ShouldBe(position);
-            new DateTimeOffset(cf.Date).ToUniversalTime().ShouldBe(new DateTimeOffset(date).ToUniversalTime());
+            cf.Date.ShouldBe(date);
             cf.PublicationStatus.ShouldBe(publicationStatus);
             cf.Body.NormalizeLineEndings().ShouldBe(bodyHtml.NormalizeLineEndings());
         }

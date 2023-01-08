@@ -2,7 +2,7 @@
 ContentType: "application/vnd.vellum.content.blogs+md"
 Title: "Azure Synapse Analytics: How serverless is replacing the data warehouse"
 Slug: "azure-synapse-analytics-how-serverless-is-replacing-the-data-warehouse"
-Date: "2020-07-15T06:30:00.0000000+01:00"
+Date: "2020-07-15 06:30:00"
 PublicationStatus: Published
 Author: "James.Broome"
 Category:

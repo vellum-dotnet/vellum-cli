@@ -149,7 +149,7 @@ this.FeatureBackground();
                             "BodyHtmlDocumentName"});
                 table4.AddRow(new string[] {
                             "application/vnd.vellum.content.blogs+md",
-                            "11/5/2022 6:30:00 AM",
+                            "2022-11-05 06:30",
                             "58754666f4d7b6578f70dea23f2a24a3aa2d6771a91e8baed08874501557e9b2",
                             "Blogs",
                             "0",
