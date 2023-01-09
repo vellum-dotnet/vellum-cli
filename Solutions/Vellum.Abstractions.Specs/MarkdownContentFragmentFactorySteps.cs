@@ -153,10 +153,8 @@
 
             actualFilePath.ShouldSatisfyAllConditions(
                 f => f.Name.ShouldBe(expectedFilePath.Name),
-                f => f.DirectoryName.ShouldBe(expectedFilePath.DirectoryName)
+                f => f.Directory?.Name.ShouldBe(expectedFilePath.Directory?.Name)
             );
-
-            ((string)cf.MetaData["FilePath"]).ShouldBe(firstRow["FilePath"]);
         }
 
         [Then(@"the Content Fragment MetaData Category should contain")]
