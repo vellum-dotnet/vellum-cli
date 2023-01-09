@@ -148,12 +148,14 @@
             ((string)cf.MetaData["HeaderImageUrl"]).ShouldBe(firstRow["HeaderImageUrl"]);
             ((string)cf.MetaData["Excerpt"]).ShouldBe(firstRow["Excerpt"]);
 
-            var actualFilePath = new FileInfo((string)cf.MetaData["FilePath"]);
-            var expectedFilePath = new FileInfo(firstRow["FilePath"]);
+            string actualFilePath = Path.GetFullPath((string)cf.MetaData["FilePath"]);
+            string expectedFilePath = Path.GetFullPath(firstRow["FilePath"]);
+            var actualFileInfo = new FileInfo(actualFilePath);
+            var expectedFileInfo = new FileInfo(expectedFilePath);
 
-            actualFilePath.ShouldSatisfyAllConditions(
-                f => f.Name.ShouldBe(expectedFilePath.Name),
-                f => f.Directory?.Name.ShouldBe(expectedFilePath.Directory?.Name)
+            actualFileInfo.ShouldSatisfyAllConditions(
+                f => f.Name.ShouldBe(expectedFileInfo.Name),
+                f => f.Directory?.Name.ShouldBe(expectedFileInfo.Directory?.Name)
             );
         }
 
