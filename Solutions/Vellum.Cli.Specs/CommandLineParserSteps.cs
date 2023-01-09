@@ -1,8 +1,7 @@
-﻿using System;
-using TechTalk.SpecFlow;
-
-namespace Vellum.Cli.Specs
+﻿namespace Vellum.Cli.Specs
 {
+    using TechTalk.SpecFlow;
+
     [Binding]
     public class CommandLineParserSteps
     {
@@ -18,6 +17,11 @@ namespace Vellum.Cli.Specs
 
         [Then(@"the result should be (.*) on the screen")]
         public void ThenTheResultShouldBeOnTheScreen(int p0)
+        {
+        }
+
+        [Given(@"I have a Command Line Parser")]
+        public void GivenIHaveACommandLineParser()
         {
         }
     }
