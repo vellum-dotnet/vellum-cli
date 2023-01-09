@@ -147,6 +147,15 @@
             ((string)cf.MetaData["Author"]).ShouldBe(firstRow["Author"]);
             ((string)cf.MetaData["HeaderImageUrl"]).ShouldBe(firstRow["HeaderImageUrl"]);
             ((string)cf.MetaData["Excerpt"]).ShouldBe(firstRow["Excerpt"]);
+
+            var actualFilePath = new FileInfo((string)cf.MetaData["FilePath"]);
+            var expectedFilePath = new FileInfo(firstRow["FilePath"]);
+
+            actualFilePath.ShouldSatisfyAllConditions(
+                f => f.Name.ShouldBe(expectedFilePath.Name),
+                f => f.DirectoryName.ShouldBe(expectedFilePath.DirectoryName)
+            );
+
             ((string)cf.MetaData["FilePath"]).ShouldBe(firstRow["FilePath"]);
         }
 
