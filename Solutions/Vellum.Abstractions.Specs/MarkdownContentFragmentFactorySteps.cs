@@ -148,8 +148,8 @@
             ((string)cf.MetaData["HeaderImageUrl"]).ShouldBe(firstRow["HeaderImageUrl"]);
             ((string)cf.MetaData["Excerpt"]).ShouldBe(firstRow["Excerpt"]);
 
-            string actualFilePath = Path.GetFullPath((string)cf.MetaData["FilePath"]);
-            string expectedFilePath = Path.GetFullPath(firstRow["FilePath"]);
+            string actualFilePath = Path.GetFullPath(((string)cf.MetaData["FilePath"]).NormaliseCrossPlatformDirectorySeparators());
+            string expectedFilePath = Path.GetFullPath(firstRow["FilePath"].NormaliseCrossPlatformDirectorySeparators());
             var actualFileInfo = new FileInfo(actualFilePath);
             var expectedFileInfo = new FileInfo(expectedFilePath);
 
