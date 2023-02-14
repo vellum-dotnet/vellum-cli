@@ -10,8 +10,8 @@
     <tags>vellum static cms vellum-cli vellum-cli-plugin cloudinary endjin</tags>
   </metadata>
   <files>
-    <file src="_packages\Vellum.Cli.Cloudinary\CloudinaryDotNet.dll" target="content\" />
-    <file src="_packages\Vellum.Cli.Cloudinary\NDepend.Path.dll" target="content\" />
-    <file src="_packages\Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.dll" target="content\" />
+    <file src="..\..\_packages\Vellum.Cli.Cloudinary\CloudinaryDotNet.dll" target="content\" />
+    <file src="..\..\_packages\Vellum.Cli.Cloudinary\NDepend.Path.dll" target="content\" />
+    <file src="..\..\_packages\Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.dll" target="content\" />
   </files>
 </package>
