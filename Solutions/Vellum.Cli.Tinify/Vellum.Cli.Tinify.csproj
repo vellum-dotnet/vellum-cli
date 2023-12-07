@@ -2,7 +2,7 @@
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <!-- We use nuspec files to generate the nupkg files as assemblies are delivered as content rather than as "packages" -->
     <IsPackable>false</IsPackable>
     <!-- This plugin package does not need symbols and source link -->
@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.5">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
