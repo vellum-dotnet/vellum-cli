@@ -10,7 +10,7 @@
     Disable warnings
     RCS1021 - Roslynator is a bit too attached to expression-bodied lambdas
     -->
-    <NoWarn>$(NoWarn);RCS1021</NoWarn>
+    <NoWarn>$(NoWarn);RCS1021;NU5104;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
