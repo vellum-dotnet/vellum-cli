@@ -33,11 +33,11 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>RCS1029; CS1591; SA1600; NU5100</NoWarn>
+    <NoWarn>RCS1029; CS1591; SA1600; NU5100; NU5104;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>RCS1029; CS1591; SA1600; NU5100</NoWarn>
+    <NoWarn>RCS1029; CS1591; SA1600; NU5100; NU5104;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
