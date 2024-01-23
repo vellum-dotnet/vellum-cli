@@ -6,6 +6,7 @@ using Spectre.Console;
 using Spectre.Console.Cli;
 
 using Vellum.Cli.Abstractions;
+using Vellum.Cli.Abstractions.Templates;
 using Vellum.Cli.Cloudinary.Environment;
 using Vellum.Cli.Cloudinary.Settings;
 
@@ -17,7 +18,7 @@ public class ListCommand : Command
     {
         CloudinarySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
 
-        CloudinarySettings settings = settingsManager.LoadSettings("TODO");
+        CloudinarySettings settings = settingsManager.LoadSettings(nameof(CloudinarySettings));
 
         if (settings != null)
         {

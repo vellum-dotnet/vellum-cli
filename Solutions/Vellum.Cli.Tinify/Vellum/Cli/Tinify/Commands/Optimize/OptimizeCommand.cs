@@ -30,7 +30,7 @@ public class OptimizeCommand : AsyncCommand<OptimizeCommand.Settings>
 
         var settingsManager = new TinifySettingsManager(new FileSystemRoamingProfileAppEnvironment());
 
-        TinifySettings tinifySettings = settingsManager.LoadSettings("TODO");
+        TinifySettings tinifySettings = settingsManager.LoadSettings(nameof(TinifySettings));
 
         try
         {

@@ -16,7 +16,7 @@ public class ListCommand : Command
     public override int Execute(CommandContext context)
     {
         TinifySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
-        TinifySettings settings = settingsManager.LoadSettings("TODO");
+        TinifySettings settings = settingsManager.LoadSettings(nameof(TinifySettings));
 
         if (settings != null)
         {

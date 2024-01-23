@@ -27,7 +27,7 @@ public class UpdateCommand : Command<UpdateCommand.Settings>
         };
         try
         {
-            settingsManager.SaveSettings(cloudinarySettings, "TODO");
+            settingsManager.SaveSettings(cloudinarySettings, nameof(CloudinarySettings));
             AnsiConsole.WriteLine("Settings updated.");
         }
         catch

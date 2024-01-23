@@ -28,7 +28,7 @@ public class UpdateCommand : Command<UpdateCommand.Settings>
 
         try
         {
-            settingsManager.SaveSettings(tinifySettings, "TODO");
+            settingsManager.SaveSettings(tinifySettings, nameof(TinifySettings));
             AnsiConsole.WriteLine("Settings updated.");
         }
         catch

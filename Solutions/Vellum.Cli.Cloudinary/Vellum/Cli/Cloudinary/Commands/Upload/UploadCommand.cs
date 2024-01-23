@@ -31,7 +31,7 @@ public class UploadCommand : AsyncCommand<UploadCommand.UploadCommandSettings>
 
         CloudinarySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
 
-        CloudinarySettings cloudinarySettings = settingsManager.LoadSettings("TODO");
+        CloudinarySettings cloudinarySettings = settingsManager.LoadSettings(nameof(CloudinarySettings));
 
         CloudinaryDotNet.Cloudinary cloudinary = new(new Account(cloudinarySettings.Cloud, cloudinarySettings.Key, cloudinarySettings.Secret));
 
