@@ -2,15 +2,14 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Conventions
+using System.Collections.Generic;
+using Spectre.IO;
+
+namespace Vellum.Cli.Abstractions.Conventions;
+
+public class ContentTypeConventionsRoot
 {
-    using System.Collections.Generic;
-    using NDepend.Path;
+    public FilePath FilePath { get; set; }
 
-    public class ContentTypeConventionsRoot
-    {
-        public IAbsoluteFilePath FilePath { get; set; }
-
-        public List<ContentTypeConvention> Conventions { get; set; }
-    }
+    public List<ContentTypeConvention> Conventions { get; set; }
 }

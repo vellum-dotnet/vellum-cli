@@ -2,14 +2,13 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Environment
+using Spectre.IO;
+
+namespace Vellum.Cli.Abstractions.Environment;
+
+public interface IAppEnvironmentConfiguration
 {
-    using NDepend.Path;
+    DirectoryPath AppPath { get; }
 
-    public interface IAppEnvironmentConfiguration
-    {
-        IAbsoluteDirectoryPath AppPath { get; }
-
-        IAbsoluteDirectoryPath ConfigurationPath { get; }
-    }
+    DirectoryPath ConfigurationPath { get; }
 }

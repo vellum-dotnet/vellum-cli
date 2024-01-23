@@ -2,16 +2,10 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Tinify.Settings
-{
-    using Vellum.Cli.Abstractions.Configuration;
-    using Vellum.Cli.Abstractions.Environment;
+using Vellum.Cli.Abstractions.Configuration;
+using Vellum.Cli.Abstractions.Environment;
 
-    public class TinifySettingsManager : SettingsManager<TinifySettings>
-    {
-        public TinifySettingsManager(IAppEnvironmentConfiguration appEnvironment)
-            : base(appEnvironment)
-        {
-        }
-    }
-}
+namespace Vellum.Cli.Tinify.Settings;
+
+public class TinifySettingsManager(IAppEnvironmentConfiguration appEnvironment)
+    : SettingsManager<TinifySettings>(appEnvironment);

@@ -2,10 +2,9 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Conventions
+namespace Vellum.Cli.Abstractions.Conventions;
+
+public static class ConventionContentTypes
 {
-    public static class ConventionContentTypes
-    {
-        public const string FilePaths = "application/vnd.vellum.conventions.file-path";
-    }
+    public const string FilePaths = "application/vnd.vellum.conventions.file-path";
 }

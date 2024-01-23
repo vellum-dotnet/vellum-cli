@@ -1,7 +1,7 @@
 ﻿// <copyright file="PluginListHandler.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
-
+/*
 #pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
 
 namespace Vellum.Cli.Commands.Plugins
@@ -29,4 +29,4 @@ namespace Vellum.Cli.Commands.Plugins
             return Task.FromResult(ReturnCodes.Ok);
         }
     }
-}
+}*/

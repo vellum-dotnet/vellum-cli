@@ -2,16 +2,13 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Templates
+namespace Vellum.Cli.Abstractions.Templates;
+
+public class DefaultTemplate
 {
-    using NDepend.Path;
+    public string ContentType { get; set; }
 
-    public class DefaultTemplate
-    {
-        public string ContentType { get; set; }
+    public string PackageName { get; set; }
 
-        public string PackageName { get; set; }
-
-        public string PackagePath { get; set; }
-    }
+    public string PackagePath { get; set; }
 }

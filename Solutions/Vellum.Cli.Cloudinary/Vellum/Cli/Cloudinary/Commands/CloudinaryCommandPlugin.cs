@@ -1,45 +1,43 @@
-﻿// <copyright file="CloudinaryCommand.cs" company="Endjin Limited">
+﻿// <copyright file="CloudinaryCommandPlugin.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Commands;
-
-using System.CommandLine;
-using System.CommandLine.Invocation;
-using System.IO;
-using System.Threading.Tasks;
+using Spectre.Console.Cli;
 using Vellum.Cli.Abstractions.Commands;
 using Vellum.Cli.Cloudinary.Commands.Settings;
 using Vellum.Cli.Cloudinary.Commands.Upload;
 
-public class CloudinaryCommand : ICommandPlugin
+namespace Vellum.Cli.Cloudinary.Commands;
+
+public class CloudinaryCommandPlugin : ICommandPlugin
 {
-    private List list;
-    private Update update;
-    private Upload upload;
-
-    public CloudinaryCommand()
+    public void Configure(IConfigurator configurator)
     {
+        configurator.AddBranch("cloudinary", root =>
+        {
+            root.SetDescription("Manage media assets in Cloudinary.");
+
+            root.AddBranch("settings", settings =>
+            {
+                settings.SetDescription("Manage Cloudinary settings.");
+                settings.AddCommand<ListCommand>("list")
+                    .WithDescription("List Cloudinary settings.");
+                settings.AddCommand<UpdateCommand>("update")
+                    .WithDescription("Update Cloudinary settings.");
+            });
+            root.AddCommand<UploadCommand>("upload")
+                .WithDescription("Upload media assets to Cloudinary.");
+        });
     }
+}
 
-    public CloudinaryCommand(List list, Update update, Upload upload)
-    {
-        this.list = list;
-        this.update = update;
-        this.upload = upload;
-    }
-
-    public delegate Task List(IConsole console, InvocationContext invocationContext = null);
-
-    public delegate Task Update(string cloud, string key, string secret, IConsole console, InvocationContext invocationContext = null);
-
-    public delegate Task Upload(FileInfo file, IConsole console, InvocationContext invocationContext = null);
-
+/*public class CloudinaryCommand
+{
     public Command Command()
     {
-        this.list ??= ListCommandHandler.Execute;
-        this.update ??= UpdateCommandHandler.Execute;
-        this.upload ??= UploadCommandHandler.Execute;
+        this.list ??= ListCommand.Execute;
+        this.update ??= UpdateCommand.Execute;
+        this.upload ??= UploadCommand.Execute;
 
         var rootCmd = new Command("cloudinary", "Manage media assets in Cloudinary.");
 
@@ -133,4 +131,4 @@ public class CloudinaryCommand : ICommandPlugin
             return cmd;
         }
     }
-}
+}*/

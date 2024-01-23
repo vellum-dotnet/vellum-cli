@@ -2,10 +2,9 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Tinify.Settings
+namespace Vellum.Cli.Tinify.Settings;
+
+public class TinifySettings
 {
-    public class TinifySettings
-    {
-        public string Key { get; set; }
-    }
+    public string Key { get; set; }
 }

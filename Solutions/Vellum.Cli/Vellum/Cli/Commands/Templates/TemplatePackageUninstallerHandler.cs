@@ -1,7 +1,7 @@
 ﻿// <copyright file="TemplatePackageUninstallerHandler.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
-
+/*
 #pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
 
 namespace Vellum.Cli.Commands.Templates
@@ -35,7 +35,7 @@ namespace Vellum.Cli.Commands.Templates
 
                 if (package != null)
                 {
-                    await packageManager.UnnstallAsync(package).ConfigureAwait(false);
+                    await packageManager.UnInstallAsync(package).ConfigureAwait(false);
 
                     currentSettings.Packages.Remove(package);
 
@@ -49,4 +49,4 @@ namespace Vellum.Cli.Commands.Templates
             return ReturnCodes.Ok;
         }
     }
-}
+}*/

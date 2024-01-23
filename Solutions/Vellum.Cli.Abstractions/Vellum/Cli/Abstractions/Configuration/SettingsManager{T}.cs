@@ -2,41 +2,39 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Configuration
+using System.IO;
+using Newtonsoft.Json;
+using Vellum.Cli.Abstractions.Environment;
+
+namespace Vellum.Cli.Abstractions.Configuration;
+
+public class SettingsManager<T> : ISettingsManager<T>
+    where T : class
 {
-    using System.IO;
-    using NDepend.Path;
-    using Newtonsoft.Json;
-    using Vellum.Cli.Abstractions.Environment;
+    private readonly IAppEnvironmentConfiguration appEnvironmentConfiguration;
 
-    public class SettingsManager<T> : ISettingsManager<T>
-        where T : class
+    public SettingsManager(IAppEnvironmentConfiguration appEnvironmentConfiguration)
     {
-        private readonly IAppEnvironmentConfiguration appEnvironment;
+        this.appEnvironmentConfiguration = appEnvironmentConfiguration;
+    }
 
-        public SettingsManager(IAppEnvironmentConfiguration appEnvironment)
-        {
-            this.appEnvironment = appEnvironment;
-        }
+    public T LoadSettings(string fileName)
+    {
+        string filePath = $"{this.GetLocalFilePath(fileName)}.json";
 
-        public T LoadSettings()
-        {
-            string filePath = $"{this.GetLocalFilePath(typeof(T).Name)}.json";
+        return File.Exists(filePath) ? JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath)) : null;
+    }
 
-            return File.Exists(filePath) ? JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath)) : null;
-        }
+    public void SaveSettings(T settings, string fileName)
+    {
+        string filePath = this.GetLocalFilePath(fileName);
+        string json = JsonConvert.SerializeObject(settings);
 
-        public void SaveSettings(T settings)
-        {
-            IAbsoluteFilePath filePath = this.GetLocalFilePath(typeof(T).Name);
-            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+        File.WriteAllText($"{filePath}.json", json);
+    }
 
-            File.WriteAllText($"{filePath}.json", json);
-        }
-
-        private IAbsoluteFilePath GetLocalFilePath(string fileName)
-        {
-            return this.appEnvironment.ConfigurationPath.GetChildFileWithName(fileName);
-        }
+    private string GetLocalFilePath(string fileName)
+    {
+        return Path.Combine(this.appEnvironmentConfiguration.ConfigurationPath.ToString(), fileName);
     }
 }

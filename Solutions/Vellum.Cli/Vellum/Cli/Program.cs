@@ -2,25 +2,49 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Spectre.Console.Cli;
+
+using Vellum.Cli.Abstractions.Commands;
+using Vellum.Cli.Environment;
+using Vellum.Cli.Infrastructure;
+using Vellum.Cli.Infrastructure.Injection;
+using Vellum.Cli.Plugins;
+
+namespace Vellum.Cli;
+
+public static class Program
 {
-    using System.CommandLine.Parsing;
-    using System.Threading.Tasks;
-    using Microsoft.Extensions.DependencyInjection;
-    using Vellum.Cli.Abstractions.Infrastructure;
-    using Vellum.Cli.Environment;
-    using Vellum.Cli.Plugins;
-
-    public static class Program
+    public static Task<int> Main(string[] args)
     {
-        public static async Task<int> Main(string[] args)
-        {
-            System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+        CommandPluginHost pluginHost = new();
+        FileSystemRoamingProfileAppEnvironment appEnvironment = new();
 
-            return await new CommandLineParser(
-                new CompositeConsole(),
-                new FileSystemRoamingProfileAppEnvironment(),
-                new CommandPluginHost()).Create().InvokeAsync(args).ConfigureAwait(false);
-        }
+        IEnumerable<ICommandPlugin> plugins = pluginHost.Discover(appEnvironment.PluginPaths);
+
+        ServiceCollection registrations = [];
+        registrations.ConfigureDependencies();
+
+        TypeRegistrar registrar = new(registrations);
+        CommandApp app = new(registrar);
+
+        app.Configure(config =>
+        {
+            config.Settings.PropagateExceptions = false;
+            config.CaseSensitivity(CaseSensitivity.None);
+            config.SetApplicationName("vellum");
+            config.ValidateExamples();
+
+            foreach (ICommandPlugin plugin in plugins)
+            {
+                plugin.Configure(config);
+            }
+        });
+
+        return app.RunAsync(args);
     }
 }
