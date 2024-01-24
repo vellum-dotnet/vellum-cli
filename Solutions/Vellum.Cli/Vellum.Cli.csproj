@@ -68,8 +68,4 @@
 		<ProjectReference Include="..\Vellum.Cli.Abstractions\Vellum.Cli.Abstractions.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Update="Roslynator.Analyzers" Version="4.9.0" />
-	</ItemGroup>
-
 </Project>

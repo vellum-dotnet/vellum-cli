@@ -31,12 +31,4 @@
     <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Roslynator.Analyzers" Version="4.9.0" />
-  </ItemGroup>
-
 </Project>
