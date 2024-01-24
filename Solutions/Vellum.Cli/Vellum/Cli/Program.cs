@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
 using Vellum.Cli.Abstractions.Commands;
+using Vellum.Cli.Commands.Environment;
+using Vellum.Cli.Commands.Plugins;
+using Vellum.Cli.Commands.Templates;
 using Vellum.Cli.Environment;
 using Vellum.Cli.Infrastructure;
 using Vellum.Cli.Infrastructure.Injection;
@@ -34,10 +37,50 @@ public static class Program
 
         app.Configure(config =>
         {
+            config.SetApplicationName("vellum-cli");
             config.Settings.PropagateExceptions = false;
             config.CaseSensitivity(CaseSensitivity.None);
-            config.SetApplicationName("vellum");
             config.ValidateExamples();
+
+            config.AddBranch("environment", environment =>
+            {
+                environment.SetDescription("Manipulate the vellum-cli environment & settings.");
+
+                environment.AddCommand<EnvironmentInitCommand>("init")
+                    .WithDescription("Initialize the vellum-cli environment.");
+                environment.AddCommand<SetEnvironmentSettingCommand>("set")
+                    .WithDescription("Set a vellum-cli environment setting.");
+            });
+
+            // new command
+            config.AddBranch("plugins", plugins =>
+            {
+                plugins.SetDescription("Manage vellum-cli plugins.");
+
+                plugins.AddCommand<PluginClearCommand>("clear")
+                    .WithDescription("Clear all vellum-cli plugins.");
+                plugins.AddCommand<PluginInstallCommand>("install")
+                    .WithDescription("Install a vellum-cli plugin.");
+                plugins.AddCommand<PluginListCommand>("list")
+                    .WithDescription("List installed vellum-cli plugins.");
+                plugins.AddCommand<PluginUninstallCommand>("uninstall")
+                    .WithDescription("Uninstall a vellum-cli plugin.");
+            });
+
+            config.AddBranch("templates", templates =>
+            {
+                templates.SetDescription("Perform operations on Vellum templates.");
+
+                templates.AddBranch("packages", packages =>
+                {
+                    packages.SetDescription("Perform operations on Vellum template packages.");
+
+                    packages.AddCommand<TemplatePackageInstallerCommand>("install")
+                        .WithDescription("Install a vellum-cli template package.");
+                    packages.AddCommand<UninstallTemplateCommand>("uninstall")
+                        .WithDescription("Uninstall a vellum-cli template package.");
+                });
+            });
 
             foreach (ICommandPlugin plugin in plugins)
             {
