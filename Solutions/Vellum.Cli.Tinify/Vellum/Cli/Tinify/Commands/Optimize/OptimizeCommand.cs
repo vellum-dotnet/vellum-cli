@@ -25,11 +25,11 @@ public class OptimizeCommand : AsyncCommand<OptimizeCommand.Settings>
         if (settings.FilePath == null)
         {
             AnsiConsole.WriteLine("Invalid File TemplateRepositoryPath");
+
             return ReturnCodes.Error;
         }
 
-        var settingsManager = new TinifySettingsManager(new FileSystemRoamingProfileAppEnvironment());
-
+        TinifySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
         TinifySettings tinifySettings = settingsManager.LoadSettings(nameof(TinifySettings));
 
         try
@@ -52,7 +52,7 @@ public class OptimizeCommand : AsyncCommand<OptimizeCommand.Settings>
             AnsiConsole.WriteLine($"Original size: {originalSizeInBytes / 1024}KB");
 
             TinifyAPI.Source source = await TinifyAPI.Tinify.FromFile(fileInfo.FullName).ConfigureAwait(false);
-            await source.ToFile(fileInfo.FullName);
+            await source.ToFile(fileInfo.FullName).ConfigureAwait(false);
 
             long newSizeInBytes = new FileInfo(fileInfo.FullName).Length;
             double percentChange = (newSizeInBytes - originalSizeInBytes) * 100.0 / originalSizeInBytes;
@@ -77,6 +77,6 @@ public class OptimizeCommand : AsyncCommand<OptimizeCommand.Settings>
         /// </summary>
         [CommandOption("--file-path")]
         [Description("Which image file (jpg|png) are you going to optimize?")]
-        public FilePath FilePath { get; init; }
+        public FilePath? FilePath { get; init; }
     }
 }

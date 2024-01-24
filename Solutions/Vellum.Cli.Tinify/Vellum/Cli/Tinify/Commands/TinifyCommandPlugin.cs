@@ -3,6 +3,7 @@
 // </copyright>
 
 using Spectre.Console.Cli;
+
 using Vellum.Cli.Abstractions.Commands;
 using Vellum.Cli.Tinify.Commands.Optimize;
 using Vellum.Cli.Tinify.Commands.Settings;

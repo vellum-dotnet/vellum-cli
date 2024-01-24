@@ -7,5 +7,4 @@ using Vellum.Cli.Abstractions.Environment;
 
 namespace Vellum.Cli.Tinify.Settings;
 
-public class TinifySettingsManager(IAppEnvironmentConfiguration appEnvironment)
-    : SettingsManager<TinifySettings>(appEnvironment);
+public class TinifySettingsManager(IAppEnvironmentConfiguration appEnvironment) : SettingsManager<TinifySettings>(appEnvironment);

@@ -21,13 +21,15 @@ public class ListCommand : Command
         if (settings != null)
         {
             AnsiConsole.WriteLine($"Tinify Key: {settings.Key}");
+
+            return ReturnCodes.Ok;
         }
         else
         {
-            AnsiConsole.WriteLine("Tinify Value cannot be found. Please Run:");
-            AnsiConsole.WriteLine("vellum-cli tinify setting update <VALUE>");
-        }
+            AnsiConsole.MarkupLine("[red]Tinify Value cannot be found. Please Run:[/]");
+            AnsiConsole.MarkupLine("[yellow]vellum-cli tinify setting update <VALUE>[/]");
 
-        return ReturnCodes.Ok;
+            return ReturnCodes.Error;
+        }
     }
 }

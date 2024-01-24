@@ -4,7 +4,4 @@
 
 namespace Vellum.Cli.Tinify.Settings;
 
-public class TinifySettings
-{
-    public string Key { get; set; }
-}
+public record TinifySettings(string? Key);

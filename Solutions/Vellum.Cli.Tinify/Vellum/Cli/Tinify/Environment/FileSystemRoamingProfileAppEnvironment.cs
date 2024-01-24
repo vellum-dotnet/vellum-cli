@@ -3,6 +3,7 @@
 // </copyright>
 
 using Spectre.IO;
+
 using Vellum.Cli.Abstractions.Environment;
 
 namespace Vellum.Cli.Tinify.Environment;
