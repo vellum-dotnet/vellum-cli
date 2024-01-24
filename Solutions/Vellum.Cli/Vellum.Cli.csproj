@@ -40,10 +40,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Corvus.ContentHandling" Version="3.0.0" />
-		<PackageReference Include="Endjin.RecommendedPractices" Version="2.1.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.9">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
