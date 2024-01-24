@@ -176,9 +176,9 @@
       },
       "YamlDotNet": {
         "type": "Direct",
-        "requested": "[13.7.1, )",
-        "resolved": "13.7.1",
-        "contentHash": "X4m1PnFcJwvAj1sCDMntg/eZcX96CJLrWMiYnq41KqhFVZPuw63ZTSxIGqgdCwHWHvCAyTxheELC/VDf1HsU2A=="
+        "requested": "[15.1.0, )",
+        "resolved": "15.1.0",
+        "contentHash": "fXrqmKkzBtXeJiHEsZOPEWkonHweiwk/l0Hqhz4yMIZPh57kZy03Xbj2/e8HV1QIkTw7yeBe9bbphuE3YiI4vQ=="
       },
       "Microsoft.Build.Tasks.Git": {
         "type": "Transitive",
@@ -531,7 +531,6 @@
       "vellum.cli.abstractions": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "[13.0.3, )",
           "Spectre.Console": "[0.48.0, )",
           "Spectre.Console.Cli": "[0.48.0, )",
           "Spectre.IO": "[0.14.0, )"

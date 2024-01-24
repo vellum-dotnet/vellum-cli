@@ -61,7 +61,7 @@
 		<PackageReference Include="Spectre.Console" Version="0.48.0" />
 		<PackageReference Include="Spectre.Console.Cli" Version="0.48.0" />
 		<PackageReference Include="Spectre.IO" Version="0.14.0" />
-		<PackageReference Include="YamlDotNet" Version="13.7.1" />
+		<PackageReference Include="YamlDotNet" Version="15.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

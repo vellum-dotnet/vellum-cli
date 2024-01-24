@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Spectre.IO;
 using Vellum.Cli.Abstractions.Packages;
 
