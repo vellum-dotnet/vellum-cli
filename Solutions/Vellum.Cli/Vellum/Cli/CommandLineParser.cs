@@ -64,7 +64,7 @@ namespace Vellum.Cli
             TemplateUninstall templateUninstall = null)
         {
             // if environmentInit hasn't been provided (for testing) then assign the Command Handler
-            environmentInit ??= EnvironmentInitHandler.ExecuteAsync;
+            environmentInit ??= EnvironmentInitCommand.ExecuteAsync;
             newFile ??= NewFileHandler.ExecuteAsync;
             pluginInstall ??= PluginInstallHandler.ExecuteAsync;
             pluginUninstall ??= PluginUninstallHandler.ExecuteAsync;

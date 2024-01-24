@@ -46,4 +46,11 @@ public static class DirectoryPathExtensions
 
         return childrenFilesPath;
     }
+
+    public static string GetRelativePathFrom(this FilePath filePath, DirectoryPath referencePath)
+    {
+        var fileUri = new Uri(filePath.FullPath);
+        var referenceUri = new Uri(referencePath.FullPath);
+        return Uri.UnescapeDataString(referenceUri.MakeRelativeUri(fileUri).ToString().Replace('/',  System.IO.Path.DirectorySeparatorChar));
+    }
 }

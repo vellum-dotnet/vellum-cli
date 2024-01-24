@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
@@ -16,8 +17,10 @@ using NuGet.Packaging.Core;
 using NuGet.Packaging.Signing;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
+
 using Spectre.Console;
 using Spectre.IO;
+
 using Vellum.Cli.Abstractions.Environment;
 using Vellum.Cli.Abstractions.Extensions;
 using Vellum.Cli.Abstractions.Plugins;
@@ -56,14 +59,14 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
     {
         var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
         ISettings settings = Settings.LoadSpecificSettings(root: null, appEnvironment.NuGetConfigFilePath.ToString());
-        var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
+        SourceRepositoryProvider sourceRepositoryProvider = new(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
         var packageMetaDataList = new List<PluginPackage>();
 
-        using (var cacheContext = new SourceCacheContext())
+        using (SourceCacheContext cacheContext = new())
         {
             IEnumerable<SourceRepository> repositories = sourceRepositoryProvider.GetRepositories();
-            var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
+            HashSet<SourcePackageDependencyInfo> availablePackages = new(PackageIdentityComparer.Default);
 
             foreach (SourceRepository sourceRepository in repositories)
             {
@@ -90,14 +93,14 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
             if (matchingPackage != null)
             {
-                var pi = new PackageIdentity(packageId, matchingPackage.Version);
+                PackageIdentity pi = new(packageId, matchingPackage.Version);
                 packageIdentities.Add(pi);
 
                 // Allow preview versions to be resolved.
                 dependencyBehavior = DependencyBehavior.Ignore;
             }
 
-            var resolverContext = new PackageResolverContext(
+            PackageResolverContext resolverContext = new(
                 dependencyBehavior,
                 new[] { packageId },
                 Enumerable.Empty<string>(),
@@ -118,7 +121,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
                     .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
                     .FirstOrDefault();
 
-                var packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
+                PackagePathResolver packagePathResolver = new(SettingsUtility.GetGlobalPackagesFolder(settings));
 
                 var packageExtractionContext = new PackageExtractionContext(
                     PackageSaveMode.Defaultv3,
@@ -126,7 +129,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
                     ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
                     NullLogger.Instance);
 
-                var frameworkReducer = new FrameworkReducer();
+                FrameworkReducer frameworkReducer = new();
                 string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
                 PackageReaderBase packageReader;
 
@@ -169,7 +172,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
                     packageMetaData.Plugins.AddRange(contentItem.Items);
                 }
 
-                var packageFileExtractor = new PackageFileExtractor(
+                PackageFileExtractor packageFileExtractor = new(
                     packageMetaData.Plugins,
                     XmlDocFileSaveMode.None);
 
@@ -199,7 +202,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
                 foreach (FilePath file in packageMetaData.PluginPath.ChildrenFilesPath())
                 {
                     // TODO: Figure out relative path.
-                    // packageMetaData.Plugins.Add(file.GetRelativePathFrom(packageMetaData.PluginPath).ToString());
+                    packageMetaData.Plugins.Add(file.GetRelativePathFrom(packageMetaData.PluginPath).ToString());
                 }
 
                 Directory.Delete(packageMetaData.PluginPath.GetChildDirectoryWithName("content").ToString()!, recursive: true);
