@@ -18,13 +18,8 @@ public class UpdateCommand : Command<UpdateCommand.Settings>
     public override int Execute(CommandContext context, Settings settings)
     {
         CloudinarySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
+        CloudinarySettings cloudinarySettings = new(settings.Cloud, settings.Key, settings.Secret);
 
-        CloudinarySettings cloudinarySettings = new()
-        {
-            Cloud = settings.Cloud,
-            Key = settings.Key,
-            Secret = settings.Secret,
-        };
         try
         {
             settingsManager.SaveSettings(cloudinarySettings, nameof(CloudinarySettings));
@@ -32,7 +27,7 @@ public class UpdateCommand : Command<UpdateCommand.Settings>
         }
         catch
         {
-            AnsiConsole.WriteLine("Settings could not be updated.");
+            AnsiConsole.MarkupLine("[red]Settings could not be updated.[/]");
         }
 
         return ReturnCodes.Ok;
@@ -40,16 +35,16 @@ public class UpdateCommand : Command<UpdateCommand.Settings>
 
     public class Settings : CommandSettings
     {
-        [CommandArgument(0, "<CLOUD>")]
+        [CommandOption("--cloud|-c")]
         [Description("Cloudinary Cloud Account PackageId")]
-        public string Cloud { get; set; } = null!;
+        public string? Cloud { get; set; }
 
-        [CommandArgument(1, "<KEY>")]
+        [CommandOption("--key|-k")]
         [Description("Cloudinary API Key")]
-        public string Key { get; set; } = null!;
+        public string? Key { get; set; }
 
-        [CommandArgument(2, "<SECRET>")]
+        [CommandOption("--secret|-s")]
         [Description("Cloudinary API Secret")]
-        public string Secret { get; set; } = null!;
+        public string? Secret { get; set; }
     }
 }

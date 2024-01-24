@@ -7,5 +7,4 @@ using Vellum.Cli.Abstractions.Environment;
 
 namespace Vellum.Cli.Cloudinary.Settings;
 
-public class CloudinarySettingsManager(IAppEnvironmentConfiguration appEnvironment)
-    : SettingsManager<CloudinarySettings>(appEnvironment);
+public class CloudinarySettingsManager(IAppEnvironmentConfiguration appEnvironment) : SettingsManager<CloudinarySettings>(appEnvironment);

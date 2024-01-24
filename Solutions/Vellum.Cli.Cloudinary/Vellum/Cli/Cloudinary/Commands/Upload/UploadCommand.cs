@@ -30,16 +30,16 @@ public class UploadCommand : AsyncCommand<UploadCommand.UploadCommandSettings>
         }
 
         CloudinarySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
-
         CloudinarySettings cloudinarySettings = settingsManager.LoadSettings(nameof(CloudinarySettings));
 
         CloudinaryDotNet.Cloudinary cloudinary = new(new Account(cloudinarySettings.Cloud, cloudinarySettings.Key, cloudinarySettings.Secret));
 
+        string cdnPath = settings.CdnPath ?? $"assets/images/blog/{DateTime.Now.Year}/{DateTime.Now.Month:00}/{Path.GetFileNameWithoutExtension(settings.File.Name.ToLowerInvariant())}";
+
         ImageUploadParams fileToUpload = new()
         {
             File = new FileDescription(settings.File.FullName),
-            PublicId =
-                $"assets/images/blog/{DateTime.Now.Year}/{DateTime.Now.Month:00}/{Path.GetFileNameWithoutExtension(settings.File.Name.ToLowerInvariant())}",
+            PublicId = cdnPath,
             UniqueFilename = false,
             UseFilename = false,
         };
@@ -49,8 +49,7 @@ public class UploadCommand : AsyncCommand<UploadCommand.UploadCommandSettings>
             ImageUploadResult uploadResult = await cloudinary.UploadAsync(fileToUpload).ConfigureAwait(false);
 
             AnsiConsole.WriteLine("Image uploaded.");
-            AnsiConsole.WriteLine(
-                $"Use following path in your blog post: /{uploadResult.PublicId}{Path.GetExtension(settings.File.Name)}");
+            AnsiConsole.WriteLine($"Here's the path of the asset you uploaded: /{uploadResult.PublicId}{Path.GetExtension(settings.File.Name)}");
         }
         catch (Exception exception)
         {
@@ -64,8 +63,12 @@ public class UploadCommand : AsyncCommand<UploadCommand.UploadCommandSettings>
 
     public class UploadCommandSettings : CommandSettings
     {
-        [CommandArgument(0, "<FILE>")]
-        [Description("")]
-        public FileInfo File { get; set; }
+        [CommandOption("--file-path|-f")]
+        [Description("Which file should be uploaded to Cloudinary?")]
+        public FileInfo? File { get; set; }
+
+        [CommandOption("--cdn-path|-c")]
+        [Description("Destination path on the CDN, i.e. assets/images/blog/ or /assets/images/news")]
+        public string? CdnPath { get; set; }
     }
 }
