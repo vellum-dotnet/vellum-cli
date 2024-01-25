@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -28,7 +29,7 @@ public class PluginInstallCommand(IAppEnvironment appEnvironment) : AsyncCommand
 
         AnsiConsole.WriteLine(message);
 
-        var packageManager = new NuGetPluginPackageManager(appEnvironment);
+        NuGetPluginPackageManager packageManager = new(appEnvironment);
 
         try
         {

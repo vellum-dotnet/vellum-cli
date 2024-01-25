@@ -11,24 +11,14 @@ using Spectre.IO;
 
 using Vellum.Cli.Abstractions;
 using Vellum.Cli.Abstractions.Environment;
-using Vellum.Cli.Packages;
 
 namespace Vellum.Cli.Commands.Plugins;
 
-public class PluginClearCommand : Command
+public class PluginClearCommand(IAppEnvironment appEnvironment) : Command
 {
-    private readonly IAppEnvironment appEnvironment;
-
-    public PluginClearCommand(IAppEnvironment appEnvironment)
-    {
-        this.appEnvironment = appEnvironment;
-    }
-
     public override int Execute(CommandContext context)
     {
-        NuGetPluginPackageManager packageManager = new(this.appEnvironment);
-
-        IEnumerable<DirectoryPath> paths = this.appEnvironment.PluginPaths;
+        IEnumerable<DirectoryPath> paths = appEnvironment.PluginPaths;
 
         foreach (DirectoryPath directoryPath in paths)
         {

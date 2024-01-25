@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Spectre.Console;
 using Spectre.IO;
+
 using Vellum.Cli.Abstractions;
 using Vellum.Cli.Abstractions.Conventions;
 using Vellum.Cli.Abstractions.Environment;
@@ -18,10 +20,7 @@ namespace Vellum.Cli.Commands.New;
 
 public static class NewFileHandler
 {
-    public static async Task<int> ExecuteAsync(
-        string templateName,
-        FileInfo filePath,
-        IAppEnvironment appEnvironment)
+    public static async Task<int> ExecuteAsync(string templateName,  FileInfo filePath, IAppEnvironment appEnvironment)
     {
         var settingsManager = new EnvironmentSettingsManager(appEnvironment);
         EnvironmentSettings environmentSettings = settingsManager.LoadSettings(nameof(EnvironmentSettings));
@@ -89,7 +88,7 @@ public static class NewFileHandler
 
     private static IEnumerable<FilePath> FindAllConventionFiles(IAppEnvironment appEnvironment)
     {
-        var conventionFilePaths = new List<FilePath>();
+        List<FilePath> conventionFilePaths = [];
 
         foreach (DirectoryPath pluginPath in appEnvironment.TemplatesPath.ChildrenDirectoriesPath())
         {

@@ -4,17 +4,19 @@
 
 using System.ComponentModel;
 using System.IO;
+
 using Spectre.Console.Cli;
+
 using Vellum.Cli.Abstractions;
 using Vellum.Cli.Abstractions.Environment;
 
 namespace Vellum.Cli.Commands.Environment;
 
-public class SetEnvironmentSettingCommand(IAppEnvironment appEnvironment) : Command<SetEnvironmentSettingCommand.Settings>
+public class SetEnvironmentSettingCommand(IAppEnvironmentConfiguration appEnvironmentConfiguration) : Command<SetEnvironmentSettingCommand.Settings>
 {
     public override int Execute(CommandContext context, Settings settings)
     {
-        var settingsManager = new EnvironmentSettingsManager(appEnvironment);
+        var settingsManager = new EnvironmentSettingsManager(appEnvironmentConfiguration);
 
         EnvironmentSettings envSettings = settingsManager.LoadSettings(nameof(EnvironmentSettings)) ?? new EnvironmentSettings();
 
