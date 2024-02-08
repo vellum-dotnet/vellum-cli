@@ -17,7 +17,7 @@ namespace Vellum.Cli.Plugins;
 
 public class CommandPluginHost : ICommandPluginHost
 {
-    public IEnumerable<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths)
+    public List<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths)
     {
         List<FileInfo> files = [];
         List<PluginLoader> loaders = [];
@@ -42,26 +42,39 @@ public class CommandPluginHost : ICommandPluginHost
 
         foreach (FileInfo file in files.DistinctBy(x => x.Name))
         {
-            PluginLoader loader = PluginLoader.CreateFromAssemblyFile(file.FullName, sharedTypes: [typeof(ICommandPlugin)]);
+            PluginLoader loader = PluginLoader.CreateFromAssemblyFile(
+                file.FullName,
+                isUnloadable: true,
+                sharedTypes: [typeof(ICommandPlugin)],
+                config => config.EnableHotReload = true);
 
             loaders.Add(loader);
         }
 
         List<ICommandPlugin> plugins = [];
-
-        foreach (PluginLoader loader in loaders)
+        try
         {
-            foreach (Type pluginType in loader
-                         .LoadDefaultAssembly()
-                         .GetTypes()
-                         .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
+            foreach (PluginLoader loader in loaders)
             {
-                // This assumes the implementation of IPlugin has a parameterless constructor
-                if (Activator.CreateInstance(pluginType) is ICommandPlugin plugin)
+                foreach (Type pluginType in loader
+                             .LoadDefaultAssembly()
+                             .GetTypes()
+                             .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
                 {
-                    plugins.Add(plugin);
+                    // This assumes the implementation of IPlugin has a parameterless constructor
+                    if (Activator.CreateInstance(pluginType) is ICommandPlugin plugin)
+                    {
+                        plugins.Add(plugin);
+                    }
                 }
+
+                loader.Dispose();
             }
+        }
+        finally
+        {
+            loaders.Clear();
+            files.Clear();
         }
 
         return plugins;

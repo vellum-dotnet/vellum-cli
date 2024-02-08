@@ -12,5 +12,5 @@ namespace Vellum.Cli.Plugins;
 
 public interface ICommandPluginHost
 {
-    IEnumerable<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths);
+    List<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths);
 }

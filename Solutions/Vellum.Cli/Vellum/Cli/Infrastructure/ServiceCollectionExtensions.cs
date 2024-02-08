@@ -6,6 +6,8 @@ using Corvus.ContentHandling;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Vellum.Cli.Abstractions.Environment;
+using Vellum.Cli.Environment;
 
 namespace Vellum.Cli.Infrastructure;
 
@@ -38,7 +40,8 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddCliServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddLogging(builder => builder.AddConsole());
-
+        services.AddSingleton<IAppEnvironment, FileSystemRoamingProfileAppEnvironment>();
+        services.AddSingleton<IAppEnvironmentConfiguration, FileSystemRoamingProfileAppEnvironment>();
         return services;
     }
 

@@ -2,15 +2,18 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using Spectre.Console;
 using Spectre.Console.Cli;
 
 using Vellum.Cli.Abstractions.Commands;
 using Vellum.Cli.Commands.Environment;
+using Vellum.Cli.Commands.New;
 using Vellum.Cli.Commands.Plugins;
 using Vellum.Cli.Commands.Templates;
 using Vellum.Cli.Environment;
@@ -27,7 +30,16 @@ public static class Program
         CommandPluginHost pluginHost = new();
         FileSystemRoamingProfileAppEnvironment appEnvironment = new();
 
-        IEnumerable<ICommandPlugin> plugins = pluginHost.Discover(appEnvironment.PluginPaths);
+        List<ICommandPlugin> plugins = [];
+
+        try
+        {
+            plugins = pluginHost.Discover(appEnvironment.PluginPaths);
+        }
+        catch (ReflectionTypeLoadException)
+        {
+            AnsiConsole.MarkupLine("[red]ERROR: One or more of your plugins are not compatible. Please run vellum-cli plugins clean[/]");
+        }
 
         ServiceCollection registrations = [];
         registrations.ConfigureDependencies();
@@ -52,7 +64,9 @@ public static class Program
                     .WithDescription("Set a vellum-cli environment setting.");
             });
 
-            // new command
+            config.AddCommand<NewFileCommand>("new")
+                .WithDescription("Create new files based on templates.");
+
             config.AddBranch("plugins", plugins =>
             {
                 plugins.SetDescription("Manage vellum-cli plugins.");
