@@ -2,151 +2,157 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Environment
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Spectre.Console;
+using Spectre.IO;
+
+using Vellum.Cli.Abstractions.Environment;
+using Vellum.Cli.Abstractions.Extensions;
+
+namespace Vellum.Cli.Environment;
+
+public class FileSystemRoamingProfileAppEnvironment : IAppEnvironment
 {
-    using System;
-    using System.Collections.Generic;
-    using System.CommandLine;
-    using System.CommandLine.IO;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using NDepend.Path;
-    using Vellum.Cli.Abstractions.Environment;
+    public const string AppName = "vellum-cli";
+    public const string AppOrgName = "endjin";
+    public const string ConfigurationDirectorName = "configuration";
+    public const string PluginsDirectoryName = "plugins";
+    public const string TemplatesDirectoryName = "templates";
+    public const string NuGetFileName = "NuGet.Config";
 
-    public class FileSystemRoamingProfileAppEnvironment : IAppEnvironment
+    public const string DefaultNuGetConfig = """
+                                             <?xml version="1.0" encoding="utf-8"?>
+                                             <configuration>
+                                                 <packageSources>
+                                                     <add key="NuGet official package source" value="https://api.nuget.org/v3/index.json" />
+                                                 </packageSources>
+                                             </configuration>
+                                             """;
+
+    public DirectoryPath AppPath
     {
-        public const string AppName = "vellum-cli";
-        public const string AppOrgName = "endjin";
-        public const string ConfigurationDirectorName = "configuration";
-        public const string PluginsDirectoryName = "plugins";
-        public const string TemplatesDirectoryName = "templates";
-        public const string NuGetFileName = "NuGet.Config";
-
-        public const string DefaultNuGetConfig = @"<?xml version=""1.0"" encoding=""utf-8""?>
-<configuration>
-    <packageSources>
-        <add key=""NuGet official package source"" value=""https://api.nuget.org/v3/index.json"" />
-    </packageSources>
-</configuration>";
-
-        public IAbsoluteDirectoryPath AppPath
+        get
         {
-            get
-            {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppOrgName, AppName).ToAbsoluteDirectoryPath();
-            }
+            return System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), AppOrgName, AppName);
         }
+    }
 
-        public IAbsoluteDirectoryPath TemplatesPath
+    public DirectoryPath TemplatesPath
+    {
+        get
         {
-            get
-            {
-                return Path.Combine(this.AppPath.ToString(), TemplatesDirectoryName).ToAbsoluteDirectoryPath();
-            }
+            return System.IO.Path.Combine(this.AppPath.ToString()!, TemplatesDirectoryName);
         }
+    }
 
-        public IAbsoluteDirectoryPath PluginPath
+    public DirectoryPath PluginPath
+    {
+        get
         {
-            get
-            {
-                return Path.Combine(this.AppPath.ToString(), PluginsDirectoryName).ToAbsoluteDirectoryPath();
-            }
+            return System.IO.Path.Combine(this.AppPath.ToString()!, PluginsDirectoryName);
         }
+    }
 
-        public IEnumerable<IAbsoluteDirectoryPath> PluginPaths
+    public IEnumerable<DirectoryPath> PluginPaths
+    {
+        get
         {
-            get
+            if (Debugger.IsAttached)
             {
-                if (Debugger.IsAttached)
+                string? directory = AppContext.BaseDirectory;
+
+                while (!Directory.Exists(System.IO.Path.Combine(directory!, ".git")))
                 {
-                    string directory = AppContext.BaseDirectory;
-
-                    while (!Directory.Exists(Path.Combine(directory, ".git")) && directory != null)
-                    {
-                        directory = Directory.GetParent(directory).FullName;
-                    }
-
-                    IEnumerable<string> dirs = Directory.GetDirectories(directory, "*", System.IO.SearchOption.AllDirectories).Where(d => d.EndsWith(@"bin\Debug\net6.0"));
-
-                    foreach (string dir in dirs)
-                    {
-                        yield return dir.ToAbsoluteDirectoryPath();
-                    }
+                    directory = Directory.GetParent(directory!)?.FullName;
                 }
-                else
-                {
-                    foreach (IAbsoluteDirectoryPath path in this.PluginPath.ChildrenDirectoriesPath)
-                    {
-                        IEnumerable<IAbsoluteDirectoryPath> leafPaths = Directory
-                            .EnumerateDirectories(path.ToString(), "*.*", SearchOption.AllDirectories)
-                            .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any()).Select(x => x.ToAbsoluteDirectoryPath());
 
-                        foreach (IAbsoluteDirectoryPath leafPath in leafPaths)
-                        {
-                            yield return leafPath;
-                        }
+                IEnumerable<string> dirs = Directory.EnumerateDirectories(directory!, "*.*", SearchOption.AllDirectories);
+
+                dirs = dirs.Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net8.0"));
+
+                foreach (string dir in dirs)
+                {
+                    yield return dir;
+                }
+            }
+            else
+            {
+                foreach (DirectoryPath path in this.PluginPath.ChildrenDirectoriesPath())
+                {
+                    IEnumerable<DirectoryPath> leafPaths = Directory
+                        .EnumerateDirectories(path.ToString(), "*.*", SearchOption.AllDirectories)
+                        .Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any())
+                        .Select(x => new DirectoryPath(x));
+
+                    foreach (DirectoryPath leafPath in leafPaths)
+                    {
+                        yield return leafPath;
                     }
                 }
             }
         }
+    }
 
-        public IAbsoluteDirectoryPath ConfigurationPath
+    public DirectoryPath ConfigurationPath
+    {
+        get { return System.IO.Path.Combine(this.AppPath.ToString()!, ConfigurationDirectorName); }
+    }
+
+    public FilePath NuGetConfigFilePath
+    {
+        get { return System.IO.Path.Combine(this.ConfigurationPath.ToString()!, NuGetFileName); }
+    }
+
+    public void Clean()
+    {
+        Directory.Delete(this.AppPath.ToString()!, recursive: true);
+    }
+
+    public async Task InitializeAsync()
+    {
+        if (!Directory.Exists(this.AppPath.ToString()))
         {
-            get { return Path.Combine(this.AppPath.ToString(), ConfigurationDirectorName).ToAbsoluteDirectoryPath(); }
+            AnsiConsole.MarkupLine($"Creating {this.AppPath}");
+            Directory.CreateDirectory(this.AppPath.ToString()!);
         }
 
-        public IAbsoluteFilePath NuGetConfigFilePath
+        if (!Directory.Exists(this.ConfigurationPath.ToString()))
         {
-            get { return Path.Combine(this.ConfigurationPath.ToString(), NuGetFileName).ToAbsoluteFilePath(); }
+            AnsiConsole.MarkupLine($"Creating {this.ConfigurationPath}");
+            Directory.CreateDirectory(this.ConfigurationPath.ToString()!);
         }
 
-        public void Clean()
+        await using (StreamWriter writer = File.CreateText(this.NuGetConfigFilePath.ToString()!))
         {
-            Directory.Delete(this.AppPath.ToString(), recursive: true);
+            AnsiConsole.MarkupLine($"Creating {this.NuGetConfigFilePath}");
+            await writer.WriteAsync(DefaultNuGetConfig).ConfigureAwait(false);
         }
 
-        public async Task InitializeAsync(IConsole console)
+        if (!Directory.Exists(this.PluginPath.ToString()))
         {
-            if (!Directory.Exists(this.AppPath.ToString()))
-            {
-                console.Out.WriteLine($"Creating {this.AppPath}");
-                Directory.CreateDirectory(this.AppPath.ToString());
-            }
-
-            if (!Directory.Exists(this.ConfigurationPath.ToString()))
-            {
-                console.Out.WriteLine($"Creating {this.ConfigurationPath}");
-                Directory.CreateDirectory(this.ConfigurationPath.ToString());
-            }
-
-            using (StreamWriter writer = File.CreateText(this.NuGetConfigFilePath.ToString()))
-            {
-                console.Out.WriteLine($"Creating {this.NuGetConfigFilePath}");
-                await writer.WriteAsync(DefaultNuGetConfig).ConfigureAwait(false);
-            }
-
-            if (!Directory.Exists(this.PluginPath.ToString()))
-            {
-                console.Out.WriteLine($"Creating {this.PluginPath}");
-                Directory.CreateDirectory(this.PluginPath.ToString());
-            }
-
-            if (!Directory.Exists(this.TemplatesPath.ToString()))
-            {
-                console.Out.WriteLine($"Creating {this.TemplatesPath}");
-                Directory.CreateDirectory(this.TemplatesPath.ToString());
-            }
+            AnsiConsole.MarkupLine($"Creating {this.PluginPath}");
+            Directory.CreateDirectory(this.PluginPath.ToString()!);
         }
 
-        public bool IsInitialized()
+        if (!Directory.Exists(this.TemplatesPath.ToString()))
         {
-            return Directory.Exists(this.AppPath.ToString()) &&
-                   Directory.Exists(this.TemplatesPath.ToString()) &&
-                   Directory.Exists(this.ConfigurationPath.ToString()) &&
-                   Directory.Exists(this.TemplatesPath.ToString()) &&
-                   Directory.Exists(this.PluginPath.ToString());
+            AnsiConsole.MarkupLine($"Creating {this.TemplatesPath}");
+            Directory.CreateDirectory(this.TemplatesPath.ToString()!);
         }
+    }
+
+    public bool IsInitialized()
+    {
+        return Directory.Exists(this.AppPath.ToString()) &&
+               Directory.Exists(this.TemplatesPath.ToString()) &&
+               Directory.Exists(this.ConfigurationPath.ToString()) &&
+               Directory.Exists(this.TemplatesPath.ToString()) &&
+               Directory.Exists(this.PluginPath.ToString());
     }
 }
