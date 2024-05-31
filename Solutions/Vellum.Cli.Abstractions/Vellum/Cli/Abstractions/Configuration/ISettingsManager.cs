@@ -2,15 +2,12 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Configuration
+namespace Vellum.Cli.Abstractions.Configuration;
+
+public interface ISettingsManager<T>
+    where T : class
 {
-    using System;
+    T LoadSettings(string fileName);
 
-    public interface ISettingsManager<T>
-        where T : class
-    {
-        T LoadSettings();
-
-        void SaveSettings(T settings);
-    }
+    void SaveSettings(T settings, string fileName);
 }

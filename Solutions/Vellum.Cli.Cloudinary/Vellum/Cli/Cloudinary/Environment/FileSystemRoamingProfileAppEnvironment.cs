@@ -2,30 +2,27 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Environment
+using Spectre.IO;
+using Vellum.Cli.Abstractions.Environment;
+
+namespace Vellum.Cli.Cloudinary.Environment;
+
+public class FileSystemRoamingProfileAppEnvironment : IAppEnvironmentConfiguration
 {
-    using System;
-    using System.IO;
-    using NDepend.Path;
-    using Vellum.Cli.Abstractions.Environment;
+    public const string AppName = "vellum-cli";
+    public const string AppOrgName = "endjin";
+    public const string ConfigurationDirectorName = "configuration";
 
-    public class FileSystemRoamingProfileAppEnvironment : IAppEnvironmentConfiguration
+    public DirectoryPath AppPath
     {
-        public const string AppName = "vellum-cli";
-        public const string AppOrgName = "endjin";
-        public const string ConfigurationDirectorName = "configuration";
-
-        public IAbsoluteDirectoryPath AppPath
+        get
         {
-            get
-            {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppOrgName, AppName).ToAbsoluteDirectoryPath();
-            }
+            return System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), AppOrgName, AppName);
         }
+    }
 
-        public IAbsoluteDirectoryPath ConfigurationPath
-        {
-            get { return Path.Combine(this.AppPath.ToString(), ConfigurationDirectorName).ToAbsoluteDirectoryPath(); }
-        }
+    public DirectoryPath ConfigurationPath
+    {
+        get { return System.IO.Path.Combine(this.AppPath.ToString(), ConfigurationDirectorName); }
     }
 }
