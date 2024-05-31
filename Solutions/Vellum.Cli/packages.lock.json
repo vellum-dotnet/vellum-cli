@@ -15,19 +15,19 @@
       },
       "Endjin.RecommendedPractices.GitHub": {
         "type": "Direct",
-        "requested": "[2.1.9, )",
-        "resolved": "2.1.9",
-        "contentHash": "gFCDZOu96fU+TfsAkZ7zLUzm8NX1/k3hWt7lbyf5HOn95+hYJQZ+g4bjs/Awx7JODsvNZpON8QlstZQVjPnRxg==",
+        "requested": "[2.1.12, )",
+        "resolved": "2.1.12",
+        "contentHash": "JEOlUQymdvrI6OeVHPTpakLhOJvkLdvmH+wJNNdjqSq3FtZ2LnqKei+4AMFUzTdJcL6RF3KGD3x0AqUfhYgWcw==",
         "dependencies": {
-          "Endjin.RecommendedPractices": "2.1.9",
+          "Endjin.RecommendedPractices": "2.1.12",
           "Microsoft.SourceLink.GitHub": "1.1.1"
         }
       },
       "Markdig": {
         "type": "Direct",
-        "requested": "[0.34.0, )",
-        "resolved": "0.34.0",
-        "contentHash": "kUS8Y/oW2Cshwq3kv08Lz5hpMjt9MuAaDIGxv86d0RtEUUe4xKKXxdZYS7bV0ZXRfeAAOfjYIrt7zybcIOYvmg=="
+        "requested": "[0.37.0, )",
+        "resolved": "0.37.0",
+        "contentHash": "biiu4MTPFjW55qw6v5Aphtj0MjDLJ14x8ndZwkJUHIeqvaSGKeqhLY7S7Vu/S3k7/c9KwhhnaCDP9hdFNUhcNA=="
       },
       "McMaster.NETCore.Plugins": {
         "type": "Direct",
@@ -98,63 +98,60 @@
       },
       "NuGet.Common": {
         "type": "Direct",
-        "requested": "[6.8.0, )",
-        "resolved": "6.8.0",
-        "contentHash": "voNZyM5L5s0CCDPU//vXKQke0M8y6kGvG+0Ll6gc/xV7Jh1C3/5OhHRzvekxBS6a9DO/lsFhTZtyCkL6n9lHEw==",
+        "requested": "[6.10.0, )",
+        "resolved": "6.10.0",
+        "contentHash": "ujuzfDwUylDALwZmqRi7I5Jx4E9/8vR2c0Hq8zRj8zCkR8KarSp84WPJ2uE/qwAOjpBYGek06wWgGJ3ABQ/WxA==",
         "dependencies": {
-          "NuGet.Frameworks": "6.8.0"
+          "NuGet.Frameworks": "6.10.0"
         }
       },
       "NuGet.Packaging": {
         "type": "Direct",
-        "requested": "[6.8.0, )",
-        "resolved": "6.8.0",
-        "contentHash": "lyDnMCAWtoHNsNKGexIl6yHtyxuvn2j3rpKMrYYf86KwTV+JVY9eFIixNdwEPjBXBzWHQGpDKj9Im8v02t9AQQ==",
+        "requested": "[6.10.0, )",
+        "resolved": "6.10.0",
+        "contentHash": "QSznYvf+HejToKt9zOB2z9F1C4R01lnrUUcJ+WxL1ihazTBfrXWPCCAQDtQFSlJlibiJBn/GEoq1gMeaeSo2qQ==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
-          "NuGet.Configuration": "6.8.0",
-          "NuGet.Versioning": "6.8.0",
+          "NuGet.Configuration": "6.10.0",
+          "NuGet.Versioning": "6.10.0",
           "System.Security.Cryptography.Pkcs": "6.0.4"
         }
       },
       "NuGet.Resolver": {
         "type": "Direct",
-        "requested": "[6.8.0, )",
-        "resolved": "6.8.0",
-        "contentHash": "018r/pi8CPNhpOqXAvq2VT2f7YIdWTxpDDIh5uZFsgDoA8ZRUuYqx2hzj/YQsRy47r+58XX/SUjcog/qKSp6Dg==",
+        "requested": "[6.10.0, )",
+        "resolved": "6.10.0",
+        "contentHash": "r6koP0OoAVJbVh+j7bVXlNbMo0peLzgMtmHYvzzT7nPC2GS8CzDe6sF6PNeNV94YoItVVe1Ndo29QNclkD9uLg==",
         "dependencies": {
-          "NuGet.Protocol": "6.8.0"
+          "NuGet.Protocol": "6.10.0"
         }
       },
       "Roslynator.Analyzers": {
         "type": "Direct",
-        "requested": "[4.9.0, )",
-        "resolved": "4.9.0",
-        "contentHash": "lFd4MmkllYR0dKlPWDokRwAvQnjNoPJztlncyzvnCG/wvGr5FzHAencngcJna/wkyDE0xIv7AnUccgCLsoIXTw=="
+        "requested": "[4.12.3, )",
+        "resolved": "4.12.3",
+        "contentHash": "6+O9GwAxOxJr1rZ4aaLiBiSH3pxDkJuXLE8qjo/JXLvGkZhKRLbAz30WA32RmJb5Nn1TmjZ2T3kWt3GJmEDj1w=="
       },
       "Spectre.Console": {
         "type": "Direct",
-        "requested": "[0.48.0, )",
-        "resolved": "0.48.0",
-        "contentHash": "4Mc1UT7Azgtyb8FyNwK5FZmoZbKuT5PmY7ZwaKUytjD5kGFMNBACpOZTwYtkuY377YkYtZYBeDDTJUwTW86QXw==",
-        "dependencies": {
-          "System.Memory": "4.5.5"
-        }
+        "requested": "[0.49.1, )",
+        "resolved": "0.49.1",
+        "contentHash": "USV+pdu49OJ3nCjxNuw1K9Zw/c1HCBbwbjXZp0EOn6wM99tFdAtN34KEBZUMyRuJuXlUMDqhd8Yq9obW2MslYA=="
       },
       "Spectre.Console.Cli": {
         "type": "Direct",
-        "requested": "[0.48.0, )",
-        "resolved": "0.48.0",
-        "contentHash": "HNoDxAOTODQ9h+4K5Cs2caW8kIicRKw5SS4vgEEkJtnTp7/4XR8OIGvCjVi09w3m+xn4lTlkS0ENy2ktGz4HRw==",
+        "requested": "[0.49.1, )",
+        "resolved": "0.49.1",
+        "contentHash": "wBZzyEbKqfPFFUPhV5E7/k4Kwy4UDO42IVzvzk0C4Pkjjw+NSd0EOBkIutYET4vJY4X81pD9ooQO9gfBGXj4+g==",
         "dependencies": {
-          "Spectre.Console": "0.48.0"
+          "Spectre.Console": "0.49.1"
         }
       },
       "Spectre.IO": {
         "type": "Direct",
-        "requested": "[0.14.0, )",
-        "resolved": "0.14.0",
-        "contentHash": "w3CGml9G1rGykGq8y2OxIra+/qeHhlnos42AwvcCoqir//njK6lDWjd8Bj3XSkQlLAfKsUmVk2m05tfaPbEgxw=="
+        "requested": "[0.15.0, )",
+        "resolved": "0.15.0",
+        "contentHash": "u+zItE79DzsmhoqdH+KjY/VBSnhZhni5+Hr5y3T4M6FdQo/i89RHIh3kyQw0KXjPmMQlQ+gFTU95/smjh6oDUw=="
       },
       "StyleCop.Analyzers": {
         "type": "Direct",
@@ -167,14 +164,14 @@
       },
       "YamlDotNet": {
         "type": "Direct",
-        "requested": "[15.1.1, )",
-        "resolved": "15.1.1",
-        "contentHash": "GjK+j6XmaFoLhdGpv5jVkt1wbUwVvZaWsUEPzr6gfA/VaEgYMlwZXeVyWJOqFK9U41mSocZvSuLkEFFhVEj0HA=="
+        "requested": "[15.1.6, )",
+        "resolved": "15.1.6",
+        "contentHash": "T/cQEK/KHK96Q8kytJ4iUGDXg1/fj2Qtk6rCQeIlHYU1zTeyGVHW0QNZgREQyxZpygGMDMmrXNWt0sj5TsQnjA=="
       },
       "Endjin.RecommendedPractices": {
         "type": "Transitive",
-        "resolved": "2.1.9",
-        "contentHash": "LzppiBrlPBj5TmVsQVxWoGv/MWfq+sAz0qkdB/ozUDS2hq31Pu8j2Cvk+BVlhvrb9eDUQxxHaLL4gbE7LiSAfQ==",
+        "resolved": "2.1.12",
+        "contentHash": "OZObdtlvF6isizGzO0Vydwmj2IR8GxydcTMGCoA9lmejnlCRWYPuyJXr3ULknlJ23hHDkyLFnu/xNA4duMr2SQ==",
         "dependencies": {
           "Microsoft.Build.Tasks.Git": "1.1.1"
         }
@@ -357,30 +354,30 @@
       },
       "NuGet.Configuration": {
         "type": "Transitive",
-        "resolved": "6.8.0",
-        "contentHash": "FFEoY1L9G+C74HfSYt6epHTIuS5xJ8D+d9LZ5nnqhujMoBlQgHphaCTfRlul+e/bNIkAp1fDObzsGlPmu3CKAg==",
+        "resolved": "6.10.0",
+        "contentHash": "PbtCCdFC/K3GG3fdstIIMVraiXcxC1IgnzqayowckSlIg2xSxvcqAWd5Z7G1V6st5JzJi9THSnvmy/kchwh80A==",
         "dependencies": {
-          "NuGet.Common": "6.8.0",
+          "NuGet.Common": "6.10.0",
           "System.Security.Cryptography.ProtectedData": "4.4.0"
         }
       },
       "NuGet.Frameworks": {
         "type": "Transitive",
-        "resolved": "6.8.0",
-        "contentHash": "cN9NyahKgYYScioH4CKn+TYj1eSODxd0RECFnQt6ZmzT6z7PfXlbYpVzbiPsxNgY23iNDMOVkSmOqNZyYxNlQA=="
+        "resolved": "6.10.0",
+        "contentHash": "bKaC87Q8rxK7ozFN9Eyo0YVUmd4r2s8pbNxHI7sHRqL16OAP0yEdCU5wpDkG9cKLHpZCahgoQUfAVC0UadVU+A=="
       },
       "NuGet.Protocol": {
         "type": "Transitive",
-        "resolved": "6.8.0",
-        "contentHash": "Nfvij7QlEevDbuRCXkhCrHk1oJN+mYkmeVzNvS9hxNTmwdtHqB+zhUIMFBlbye3MUicgc4bbtLAwoF+EKjUvcg==",
+        "resolved": "6.10.0",
+        "contentHash": "/3r1avHk5IlqoGlXlb1ezNgtTIQyMTR5DAgh1WBcllivpbADpM9rvsFeemvcnndaFuQkEgc7a2egQZEnOK15ew==",
         "dependencies": {
-          "NuGet.Packaging": "6.8.0"
+          "NuGet.Packaging": "6.10.0"
         }
       },
       "NuGet.Versioning": {
         "type": "Transitive",
-        "resolved": "6.8.0",
-        "contentHash": "WBu15cdv1lqKkPKXDQOEmEzwKemwrczKYlc2jtuZgRYiZ8TG8F4QzPYiE0Q9eVIpMSk8Aky7mUephf19HjBPOw=="
+        "resolved": "6.10.0",
+        "contentHash": "ytTA08tgZWo/Pbk333hnzQfiMyyynkkwMt4GyC5T0bzExYYSRNrkwv4jT8jmWr5LUOYsumEZvXdoven2SA7YZw=="
       },
       "StyleCop.Analyzers.Unstable": {
         "type": "Transitive",
@@ -414,8 +411,8 @@
       },
       "System.Memory": {
         "type": "Transitive",
-        "resolved": "4.5.5",
-        "contentHash": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw=="
+        "resolved": "4.5.4",
+        "contentHash": "1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw=="
       },
       "System.Reflection": {
         "type": "Transitive",
@@ -530,9 +527,9 @@
       "vellum.cli.abstractions": {
         "type": "Project",
         "dependencies": {
-          "Spectre.Console": "[0.48.0, )",
-          "Spectre.Console.Cli": "[0.48.0, )",
-          "Spectre.IO": "[0.14.0, )"
+          "Spectre.Console": "[0.49.1, )",
+          "Spectre.Console.Cli": "[0.49.1, )",
+          "Spectre.IO": "[0.15.0, )"
         }
       }
     }

@@ -58,7 +58,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
     private async Task<PluginPackage?> GetLatestTemplatePackage(string packageId, string version, string frameworkVersion, DirectoryPath pluginRepositoryPath)
     {
         var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
-        ISettings settings = Settings.LoadSpecificSettings(root: null, appEnvironment.NuGetConfigFilePath.ToString());
+        ISettings settings = Settings.LoadSpecificSettings(root: string.Empty, appEnvironment.NuGetConfigFilePath.ToString());
         SourceRepositoryProvider sourceRepositoryProvider = new(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
         var packageMetaDataList = new List<PluginPackage>();

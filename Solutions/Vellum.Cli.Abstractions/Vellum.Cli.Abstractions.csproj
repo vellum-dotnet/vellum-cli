@@ -14,13 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.9">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Spectre.Console" Version="0.48.0" />
-    <PackageReference Include="Spectre.Console.Cli" Version="0.48.0" />
-    <PackageReference Include="Spectre.IO" Version="0.14.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
+    <PackageReference Include="Spectre.IO" Version="0.15.0" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
