@@ -2,12 +2,12 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -30,11 +30,11 @@ public static class Program
         CommandPluginHost pluginHost = new();
         FileSystemRoamingProfileAppEnvironment appEnvironment = new();
 
-        List<ICommandPlugin> plugins = [];
+        List<ICommandPlugin> commandPlugins = [];
 
         try
         {
-            plugins = pluginHost.Discover(appEnvironment.PluginPaths);
+            commandPlugins = pluginHost.Discover(appEnvironment.PluginPaths);
         }
         catch (ReflectionTypeLoadException)
         {
@@ -57,11 +57,8 @@ public static class Program
             config.AddBranch("environment", environment =>
             {
                 environment.SetDescription("Manipulate the vellum-cli environment & settings.");
-
-                environment.AddCommand<EnvironmentInitCommand>("init")
-                    .WithDescription("Initialize the vellum-cli environment.");
-                environment.AddCommand<SetEnvironmentSettingCommand>("set")
-                    .WithDescription("Set a vellum-cli environment setting.");
+                environment.AddCommand<EnvironmentInitCommand>("init").WithDescription("Initialize the vellum-cli environment.");
+                environment.AddCommand<SetEnvironmentSettingCommand>("set").WithDescription("Set a vellum-cli environment setting.");
             });
 
             config.AddCommand<NewFileCommand>("new")
@@ -70,33 +67,24 @@ public static class Program
             config.AddBranch("plugins", plugins =>
             {
                 plugins.SetDescription("Manage vellum-cli plugins.");
-
-                plugins.AddCommand<PluginClearCommand>("clear")
-                    .WithDescription("Clear all vellum-cli plugins.");
-                plugins.AddCommand<PluginInstallCommand>("install")
-                    .WithDescription("Install a vellum-cli plugin.");
-                plugins.AddCommand<PluginListCommand>("list")
-                    .WithDescription("List installed vellum-cli plugins.");
-                plugins.AddCommand<PluginUninstallCommand>("uninstall")
-                    .WithDescription("Uninstall a vellum-cli plugin.");
+                plugins.AddCommand<PluginClearCommand>("clear").WithDescription("Clear all vellum-cli plugins.");
+                plugins.AddCommand<PluginInstallCommand>("install").WithDescription("Install a vellum-cli plugin.");
+                plugins.AddCommand<PluginListCommand>("list").WithDescription("List installed vellum-cli plugins.");
+                plugins.AddCommand<PluginUninstallCommand>("uninstall").WithDescription("Uninstall a vellum-cli plugin.");
             });
 
             config.AddBranch("templates", templates =>
             {
                 templates.SetDescription("Perform operations on Vellum templates.");
-
                 templates.AddBranch("packages", packages =>
                 {
                     packages.SetDescription("Perform operations on Vellum template packages.");
-
-                    packages.AddCommand<TemplatePackageInstallerCommand>("install")
-                        .WithDescription("Install a vellum-cli template package.");
-                    packages.AddCommand<UninstallTemplateCommand>("uninstall")
-                        .WithDescription("Uninstall a vellum-cli template package.");
+                    packages.AddCommand<TemplatePackageInstallerCommand>("install").WithDescription("Install a vellum-cli template package.");
+                    packages.AddCommand<UninstallTemplateCommand>("uninstall").WithDescription("Uninstall a vellum-cli template package.");
                 });
             });
 
-            foreach (ICommandPlugin plugin in plugins)
+            foreach (ICommandPlugin plugin in commandPlugins)
             {
                 plugin.Configure(config);
             }
