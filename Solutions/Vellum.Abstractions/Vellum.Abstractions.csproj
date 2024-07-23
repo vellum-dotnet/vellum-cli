@@ -3,7 +3,7 @@
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <!--<Nullable>enable</Nullable>-->
   </PropertyGroup>
 
@@ -16,23 +16,23 @@
 
   <ItemGroup>
     <PackageReference Include="Corvus.ContentHandling" Version="3.0.0" />
-    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.4">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Flurl" Version="3.0.7" />
+    <PackageReference Include="Flurl" Version="4.0.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="ImpromptuInterface" Version="7.0.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="NDepend.Path" Version="2.0.0" />
-    <PackageReference Include="Markdig" Version="0.31.0" />
+    <PackageReference Include="Markdig" Version="0.37.0" />
     <!--<PackageReference Include="Marain.ContentManagement.Abstractions" Version="0.1.0" />-->
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.10.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="YamlDotNet" Version="13.0.2" />
+    <PackageReference Include="YamlDotNet" Version="16.0.0" />
   </ItemGroup>
 
   <ItemGroup>

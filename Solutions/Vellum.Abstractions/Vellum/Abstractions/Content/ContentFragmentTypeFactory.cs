@@ -19,7 +19,7 @@ namespace Vellum.Abstractions.Content
 
         public T Create(ContentFragment contentFragment)
         {
-            var cf = new DynamicContentFragment(contentFragment, this.serviceProvider);
+            DynamicContentFragment cf = new(contentFragment, this.serviceProvider);
 
             return cf.ActLike<T>();
         }

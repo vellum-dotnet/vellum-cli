@@ -3,7 +3,7 @@
   
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>vellum-cli</AssemblyName>
   </PropertyGroup>
 
@@ -43,21 +43,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.4">
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Markdig" Version="0.31.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="Markdig" Version="0.37.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageReference Include="NDepend.Path" Version="2.0.0" />
-    <PackageReference Include="NuGet.Common" Version="6.5.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="6.5.0" />
-    <PackageReference Include="NuGet.Resolver" Version="6.5.0" />
-    <PackageReference Include="YamlDotNet" Version="13.0.2" />
+    <PackageReference Include="NuGet.Common" Version="6.10.1" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="6.9.1" />
+    <PackageReference Include="NuGet.Resolver" Version="6.10.1" />
+    <PackageReference Include="YamlDotNet" Version="16.0.0" />
   </ItemGroup>
 
   <ItemGroup>

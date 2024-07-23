@@ -74,6 +74,13 @@ namespace Vellum.Cli.Commands.Content
                             IEnumerable<(string Question, string Answer)> faqs = post.Faqs;
                         }
 
+                        if (post.Author is not null)
+                        {
+                            // We're just getting the author value from the blog, we need
+                            // to intercept and convert...
+                            var author = post.Author;
+                        }
+
                         table.AddRow(
                             post.Title,
                             post.Author.ToString(),
