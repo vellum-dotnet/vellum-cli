@@ -2,27 +2,25 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Environment
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Spectre.IO;
+
+namespace Vellum.Cli.Abstractions.Environment;
+
+public interface IAppEnvironment : IAppEnvironmentConfiguration
 {
-    using System.Collections.Generic;
-    using System.CommandLine;
-    using System.Threading.Tasks;
-    using NDepend.Path;
+    FilePath NuGetConfigFilePath { get; }
 
-    public interface IAppEnvironment : IAppEnvironmentConfiguration
-    {
-        IAbsoluteFilePath NuGetConfigFilePath { get; }
+    DirectoryPath TemplatesPath { get; }
 
-        IAbsoluteDirectoryPath TemplatesPath { get; }
+    DirectoryPath PluginPath { get; }
 
-        IAbsoluteDirectoryPath PluginPath { get; }
+    IEnumerable<DirectoryPath> PluginPaths { get; }
 
-        IEnumerable<IAbsoluteDirectoryPath> PluginPaths { get; }
+    void Clean();
 
-        void Clean();
+    Task InitializeAsync();
 
-        Task InitializeAsync(IConsole console);
-
-        bool IsInitialized();
-    }
+    bool IsInitialized();
 }

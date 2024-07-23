@@ -2,16 +2,9 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Settings
-{
-    using Vellum.Cli.Abstractions.Configuration;
-    using Vellum.Cli.Abstractions.Environment;
+using Vellum.Cli.Abstractions.Configuration;
+using Vellum.Cli.Abstractions.Environment;
 
-    public class CloudinarySettingsManager : SettingsManager<CloudinarySettings>
-    {
-        public CloudinarySettingsManager(IAppEnvironmentConfiguration appEnvironment)
-            : base(appEnvironment)
-        {
-        }
-    }
-}
+namespace Vellum.Cli.Cloudinary.Settings;
+
+public class CloudinarySettingsManager(IAppEnvironmentConfiguration appEnvironment) : SettingsManager<CloudinarySettings>(appEnvironment);
