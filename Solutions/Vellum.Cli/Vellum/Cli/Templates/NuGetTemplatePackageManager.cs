@@ -25,6 +25,7 @@ namespace Vellum.Cli.Templates
     using Vellum.Cli.Abstractions.Environment;
     using Vellum.Cli.Abstractions.Templates;
     using YamlDotNet.Serialization;
+    using Settings = NuGet.Configuration.Settings;
 
     public class NuGetTemplatePackageManager : ITemplatePackageManager
     {

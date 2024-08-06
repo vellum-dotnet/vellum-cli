@@ -8,31 +8,31 @@
 
 ## dotnet global tools
 
-`vellum-cli` is a [.NET global tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools), which means once installed, it's available on the PATH of your machine. 
+`vellum` is a [.NET global tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools), which means once installed, it's available on the PATH of your machine. 
 
 To list all the global tools installed on your machine, open a command prompt and type:
 
 `dotnet tool list -g`
 
-To install the `vellum-cli` global tool use the following command:
+To install the `vellum` global tool use the following command:
 
-`dotnet tool install -g vellum-cli`
+`dotnet tool install -g vellum`
 
 To install a specific version, use:
 
-`dotnet tool install -g vellum-cli --version <version-number>`
+`dotnet tool install -g vellum --version <version-number>`
 
 To update to the latest version of the tool, use:
 
-`dotnet tool update -g vellum-cli`
+`dotnet tool update -g vellum`
 
 To uninstall the tool, use:
 
-`dotnet tool uninstall -g vellum-cli`
+`dotnet tool uninstall -g vellum`
 
 ## dotnet-suggest
 
-`vellum-cli` supports [dotnet suggest](https://github.com/dotnet/command-line-api/wiki/dotnet-suggest), for tab based auto completion.
+`vellum` supports [dotnet suggest](https://github.com/dotnet/command-line-api/wiki/dotnet-suggest), for tab based auto completion.
 
 To install dotnet suggest:
 
@@ -54,43 +54,48 @@ Otherwise, copy the contents of the file above and paste it into your pre-existi
 
 ## Commands
 
-Once you have `dotnet-suggest` installed, you can use `vellum-cli` then TAB to explore the available commands. Here is a detailed list of the available commands:
+Once you have `dotnet-suggest` installed, you can use `vellum` then TAB to explore the available commands. Here is a detailed list of the available commands:
 
-`vellum-cli environment` - Manipulate the vellum-cli environment & settings. Will list available sub-commands.
+`vellum environment` - Manipulate the vellum environment & settings. Will list available sub-commands.
 
-`vellum-cli environment init` - Initialize the environment & settings.
+`vellum environment init` - Initialize the environment & settings.
 
-`vellum-cli environment set --username <USER.NAME>` - Sets the current User's username.
+`vellum environment set --username <USER.NAME>` - Sets the current User's username.
 
-`vellum-cli environment set --workspace-path <PATH>` - Sets the path to your vellum workspace.
+`vellum environment set --workspace-path <PATH>` - Sets the path to your vellum workspace.
 
-`vellum-cli environment set --publish-path <PATH>` - Sets the path to where your artefacts are generated.
+`vellum environment set --publish-path <PATH>` - Sets the path to where your artefacts are generated.
 
-`vellum-cli environment set --key <KEY> --value <VALUE>` - Store key value pairs in configuration.
+`vellum environment set --key <KEY> --value <VALUE>` - Store key value pairs in configuration.
 
-`vellum-cli plugins install --package-id <PACKAGE ID>` - Install a vellum-cli plugin.
+`vellum plugins install <PACKAGE ID>` - Install a vellum plugin.
 
-`vellum-cli plugins uninstall --package-id <PACKAGE ID>` - Uninstall a vellum-cli plugin.
+`vellum plugins uninstall <PACKAGE ID>` - Uninstall a vellum plugin.
 
-NOT IMPLEMENTED YET `vellum-cli plugins list available` - Lists available vellum-cli plugins from the default package repository (nuget.org).
+NOT IMPLEMENTED YET `vellum plugins list available` - Lists available vellum plugins from the default package repository (nuget.org).
 
-`vellum-cli plugins list` - Lists installed vellum-cli plugins.
+`vellum plugins list installed` - Lists installed vellum plugins.
 
-`vellum-cli new --template-name <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
+`vellum new <TEMPLATE NAME> [--path <PATH>]` - Will create a new file based on the template name selected. The location is derived by convention based on the template content-type, but can be overriden by the `--path` option. 
 
+`vellum content list --published` - Lists all published content
+
+`vellum content list --draft`
+
+`vellum content schedule`
 ## Plugins
 
-`vellum-cli` supports external plugins.
+`vellum` supports external plugins.
 
 ### Cloudinary
 
 [Cloudinary](https://cloudinary.com/) is a Content Delivery Network that also offers sophiticated APIs for manipulating media. 
 
-`vellum-cli cloudinary settings list` - lists the current settings.
+`vellum cloudinary settings list` - lists the current settings.
 
-`vellum-cli cloudinary settings update --cloud <CLOUD> --key <KEY> --secret <SECRET>` - update the settings for Cloudinary authentication.
+`vellum cloudinary settings update <CLOUD> <KEY> <SECRET>` - update the settings for Cloudinary authentication.
 
-`vellum-cli cloudinary upload --file-path <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
+`vellum cloudinary upload <FILE PATH>` - uploads the file to `assets/images/blog/<YYYY>/<MM>/<lowercase_file_name>` and will return you the full public path.
 
 ### Tinify
 
@@ -98,9 +103,9 @@ NOT IMPLEMENTED YET `vellum-cli plugins list available` - Lists available vellum
 
 To use, first you need to register for an [API Key](https://tinypng.com/developers), this will allow you to process 500 images per month.
 
-`vellum-cli tinify settings update --key <KEY>` - updates tinify setting with your API Key.
+`vellum tinify settings update <KEY>` - updates tinify setting with your API Key.
 
-`vellum-cli tinify settings list` - lists your tinify settings.
+`vellum tinify settings list ` - lists your tinify settings.
 
 ## Licenses
 
@@ -121,6 +126,16 @@ We produce two free weekly newsletters; [Azure Weekly](https://azureweekly.info)
 Keep up with everything that's going on at endjin via our [blog](https://blogs.endjin.com/), follow us on [Twitter](https://twitter.com/endjin), or [LinkedIn](https://www.linkedin.com/company/1671851/).
 
 Our other Open Source projects can be found on GitHub on our [endjin](https://github.com/endjin), [Corvus](https://github.com/corvus-dotnet), [Menes](https://github.com/menes-dotnet), [Marain](https://github.com/marain-dotnet), and [AIS.NET](https://github.com/ais-net) Orgs.
+
+<details><summary><b>Show instructions</b></summary>
+
+1. 
+2.
+3.
+4.
+5.
+
+</details>
 
 ## Code of conduct
 
@@ -166,3 +181,4 @@ The IMM is endjin's IP quality framework.
 
 [![OpenChain](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/66efac1a-662c-40cf-b4ec-8b34c29e9fd7?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/66efac1a-662c-40cf-b4ec-8b34c29e9fd7?cache=false)
 
+[![Deployment](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/edea4593-d2dd-485b-bc1b-aaaf18f098f9?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/edea4593-d2dd-485b-bc1b-aaaf18f098f9?cache=false)

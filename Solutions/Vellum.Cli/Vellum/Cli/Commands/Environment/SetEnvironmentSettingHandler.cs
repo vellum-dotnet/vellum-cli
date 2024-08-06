@@ -46,7 +46,14 @@ namespace Vellum.Cli.Commands.Environment
 
             if (key != null && value != null)
             {
-                settings.Configuration[key] = value;
+                if (settings.Configuration.ContainsKey(key))
+                {
+                    settings.Configuration[key] = value;
+                }
+                else
+                {
+                    settings.Configuration.Add(key, value);
+                }
             }
 
             settingsManager.SaveSettings(settings);

@@ -350,8 +350,5 @@ MigrationBackup/
 .ionide/
 .idea/
 
-# Build artefacts
 *.sbom.*
-/Solutions/Vellum.Cli/Properties/launchSettings.json
-_codeCoverage/
-_packages/
+coverage.cobertura.xml

@@ -50,6 +50,19 @@ namespace Vellum.Cli.Packages
             return packageMetaData;
         }
 
+        public IEnumerable<PluginPackage> ListInstalledPackages()
+        {
+            foreach (IAbsoluteDirectoryPath directory in this.appEnvironment.PluginPath.ChildrenDirectoriesPath)
+            {
+                var pluginPackage = new PluginPackage();
+                pluginPackage.Name = directory.DirectoryName;
+                pluginPackage.Version = directory.ChildrenDirectoriesPath.FirstOrDefault()?.DirectoryName;
+                pluginPackage.RepositoryPath = this.appEnvironment.PluginPath;
+
+                yield return pluginPackage;
+            }
+        }
+
         public async Task<PluginPackage> InstallLatestAsync(string packageId)
         {
             PluginPackage packageMetaData = await this.GetLatestTemplatePackage(packageId, string.Empty, "any", this.appEnvironment.PluginPath).ConfigureAwait(false);
