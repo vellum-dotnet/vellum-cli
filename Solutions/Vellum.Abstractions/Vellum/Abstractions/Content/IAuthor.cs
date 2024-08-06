@@ -6,7 +6,7 @@ namespace Vellum.Abstractions.Content
 {
     using System.Collections.Generic;
 
-    public interface IAuthor : IContent
+    public interface IAuthor : IContent, IAuthorId
     {
         string Bio { get; set; }
 
@@ -16,7 +16,7 @@ namespace Vellum.Abstractions.Content
 
         string FirstName { get; set; }
 
-        string FullName { get; }
+        string FullName => $"{this.FirstName} {this.LastName}";
 
         string GitHub { get; set; }
 
@@ -35,7 +35,5 @@ namespace Vellum.Abstractions.Content
         string ProfileHeroImageUrl { get; set; }
 
         string Twitter { get; set; }
-
-        string UserName { get; set; }
     }
 }

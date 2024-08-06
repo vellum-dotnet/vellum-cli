@@ -28,6 +28,7 @@ namespace Vellum.Abstractions.Content.ContentFactories
         private static ContentFactory RegisterContent(this ContentFactory factory)
         {
             factory.RegisterTransientContent<ContentFragmentTypeFactory<IBlogPost>>(WellKnown.ContentFragments.ContentTypes.BlogMarkdown.AsContentFragmentFactory());
+            factory.RegisterTransientContent<ContentFragmentTypeFactory<IAuthor>>(WellKnown.ContentFragments.ContentTypes.Authors.AsContentFragmentFactory());
 
             return factory;
         }

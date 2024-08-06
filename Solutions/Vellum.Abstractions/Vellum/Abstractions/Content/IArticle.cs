@@ -5,10 +5,8 @@
 namespace Vellum.Abstractions.Content;
 
 #pragma warning disable CS8632
-public interface IArticle
+public interface IArticle : IAuthorId
 {
-    IAuthor Author { get; set; }
-
     string Body { get; set; }
 
     string Excerpt { get; set; }

@@ -34,7 +34,7 @@ public class ExtensionTypeFactory : IExtensionTypeFactory
         Type contentFragmentType = this.contentTypeInterfaceFactory.Resolve(cf.ContentType);
         Type extensionDynamicProxyType = this.extensionDynamicProxyTypeFactory.Create(contentFragmentType, extensionTypes);
         Type typeFactory = typeof(ContentFragmentTypeFactory<>);
-        Type[] typeArgs = { extensionDynamicProxyType };
+        Type[] typeArgs = [extensionDynamicProxyType];
         Type genericTypeFactory = typeFactory.MakeGenericType(typeArgs);
         dynamic typeFactoryInstance = Activator.CreateInstance(genericTypeFactory, args: this.serviceProvider);
 

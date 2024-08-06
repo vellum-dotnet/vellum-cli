@@ -13,7 +13,6 @@ namespace Vellum.Cli.Commands.Content
     using Microsoft.Extensions.DependencyInjection;
     using NDepend.Path;
     using Spectre.Console;
-    using Vellum.Abstractions;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
     using Vellum.Abstractions.Content.Primitives;
@@ -50,49 +49,29 @@ namespace Vellum.Cli.Commands.Content
             var siteTaxonomyParser = new SiteTaxonomyParser();
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(siteTaxonomyDirectoryPath);
-            IAsyncEnumerable<TaxonomyDocument> loaded = taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments);
+            List<TaxonomyDocument> loaded = await taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments).ToListAsync();
 
-            var table = new Table();
+            List<IAuthor> authors = loaded.GetAllAuthors(serviceProvider);
+            List<IBlogPost> blogs = loaded.GetAllBlogPosts(serviceProvider);
+
+            Table table = new();
             table.AddColumn("Title");
             table.AddColumn("Author");
             table.AddColumn("Date");
             table.AddColumn("Status");
 
-            await foreach (TaxonomyDocument doc in loaded)
+            foreach (IBlogPost post in blogs)
             {
-                foreach (ContentFragment contentFragment in doc.ContentFragments.OrderBy(cf => cf.Date))
-                {
-                    if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
-                    {
-                        ContentFragmentTypeFactory<IBlogPost> contentFragmentTypeFactory = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
-                        IBlogPost post = contentFragmentTypeFactory.Create(contentFragment);
-
-                        IEnumerable<string> categories = post.Category;
-
-                        if (post.Faqs is not null)
-                        {
-                            IEnumerable<(string Question, string Answer)> faqs = post.Faqs;
-                        }
-
-                        if (post.Author is not null)
-                        {
-                            // We're just getting the author value from the blog, we need
-                            // to intercept and convert...
-                            var author = post.Author;
-                        }
-
-                        table.AddRow(
-                            post.Title,
-                            post.Author.ToString(),
-                            post.Date.ToShortDateString(),
-                            post.PublicationStatus.ToString());
-                    }
-                }
+                table.AddRow(
+                    post.Title,
+                    post.Author(authors).Email,
+                    post.Date.ToShortDateString(),
+                    post.PublicationStatus.ToString());
             }
 
             console.Write(table);
 
-            List<TaxonomyDocument> docs = await loaded.ToListAsync();
+            List<TaxonomyDocument> docs = loaded;
 
             NavigationNode siteNavigation = siteTaxonomyParser.Parse(docs);
 
@@ -112,42 +91,3 @@ namespace Vellum.Cli.Commands.Content
         }
     }
 }
-
-/*
-List<TaxonomyDocument> documents = await loaded.Select(x => x).ToListAsync();
-var siteTaxonomyRepository = new SiteDetailsRepository();
-SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(options.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
-console.Out.Write(siteTaxonomy.Title + System.Environment.NewLine);
-
-await foreach (TaxonomyDocument doc in loaded)
-{
-    Console.WriteLine(doc.Path.ToString());
-    foreach (ContentFragment contentFragment in doc.ContentFragments)
-    {
-        if (contentFragment.ContentType == WellKnown.ContentFragments.ContentTypes.BlogMarkdown)
-        {
-            ContentFragmentTypeFactory<IBlogPost> cff = serviceProvider.GetContent<ContentFragmentTypeFactory<IBlogPost>>(contentFragment.ContentType.AsContentFragmentFactory());
-            IBlogPost cf = cff.Create(contentFragment);
-            Console.WriteLine(cf.Attachments);
-            Console.WriteLine(cf.Author);
-            Console.WriteLine(cf.Body);
-            Console.WriteLine(cf.Categories);
-            Console.WriteLine(cf.ContentType);
-            Console.WriteLine(cf.Date);
-            Console.WriteLine(cf.Excerpt);
-            Console.WriteLine(cf.Faqs);
-            Console.WriteLine(cf.HeaderImageUrl);
-            Console.WriteLine(cf.IsSeries);
-            Console.WriteLine(cf.PartTitle);
-            Console.WriteLine(cf.Position);
-            Console.WriteLine(cf.Profile);
-            Console.WriteLine(cf.PublicationStatus);
-            Console.WriteLine(cf.Series);
-            Console.WriteLine(cf.Slug);
-            Console.WriteLine(cf.Tags);
-            Console.WriteLine(cf.Title);
-            Console.WriteLine(cf.Url);
-            Console.WriteLine(cf.UserName);
-        }
-    }
-}*/
