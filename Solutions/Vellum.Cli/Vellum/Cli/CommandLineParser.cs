@@ -11,7 +11,6 @@ namespace Vellum.Cli
     using System.CommandLine.Parsing;
     using System.IO;
     using System.Threading.Tasks;
-
     using Microsoft.Extensions.DependencyInjection;
     using NDepend.Path;
     using Vellum.Cli.Abstractions;

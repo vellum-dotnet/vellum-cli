@@ -1,10 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
   
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>vellum-cli</AssemblyName>
+
+    <!--
+    Disable warnings
+    RCS1021 - Roslynator is a bit too attached to expression-bodied lambdas
+    -->
+    <NoWarn>$(NoWarn);RCS1021;NU5104;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -69,6 +75,18 @@
     <ProjectReference Include="..\Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj" PrivateAssets="all">
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Roslynator.Analyzers" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

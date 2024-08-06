@@ -23,6 +23,7 @@ namespace Vellum.Cli.Environment
         public const string PluginsDirectoryName = "plugins";
         public const string TemplatesDirectoryName = "templates";
         public const string NuGetFileName = "NuGet.Config";
+
         public const string DefaultNuGetConfig = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <configuration>
     <packageSources>

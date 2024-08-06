@@ -82,7 +82,7 @@ namespace Vellum.Cli.Templates
 
         private async Task<TemplatePackage> GetLatestTemplatePackage(string packageId, string frameworkVersion, IAbsoluteDirectoryPath templateRepositoryPath)
         {
-            ISettings settings = Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
+            ISettings settings = NuGet.Configuration.Settings.LoadSpecificSettings(root: null, this.appEnvironment.NuGetConfigFilePath.ToString());
 
             var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
             var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());

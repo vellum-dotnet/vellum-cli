@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+#pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
+
 namespace Vellum.Cli.Tinify.Commands.Settings
 {
     using System.CommandLine;
@@ -24,11 +26,11 @@ namespace Vellum.Cli.Tinify.Commands.Settings
             try
             {
                 settingsManager.SaveSettings(settings);
-                console.Out.WriteLine($"Settings updated.");
+                console.Out.WriteLine("Settings updated.");
             }
             catch
             {
-                console.Error.WriteLine($"Settings could not be updated.");
+                console.Error.WriteLine("Settings could not be updated.");
             }
 
             return Task.FromResult(0);

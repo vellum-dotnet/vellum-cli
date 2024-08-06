@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+#pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
+
 namespace Vellum.Cli.Commands.New
 {
     using System;
@@ -75,14 +77,13 @@ namespace Vellum.Cli.Commands.New
 
         private static async Task<List<ContentTypeConventionsRoot>> FindAllConventions(IAppEnvironment appEnvironment)
         {
-            var conventionsManager = new ConventionsManager();
             var conventions = new List<ContentTypeConventionsRoot>();
 
             IEnumerable<IAbsoluteFilePath> conventionFilePaths = FindAllConventionFiles(appEnvironment);
 
             foreach (IAbsoluteFilePath filePath in conventionFilePaths)
             {
-                ContentTypeConventionsRoot convention = await conventionsManager.LoadAsync(filePath).ConfigureAwait(false);
+                ContentTypeConventionsRoot convention = await ConventionsManager.LoadAsync(filePath).ConfigureAwait(false);
                 convention.FilePath = filePath;
                 conventions.Add(convention);
             }

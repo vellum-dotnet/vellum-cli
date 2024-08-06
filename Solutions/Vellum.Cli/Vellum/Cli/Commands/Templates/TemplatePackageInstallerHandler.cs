@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+#pragma warning disable RCS1163,IDE0060 // Unused parameter - these methods are required to match certain signatures
+
 namespace Vellum.Cli.Commands.Templates
 {
     using System.CommandLine.Invocation;
@@ -54,7 +56,7 @@ namespace Vellum.Cli.Commands.Templates
 
             currentSettings.DefaultTemplate ??= new DefaultTemplate
             {
-                ContentType = templatePackage.Templates.First().ContentType,
+                ContentType = templatePackage.Templates[0].ContentType,
                 PackageName = templatePackage.PackageId,
                 PackagePath = templatePackage.InstalltionPath,
             };

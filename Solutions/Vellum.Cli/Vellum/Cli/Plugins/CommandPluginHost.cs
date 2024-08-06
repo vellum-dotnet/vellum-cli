@@ -4,17 +4,42 @@
 
 namespace Vellum.Cli.Plugins
 {
-    using System;
-    using System.Collections.Generic;
-    using System.CommandLine;
-    using System.Linq;
-    using McMaster.NETCore.Plugins;
-    using NDepend.Path;
-    using Vellum.Cli.Abstractions.Commands;
+  using System;
+  using System.Collections.Generic;
+  using System.CommandLine;
+  using System.Linq;
 
-    public class CommandPluginHost : ICommandPluginHost
+  using McMaster.NETCore.Plugins;
+
+  using NDepend.Path;
+
+  using Vellum.Cli.Abstractions.Commands;
+
+  public class CommandPluginHost : ICommandPluginHost
+  {
+    public IEnumerable<Command> Discover(IEnumerable<IAbsoluteDirectoryPath> pluginPaths)
     {
-        public IEnumerable<Command> Discover(IEnumerable<IAbsoluteDirectoryPath> pluginPaths)
+      var loaders = new List<PluginLoader>();
+      var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
+                                                       .DistinctBy(x => x.FileName)
+                                                       .ToList();
+
+      foreach (IAbsoluteFilePath assembly in assemblies)
+      {
+        // Enable Hot Reload so that we can delete plugins, otherwise you get an access denied exception
+        var pluginLoader = PluginLoader.CreateFromAssemblyFile(
+            assembly.FileInfo.FullName,
+            sharedTypes: new[] { typeof(ICommandPlugin) },
+            config => config.EnableHotReload = true);
+
+        loaders.Add(pluginLoader);
+      }
+
+      List<Command> loadedCommands = new();
+
+      foreach (PluginLoader loader in loaders)
+      {
+        try
         {
             var loaders = new List<PluginLoader>();
             var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
@@ -72,5 +97,13 @@ namespace Vellum.Cli.Plugins
 
             return loadedCommands;
         }
+        catch (Exception exception)
+        {
+          Console.WriteLine(exception.Message);
+        }
+      }
+
+      return loadedCommands;
     }
+  }
 }
