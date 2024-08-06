@@ -5,8 +5,8 @@
     using System.IO;
     using System.Linq;
     using Microsoft.Extensions.DependencyInjection;
+    using Reqnroll;
     using Shouldly;
-    using TechTalk.SpecFlow;
     using Vellum.Abstractions.Content;
     using Vellum.Abstractions.Content.ContentFactories;
     using Vellum.Abstractions.Content.Extensions;
@@ -38,7 +38,7 @@
         [Given(@"the following markdown files")]
         public void GivenTheFollowingMarkdownFiles(Table table)
         {
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 this.markdownDocumentRegistry.Register(row["document"], row["file"]);
             }
@@ -47,7 +47,7 @@
         [Given(@"the following html files")]
         public void GivenTheFollowingHtmlFiles(Table table)
         {
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 this.htmlDocumentRegistry.Register(row["document"], row["file"]);
             }
@@ -56,7 +56,7 @@
         [Given(@"the following content blocks")]
         public void GivenTheFollowingContentBlocks(Table table)
         {
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 this.contentBlockRegistry.Register(row["Id"], row["ContentType"], row["SpecPath"]);
             }
@@ -100,7 +100,7 @@
         [Then(@"Content Fragment should contain")]
         public void ThenContentFragmentShouldContain(Table table)
         {
-            TableRow firstRow = table.Rows[0];
+            var firstRow = table.Rows[0];
 
             string contentType = firstRow["ContentType"];
             var date = DateTime.Parse(firstRow["Date"]);
@@ -127,7 +127,7 @@
         {
             List<string> extensions = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 extensions.Add(row["ContentType"]);
             }
@@ -141,7 +141,7 @@
         public void ThenTheContentFragmentMetaDataShouldContain(Table table)
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
-            TableRow firstRow = table.Rows[0];
+            var firstRow = table.Rows[0];
             ((string)cf.MetaData["Title"]).ShouldBe<string>(firstRow["Title"]);
             ((string)cf.MetaData["Slug"]).ShouldBe(firstRow["Slug"]);
             ((string)cf.MetaData["Author"]).ShouldBe(firstRow["Author"]);
@@ -166,7 +166,7 @@
 
             List<string> list = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 list.Add(row["Value"].Trim());
             }
@@ -183,7 +183,7 @@
 
             List<string> list = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 list.Add(row["Key"].Trim());
             }
@@ -200,7 +200,7 @@
 
             List<KeyValuePair<string, string>> expected = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 expected.Add(new KeyValuePair<string, string>("Q", row["Question"]));
                 expected.Add(new KeyValuePair<string, string>("A", row["Answer"]));
@@ -267,7 +267,7 @@
         public void ThenTheBlogPostShouldContain(Table table)
         {
             IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
-            TableRow firstRow = table.Rows[0];
+            var firstRow = table.Rows[0];
 
             string bodyHtmlDocumentName = firstRow["BodyHtmlDocumentName"];
             string bodyHtml = this.htmlDocumentRegistry.GetFileContent(bodyHtmlDocumentName);
@@ -289,7 +289,7 @@
 
             List<string> expected = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 expected.Add(row["Value"].Trim());
             }
@@ -304,7 +304,7 @@
 
             List<string> expected = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 expected.Add(row["Key"].Trim());
             }
@@ -320,7 +320,7 @@
 
             List<(string, string)> expected = new();
 
-            foreach (TableRow row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 expected.Add(new(row["Question"], row["Answer"]));
             }

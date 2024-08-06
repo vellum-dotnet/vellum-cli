@@ -1,9 +1,9 @@
 ﻿namespace Vellum.Abstractions.Specs;
 
 using System;
-using BoDi;
 using Microsoft.Extensions.DependencyInjection;
-using TechTalk.SpecFlow;
+using Reqnroll;
+using Reqnroll.BoDi;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.ContentFactories;
 using Vellum.Abstractions.Content.Extensions;
