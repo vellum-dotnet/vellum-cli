@@ -43,7 +43,7 @@ param (
     [string[]] $Tasks = @("."),
 
     [Parameter()]
-    [string] $Configuration = "Release",
+    [string] $Configuration = "Debug",
 
     [Parameter()]
     [string] $BuildRepositoryUri = "",
@@ -71,10 +71,13 @@ param (
     [string] $BuildModulePath,
 
     [Parameter()]
-    [version] $BuildModuleVersion = "1.2.2",
+    [version] $BuildModuleVersion = "1.5.6",
 
     [Parameter()]
-    [version] $InvokeBuildModuleVersion = "5.7.1"
+    [string] $BuildModulePackageVersion = $BuildModuleVersion,
+
+    [Parameter()]
+    [version] $InvokeBuildModuleVersion = "5.10.3"
 )
 
 $ErrorActionPreference = $ErrorActionPreference ? $ErrorActionPreference : 'Stop'
@@ -126,10 +129,10 @@ $SkipInit = $false
 $SkipVersion = $false
 $SkipBuild = $false
 $CleanBuild = $Clean
-$SkipTest = $false
-$SkipTestReport = $true     # Temporarily skip the test report due .NET 7 MSBuild issue
-$SkipPackage = $false
+$SkipTest = $true
+$SkipTestReport = $false
 $SkipAnalysis = $false
+$SkipPackage = $false
 
 
 #
@@ -153,12 +156,6 @@ $NuSpecFilesToPackage = @(
 #
 $ExcludeFilesFromCodeCoverage = ""
 
-#
-# Update to the latest report generator versions
-#
-$ReportGeneratorToolVersion = "5.1.10"
-
-
 # Synopsis: Build, Test and Package
 task . FullBuild
 
@@ -176,7 +173,7 @@ task PostTest {}
 task PreTestReport {}
 task PostTestReport {}
 task PreAnalysis {}
-task PostAnalysis {}
+task PostAnalysis
 task PrePackage {}
 task PostPackage {}
 task PrePublish {}
