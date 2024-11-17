@@ -4,60 +4,62 @@
 
 namespace Vellum.Cli.Plugins
 {
-  using System;
-  using System.Collections.Generic;
-  using System.CommandLine;
-  using System.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.CommandLine;
+    using System.IO;
+    using System.Linq;
+    using McMaster.NETCore.Plugins;
+    using Microsoft.Extensions.FileSystemGlobbing;
+    using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+    using Spectre.IO;
+    using Vellum.Cli.Abstractions.Commands;
 
-  using McMaster.NETCore.Plugins;
-
-  using NDepend.Path;
-
-  using Vellum.Cli.Abstractions.Commands;
-
-  public class CommandPluginHost : ICommandPluginHost
-  {
-    public IEnumerable<Command> Discover(IEnumerable<IAbsoluteDirectoryPath> pluginPaths)
+    public class CommandPluginHost : ICommandPluginHost
     {
-      var loaders = new List<PluginLoader>();
-      var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
-                                                       .DistinctBy(x => x.FileName)
-                                                       .ToList();
+        public bool RaiseExceptions { get; set; }
 
-      foreach (IAbsoluteFilePath assembly in assemblies)
-      {
-        // Enable Hot Reload so that we can delete plugins, otherwise you get an access denied exception
-        var pluginLoader = PluginLoader.CreateFromAssemblyFile(
-            assembly.FileInfo.FullName,
-            sharedTypes: new[] { typeof(ICommandPlugin) },
-            config => config.EnableHotReload = true);
-
-        loaders.Add(pluginLoader);
-      }
-
-      List<Command> loadedCommands = new();
-
-      foreach (PluginLoader loader in loaders)
-      {
-        try
+        public List<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths)
         {
-            var loaders = new List<PluginLoader>();
-            var assemblies = pluginPaths.SelectMany(dir => dir.ChildrenFilesPath.Where(x => x.FileExtension == ".dll"))
-                                                             .DistinctBy(x => x.FileName)
-                                                             .ToList();
+            List<FileInfo> files = [];
+            List<PluginLoader> loaders = [];
+            Matcher matcher = new();
+            matcher.AddInclude("*.dll");
 
-            foreach (IAbsoluteFilePath assembly in assemblies)
+            DirectoryInfo commonDir = new(AppContext.BaseDirectory);
+
+            foreach (DirectoryPath directoryPath in pluginPaths)
             {
-                // Enable Hot Reload so that we can delete plugins, otherwise you get an access denied exception
-                var pluginLoader = PluginLoader.CreateFromAssemblyFile(
-                    assembly.FileInfo.FullName,
-                    sharedTypes: new[] { typeof(ICommandPlugin) },
-                    config => config.EnableHotReload = true);
+                string result = System.IO.Path.GetRelativePath(directoryPath.FullPath, commonDir.FullName);
+                string relPath = System.IO.Path.Combine(commonDir.FullName, result, directoryPath.FullPath);
+                string fullPath = System.IO.Path.GetFullPath(relPath);
 
-                loaders.Add(pluginLoader);
+                PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(fullPath)));
+
+                foreach (FilePatternMatch file in matches.Files)
+                {
+                    files.Add(new FileInfo(System.IO.Path.Join(fullPath, file.Path)));
+                }
             }
 
-            List<Command> loadedCommands = new();
+            foreach (FileInfo file in files.DistinctBy(x => x.Name))
+            {
+                PluginLoader loader = PluginLoader.CreateFromAssemblyFile(
+                    file.FullName,
+                    isUnloadable: false,
+                    sharedTypes: [typeof(ICommandPlugin)],
+                    config =>
+                    {
+                        config.IsLazyLoaded = false;
+                        config.EnableHotReload = false;
+                    });
+
+                loaders.Add(loader);
+            }
+
+            List<ICommandPlugin> plugins = [];
+            List<Exception> exceptions = [];
+            bool containPlugin = false;
 
             foreach (PluginLoader loader in loaders)
             {
@@ -68,42 +70,38 @@ namespace Vellum.Cli.Plugins
                                  .GetTypes()
                                  .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
                     {
-                        Command command = null;
-
-                        try
+                        // This assumes the implementation of IPlugin has a parameterless constructor
+                        if (Activator.CreateInstance(pluginType) is ICommandPlugin plugin)
                         {
-                            // This assumes the implementation of IPlugin has a parameter-less constructor
-                            var plugin = Activator.CreateInstance(pluginType) as ICommandPlugin;
-                            command = plugin?.Command();
-                        }
-                        catch (Exception exception)
-                        {
-                            Console.WriteLine($"Cannot Load {pluginType.FullName}");
-                            Console.WriteLine($"You may need to manually delete the plugin or run the plugins clear command.");
-                            Console.WriteLine(exception.Message);
-                        }
-
-                        if (command != null)
-                        {
-                            loadedCommands.Add(command);
+                            containPlugin = true;
+                            plugins.Add(plugin);
                         }
                     }
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(exception.Message);
+                    exceptions.Add(ex);
+                }
+                finally
+                {
+                    if (!containPlugin)
+                    {
+                        loader.Dispose();
+                    }
+
+                    containPlugin = false;
                 }
             }
 
-            return loadedCommands;
-        }
-        catch (Exception exception)
-        {
-          Console.WriteLine(exception.Message);
-        }
-      }
+            loaders.Clear();
+            files.Clear();
 
-      return loadedCommands;
+            if (this.RaiseExceptions && exceptions.Count > 0)
+            {
+                throw new AggregateException("One or more plugins failed to load", exceptions);
+            }
+
+            return plugins;
+        }
     }
-  }
 }
