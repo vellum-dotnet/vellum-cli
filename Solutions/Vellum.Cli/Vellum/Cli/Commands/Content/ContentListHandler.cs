@@ -32,7 +32,7 @@ namespace Vellum.Cli.Commands.Content
             IAppEnvironment appEnvironment,
             InvocationContext context = null)
         {
-            var stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new();
             stopwatch.Start();
 
             services.AddWellKnownTaxonomyContentTypes();
@@ -42,17 +42,19 @@ namespace Vellum.Cli.Commands.Content
 
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            var siteTaxonomyRepository = new SiteDetailsRepository();
+            TaxonomyDocumentListExtension.Configure(serviceProvider);
+
+            SiteDetailsRepository siteTaxonomyRepository = new();
             SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(siteTaxonomyDirectoryPath).ConfigureAwait(false);
 
-            var taxonomyDocumentRepository = new TaxonomyDocumentRespository(services);
-            var siteTaxonomyParser = new SiteTaxonomyParser();
+            TaxonomyDocumentRespository taxonomyDocumentRepository = new(services);
+            SiteTaxonomyParser siteTaxonomyParser = new();
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(siteTaxonomyDirectoryPath);
             List<TaxonomyDocument> loaded = await taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments).ToListAsync();
 
-            List<IAuthor> authors = loaded.GetAllAuthors(serviceProvider);
-            List<IBlogPost> blogs = loaded.GetAllBlogPosts(serviceProvider);
+            List<IAuthor> authors = loaded.GetAllAuthors();
+            List<IBlogPost> blogs = loaded.GetAllBlogPosts();
 
             Table table = new();
             table.AddColumn("Title");
@@ -71,15 +73,13 @@ namespace Vellum.Cli.Commands.Content
 
             console.Write(table);
 
-            List<TaxonomyDocument> docs = loaded;
+            NavigationNode siteNavigation = siteTaxonomyParser.Parse(loaded);
 
-            NavigationNode siteNavigation = siteTaxonomyParser.Parse(docs);
-
-            var siteContext = new SiteContext
+            SiteContext siteContext = new()
             {
                 Preview = false,
                 Navigation = siteNavigation,
-                Pages = docs,
+                Pages = loaded,
                 Details = siteTaxonomy,
             };
 
@@ -87,6 +87,7 @@ namespace Vellum.Cli.Commands.Content
 
             Console.WriteLine("Rendering Took: {0}", stopwatch.Elapsed);
             Console.ReadKey();
+
             return ReturnCodes.Ok;
         }
     }

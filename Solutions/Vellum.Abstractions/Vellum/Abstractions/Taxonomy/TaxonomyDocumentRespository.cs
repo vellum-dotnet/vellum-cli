@@ -88,7 +88,7 @@ namespace Vellum.Abstractions.Taxonomy
                 yield return taxonomyDocument;
             }
 
-            var mc = (MemoryCache)serviceProvider.GetRequiredService<IMemoryCache>();
+            MemoryCache mc = (MemoryCache)serviceProvider.GetRequiredService<IMemoryCache>();
 
             mc.Compact(100);
         }

@@ -16,22 +16,29 @@ using Vellum.Abstractions.Taxonomy;
 
 public static class TaxonomyDocumentListExtension
 {
+    private static ServiceProvider sp;
+
+    public static void Configure(ServiceProvider serviceProvider)
+    {
+        sp = serviceProvider;
+    }
+
     public static IAuthor Author(this IBlogPost blogPost, List<IAuthor> authors)
     {
         return authors.First(x => string.Compare(x.AuthorId, blogPost.AuthorId, StringComparison.InvariantCultureIgnoreCase) == 0);
     }
 
-    public static List<IAuthor> GetAllAuthors(this List<TaxonomyDocument> taxonomyDocuments, ServiceProvider serviceProvider)
+    public static List<IAuthor> GetAllAuthors(this List<TaxonomyDocument> taxonomyDocuments)
     {
-        return GetAll<IAuthor>(taxonomyDocuments, WellKnown.ContentFragments.ContentTypes.Authors, serviceProvider);
+        return GetAll<IAuthor>(taxonomyDocuments, WellKnown.ContentFragments.ContentTypes.Authors);
     }
 
-    public static List<IBlogPost> GetAllBlogPosts(this List<TaxonomyDocument> taxonomyDocuments, ServiceProvider serviceProvider)
+    public static List<IBlogPost> GetAllBlogPosts(this List<TaxonomyDocument> taxonomyDocuments)
     {
-        return GetAll<IBlogPost>(taxonomyDocuments, WellKnown.ContentFragments.ContentTypes.BlogMarkdown, serviceProvider).OrderBy(x => x.Date).ToList();
+        return GetAll<IBlogPost>(taxonomyDocuments, WellKnown.ContentFragments.ContentTypes.BlogMarkdown).OrderBy(x => x.Date).ToList();
     }
 
-    public static List<T> GetAll<T>(this List<TaxonomyDocument> taxonomyDocuments, string contentType, ServiceProvider serviceProvider)
+    public static List<T> GetAll<T>(this List<TaxonomyDocument> taxonomyDocuments, string contentType)
         where T : class, IContent
     {
         List<ContentFragment> contentFragments = taxonomyDocuments.SelectMany(x => x.ContentFragments.Where(y => y.ContentType == contentType)).Distinct().ToList();
@@ -39,7 +46,7 @@ public static class TaxonomyDocumentListExtension
 
         foreach (ContentFragment contentFragment in contentFragments)
         {
-            ContentFragmentTypeFactory<T> contentFragmentTypeFactory = serviceProvider.GetContent<ContentFragmentTypeFactory<T>>(contentFragment.ContentType.AsContentFragmentFactory());
+            ContentFragmentTypeFactory<T> contentFragmentTypeFactory = sp.GetContent<ContentFragmentTypeFactory<T>>(contentFragment.ContentType.AsContentFragmentFactory());
             T item = contentFragmentTypeFactory.Create(contentFragment);
             dataType.Add(item);
         }
