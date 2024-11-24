@@ -45,7 +45,7 @@ namespace Vellum.Cli.Commands.New
             List<ContentTypeConventionsRoot> conventions = await FindAllConventions(appEnvironment);
 
             // Select the convention that matches the template name specified
-            ContentTypeConventionsRoot contentTypeConventionsRoot = conventions.Find(x => x.Conventions.Any(y => y.Conventions.Any(z => z.Value == templateName)));
+            ContentTypeConventionsRoot contentTypeConventionsRoot = conventions.FirstOrDefault(x => x.Conventions.Any(y => y.Conventions.Any(z => z.Value == templateName)));
 
             // Now find the filepath..
             Convention convention = contentTypeConventionsRoot?.Conventions.SelectMany(x => x.Conventions)

@@ -13,9 +13,13 @@ namespace Vellum.Cli
 
     public static class Program
     {
+        private static readonly ServiceCollection ServiceCollection = new();
+
         public static async Task<int> Main(string[] args)
         {
             System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+            ServiceCollection.AddCommonServices();
 
             return await new CommandLineParser(
                 new CompositeConsole(),

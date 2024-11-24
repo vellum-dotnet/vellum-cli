@@ -15,15 +15,14 @@
 
   <PropertyGroup>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>vellum-cli</ToolCommandName>
+    <ToolCommandName>vellum</ToolCommandName>
   </PropertyGroup>
 
   <PropertyGroup>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RestoreLockedMode Condition="$(ContinuousIntegrationBuild) == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
-
-  <!-- Enable these settings for an optimised single .exe -->
+ <!-- Enable these settings for an optimised single .exe -->
   <!--
   <PropertyGroup>
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
@@ -54,23 +53,28 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Markdig" Version="0.33.0" />
+    <PackageReference Include="Markdig" Version="0.37.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="NuGet.Packaging" Version="6.8.0" />
-    <PackageReference Include="Spectre.Console" Version="0.48.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="System.CommandLine.Experimental" Version="0.3.0-alpha.19577.1" />
-    <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageReference Include="NDepend.Path" Version="2.0.0" />
-    <PackageReference Include="NuGet.Common" Version="6.8.0" />
-    <PackageReference Include="NuGet.Resolver" Version="6.8.0" />
-    <PackageReference Include="YamlDotNet" Version="13.7.1" />
+    <PackageReference Include="NuGet.Common" Version="6.10.1" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="6.9.1" />
+    <PackageReference Include="NuGet.Resolver" Version="6.10.1" />
+    <PackageReference Include="YamlDotNet" Version="16.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Vellum.Abstractions\Vellum.Abstractions.csproj" />
     <ProjectReference Include="..\Vellum.Cli.Abstractions\Vellum.Cli.Abstractions.csproj" />
+    <ProjectReference Include="..\Vellum.Cli.Cloudinary\Vellum.Cli.Cloudinary.csproj" PrivateAssets="all">
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj" PrivateAssets="all">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

@@ -43,7 +43,7 @@ param (
     [string[]] $Tasks = @("."),
 
     [Parameter()]
-    [string] $Configuration = "Release",
+    [string] $Configuration = "Debug",
 
     [Parameter()]
     [string] $BuildRepositoryUri = "",
@@ -72,6 +72,9 @@ param (
 
     [Parameter()]
     [version] $BuildModuleVersion = "1.5.10",
+
+    [Parameter()]
+    [string] $BuildModulePackageVersion = $BuildModuleVersion,
 
     [Parameter()]
     [version] $InvokeBuildModuleVersion = "5.10.3"
