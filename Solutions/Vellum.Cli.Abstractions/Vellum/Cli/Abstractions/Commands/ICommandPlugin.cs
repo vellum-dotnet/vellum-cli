@@ -2,12 +2,11 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Commands
-{
-    using System.CommandLine;
+using Spectre.Console.Cli;
 
-    public interface ICommandPlugin
-    {
-        Command Command();
-    }
+namespace Vellum.Cli.Abstractions.Commands;
+
+public interface ICommandPlugin
+{
+    void Configure(IConfigurator configurator);
 }

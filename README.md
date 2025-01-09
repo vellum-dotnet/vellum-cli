@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/endjin-labs/vellum.cli/_apis/build/status/vellum-dotnet.vellum.cli?branchName=main)](https://dev.azure.com/endjin-labs/vellum.cli/_build/latest?definitionId=4&branchName=main)
 [![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/vellum-dotnet/vellum-cli/main/LICENSE)
-[![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum.cli/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/total?cache=false)
+[![IMM](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum.cli/total?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/total?cache=false)
 
 `Vellum` is a Static Content Management System, available as a .NET Global Tool, and is built using Microsoft's `System.CommandLine` [libraries](https://github.com/dotnet/command-line-api). These packages, while still marked as experimental, are seeing lots of real-world usage, including tools such as [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet) and [.NET Interactive](https://github.com/dotnet/interactive). A useful blog post for understanding `System.CommandLine` is [Radu Matei's](https://twitter.com/matei_radu) blog post "[Building self-contained, single executable .NET Core 3 CLI tools](https://radu-matei.com/blog/self-contained-dotnet-cli/)".
 
@@ -130,36 +130,39 @@ This project has adopted a code of conduct adapted from the [Contributor Covenan
 
 The IMM is endjin's IP quality framework.
 
-[![Shared Engineering Standards](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/74e29f9b-6dca-4161-8fdd-b468a1eb185d?nocache=true)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/74e29f9b-6dca-4161-8fdd-b468a1eb185d?cache=false)
+[![Shared Engineering Standards](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/74e29f9b-6dca-4161-8fdd-b468a1eb185d?nocache=true)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/74e29f9b-6dca-4161-8fdd-b468a1eb185d?cache=false)
 
-[![Coding Standards](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/f6f6490f-9493-4dc3-a674-15584fa951d8?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/f6f6490f-9493-4dc3-a674-15584fa951d8?cache=false)
+[![Coding Standards](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/f6f6490f-9493-4dc3-a674-15584fa951d8?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/f6f6490f-9493-4dc3-a674-15584fa951d8?cache=false)
 
-[![Executable Specifications](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/bb49fb94-6ab5-40c3-a6da-dfd2e9bc4b00?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/bb49fb94-6ab5-40c3-a6da-dfd2e9bc4b00?cache=false)
+[![Executable Specifications](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/bb49fb94-6ab5-40c3-a6da-dfd2e9bc4b00?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/bb49fb94-6ab5-40c3-a6da-dfd2e9bc4b00?cache=false)
 
-[![Code Coverage](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/0449cadc-0078-4094-b019-520d75cc6cbb?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/0449cadc-0078-4094-b019-520d75cc6cbb?cache=false)
+[![Code Coverage](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/0449cadc-0078-4094-b019-520d75cc6cbb?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/0449cadc-0078-4094-b019-520d75cc6cbb?cache=false)
 
-[![Benchmarks](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/64ed80dc-d354-45a9-9a56-c32437306afa?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/64ed80dc-d354-45a9-9a56-c32437306afa?cache=false)
+[![Benchmarks](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/64ed80dc-d354-45a9-9a56-c32437306afa?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/64ed80dc-d354-45a9-9a56-c32437306afa?cache=false)
 
-[![Reference Documentation](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/2a7fc206-d578-41b0-85f6-a28b6b0fec5f?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/2a7fc206-d578-41b0-85f6-a28b6b0fec5f?cache=false)
+[![Reference Documentation](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/2a7fc206-d578-41b0-85f6-a28b6b0fec5f?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/2a7fc206-d578-41b0-85f6-a28b6b0fec5f?cache=false)
 
-[![Design & Implementation Documentation](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/f026d5a2-ce1a-4e04-af15-5a35792b164b?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/f026d5a2-ce1a-4e04-af15-5a35792b164b?cache=false)
+[![Design & Implementation Documentation](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/f026d5a2-ce1a-4e04-af15-5a35792b164b?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/f026d5a2-ce1a-4e04-af15-5a35792b164b?cache=false)
 
-[![How-to Documentation](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/145f2e3d-bb05-4ced-989b-7fb218fc6705?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/145f2e3d-bb05-4ced-989b-7fb218fc6705?cache=false)
+[![How-to Documentation](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/145f2e3d-bb05-4ced-989b-7fb218fc6705?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/145f2e3d-bb05-4ced-989b-7fb218fc6705?cache=false)
 
-[![Date of Last IP Review](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/da4ed776-0365-4d8a-a297-c4e91a14d646?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/da4ed776-0365-4d8a-a297-c4e91a14d646?cache=false)
+[![Date of Last IP Review](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/da4ed776-0365-4d8a-a297-c4e91a14d646?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/da4ed776-0365-4d8a-a297-c4e91a14d646?cache=false)
 
-[![Framework Version](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/6c0402b3-f0e3-4bd7-83fe-04bb6dca7924?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/6c0402b3-f0e3-4bd7-83fe-04bb6dca7924?cache=false)
+[![Framework Version](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/6c0402b3-f0e3-4bd7-83fe-04bb6dca7924?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/6c0402b3-f0e3-4bd7-83fe-04bb6dca7924?cache=false)
 
-[![Associated Work Items](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/79b8ff50-7378-4f29-b07c-bcd80746bfd4?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/79b8ff50-7378-4f29-b07c-bcd80746bfd4?cache=false)
+[![Associated Work Items](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/79b8ff50-7378-4f29-b07c-bcd80746bfd4?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/79b8ff50-7378-4f29-b07c-bcd80746bfd4?cache=false)
 
-[![Source Code Availability](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/30e1b40b-b27d-4631-b38d-3172426593ca?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/30e1b40b-b27d-4631-b38d-3172426593ca?cache=false)
+[![Source Code Availability](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/30e1b40b-b27d-4631-b38d-3172426593ca?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/30e1b40b-b27d-4631-b38d-3172426593ca?cache=false)
 
-[![License](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/d96b5bdc-62c7-47b6-bcc4-de31127c08b7?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/d96b5bdc-62c7-47b6-bcc4-de31127c08b7?cache=false)
+[![License](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/d96b5bdc-62c7-47b6-bcc4-de31127c08b7?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/d96b5bdc-62c7-47b6-bcc4-de31127c08b7?cache=false)
 
-[![Production Use](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/87ee2c3e-b17a-4939-b969-2c9c034d05d7?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/87ee2c3e-b17a-4939-b969-2c9c034d05d7?cache=false)
+[![Production Use](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/87ee2c3e-b17a-4939-b969-2c9c034d05d7?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/87ee2c3e-b17a-4939-b969-2c9c034d05d7?cache=false)
 
-[![Insights](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/71a02488-2dc9-4d25-94fa-8c2346169f8b?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/71a02488-2dc9-4d25-94fa-8c2346169f8b?cache=false)
+[![Insights](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/71a02488-2dc9-4d25-94fa-8c2346169f8b?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/71a02488-2dc9-4d25-94fa-8c2346169f8b?cache=false)
 
-[![Packaging](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/547fd9f5-9caf-449f-82d9-4fba9e7ce13a?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/547fd9f5-9caf-449f-82d9-4fba9e7ce13a?cache=false)
+[![Packaging](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/547fd9f5-9caf-449f-82d9-4fba9e7ce13a?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/547fd9f5-9caf-449f-82d9-4fba9e7ce13a?cache=false)
 
-[![Deployment](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/edea4593-d2dd-485b-bc1b-aaaf18f098f9?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/vellum-dotnet/vellum-cli/rule/edea4593-d2dd-485b-bc1b-aaaf18f098f9?cache=false)
+[![Deployment](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/edea4593-d2dd-485b-bc1b-aaaf18f098f9?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/edea4593-d2dd-485b-bc1b-aaaf18f098f9?cache=false)
+
+[![OpenChain](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/66efac1a-662c-40cf-b4ec-8b34c29e9fd7?cache=false)](https://imm.endjin.com/api/imm/github/vellum-dotnet/vellum-cli/rule/66efac1a-662c-40cf-b4ec-8b34c29e9fd7?cache=false)
+

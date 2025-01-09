@@ -1,0 +1,61 @@
+name: build
+on:
+  push:
+    branches:
+    - main
+    tags:
+    - '*'
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+    inputs:
+      forcePublish:
+        description: When true the Publish stage will always be run, otherwise it only runs for tagged versions.
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  checks: write  # enable test result annotations
+  contents: write  # enable creating releases
+  issues: read
+  packages: write  # enable publishing packages
+  pull-requests: write  # enable test result annotations
+
+jobs:
+  build:
+    name: Run Build
+    runs-on: ubuntu-latest
+    outputs:
+      semver: ${{ steps.run_build.outputs.semver }}
+      major: ${{ steps.run_build.outputs.major }}
+      majorMinor: ${{ steps.run_build.outputs.majorMinor }}
+      preReleaseTag: ${{ steps.run_build.outputs.preReleaseTag }}
+
+    steps:
+    - uses: endjin/Endjin.RecommendedPractices.GitHubActions/actions/prepare-env-vars-and-secrets@main
+      id: prepareEnvVarsAndSecrets
+      with:
+        environmentVariablesYaml: |
+          BUILDVAR_Configuration: "Release"
+          BUILDVAR_NuGetPublishSource: "${{ startsWith(github.ref, 'refs/tags/') && 'https://api.nuget.org/v3/index.json' || format('https://nuget.pkg.github.com/{0}/index.json', github.repository_owner) }}"
+        secretsYaml: |
+          NUGET_API_KEY: "${{ startsWith(github.ref, 'refs/tags/') && secrets.NUGET_APIKEY || secrets.BUILD_PUBLISHER_PAT }}"
+
+    - uses: endjin/Endjin.RecommendedPractices.GitHubActions/actions/run-build-process@main
+      id: run_build
+      with:
+        netSdkVersion: '8.x'
+        # workflow_dispatch inputs are always strings, the type property is just for the UI
+        forcePublish: ${{ github.event.inputs.forcePublish == 'true' }}
+        sbomOutputStorageAccountName: ${{ vars.SBOM_OUTPUT_STORAGE_ACCOUNT_NAME }}
+        sbomOutputStorageContainerName: ${{ vars.SBOM_OUTPUT_STORAGE_CONTAINER_NAME }}
+        buildEnv: ${{ steps.prepareEnvVarsAndSecrets.outputs.environmentVariablesYamlBase64 }}
+        buildSecrets: ${{ steps.prepareEnvVarsAndSecrets.outputs.secretsYamlBase64 }}
+        buildAzureCredentials: ${{ secrets.AZURE_READER_CREDENTIALS }}
+        token: ${{ secrets.GITHUB_TOKEN }}

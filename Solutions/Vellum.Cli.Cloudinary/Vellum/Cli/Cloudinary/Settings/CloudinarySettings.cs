@@ -2,14 +2,6 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Cloudinary.Settings
-{
-    public class CloudinarySettings
-    {
-        public string Cloud { get; set; }
+namespace Vellum.Cli.Cloudinary.Settings;
 
-        public string Key { get; set; }
-
-        public string Secret { get; set; }
-    }
-}
+public record CloudinarySettings(string? Cloud, string? Key, string? Secret);
