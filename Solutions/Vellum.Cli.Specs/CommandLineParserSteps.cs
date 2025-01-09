@@ -1,8 +1,8 @@
-﻿namespace Vellum.Cli.Specs;
+﻿using Reqnroll;
+
+namespace Vellum.Cli.Specs;
 
 using System;
-
-using TechTalk.SpecFlow;
 
 [Binding]
 public class CommandLineParserSteps
