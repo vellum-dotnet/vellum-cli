@@ -2,16 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Templates
-{
-    using Vellum.Cli.Abstractions.Configuration;
-    using Vellum.Cli.Abstractions.Environment;
+using Vellum.Cli.Abstractions.Configuration;
+using Vellum.Cli.Abstractions.Environment;
 
-    public class TemplateSettingsManager : SettingsManager<TemplatesSettings>
+namespace Vellum.Cli.Abstractions.Templates;
+
+public class TemplateSettingsManager : SettingsManager<TemplatesSettings>
+{
+    public TemplateSettingsManager(IAppEnvironment appEnvironment)
+        : base(appEnvironment)
     {
-        public TemplateSettingsManager(IAppEnvironment appEnvironment)
-            : base(appEnvironment)
-        {
         }
-    }
 }

@@ -2,31 +2,30 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Environment
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Vellum.Cli.Abstractions.Environment;
+
+public class EnvironmentSettings
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    public Dictionary<string, string> Configuration { get; set; } = new Dictionary<string, string>();
 
-    public class EnvironmentSettings
+    public string Username { get; set; }
+
+    public string PublishPath { get; set; }
+
+    public string WorkspacePath { get; set; }
+
+    public IEnumerable<KeyValuePair<string, string>> ToKvPs()
     {
-        public Dictionary<string, string> Configuration { get; set; } = new Dictionary<string, string>();
-
-        public string Username { get; set; }
-
-        public string PublishPath { get; set; }
-
-        public string WorkspacePath { get; set; }
-
-        public IEnumerable<KeyValuePair<string, string>> ToKvPs()
+        var dictionary = new Dictionary<string, string>
         {
-            var dictionary = new Dictionary<string, string>
-            {
-                { nameof(this.Username).ToLowerInvariant(), this.Username },
-                { nameof(this.PublishPath).ToLowerInvariant(), this.PublishPath },
-                { nameof(this.WorkspacePath).ToLowerInvariant(), this.WorkspacePath },
-            };
+            { nameof(this.Username).ToLowerInvariant(), this.Username },
+            { nameof(this.PublishPath).ToLowerInvariant(), this.PublishPath },
+            { nameof(this.WorkspacePath).ToLowerInvariant(), this.WorkspacePath },
+        };
 
-            return dictionary.Union(this.Configuration);
-        }
+        return dictionary.Union(this.Configuration);
     }
 }
