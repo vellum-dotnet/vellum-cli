@@ -25,9 +25,9 @@
       },
       "Markdig": {
         "type": "Direct",
-        "requested": "[0.39.1, )",
-        "resolved": "0.39.1",
-        "contentHash": "QrH/Aq9A5P7fIdy4tEBQGqVvrJoEew9+jL0k2WlrmgD0yxXP0UUtdkhJWgpVgwT18R0ubpt9cyF+LQXbTUSOrg=="
+        "requested": "[0.40.0, )",
+        "resolved": "0.40.0",
+        "contentHash": "4ve14zs+gt1irldTQE3y5FLAHuzmhW7T99lAAvVipe/q2LWT/nUCO0iICb9TXGvMX6n7Z1OZroFXkdSy91rO8w=="
       },
       "McMaster.NETCore.Plugins": {
         "type": "Direct",
@@ -123,12 +123,6 @@
           "NuGet.Protocol": "6.12.1"
         }
       },
-      "Roslynator.Analyzers": {
-        "type": "Direct",
-        "requested": "[4.12.9, )",
-        "resolved": "4.12.9",
-        "contentHash": "X6lDpN/D5wuinq37KIx+l3GSUe9No+8bCjGBTI5sEEtxapLztkHg6gzNVhMXpXw8P+/5gFYxTXJ5Pf8O4iNz/w=="
-      },
       "Spectre.Console": {
         "type": "Direct",
         "requested": "[0.49.1, )",
@@ -149,15 +143,6 @@
         "requested": "[0.18.0, )",
         "resolved": "0.18.0",
         "contentHash": "FCh6hQMOyMgL/bk0BPpXUkHNT+bXNHfSgLyFQ8X3Fca1HwxMtCMVK0kg2YYuwnN9F36+Ru8AqtzBaHRWMkj7cA=="
-      },
-      "StyleCop.Analyzers": {
-        "type": "Direct",
-        "requested": "[1.2.0-beta.556, )",
-        "resolved": "1.2.0-beta.556",
-        "contentHash": "llRPgmA1fhC0I0QyFLEcjvtM2239QzKr/tcnbsjArLMJxJlu0AA5G7Fft0OI30pHF3MW63Gf4aSSsjc5m82J1Q==",
-        "dependencies": {
-          "StyleCop.Analyzers.Unstable": "1.2.0.556"
-        }
       },
       "YamlDotNet": {
         "type": "Direct",
@@ -366,11 +351,6 @@
         "type": "Transitive",
         "resolved": "6.12.1",
         "contentHash": "fJ6rFYANDnohFsdpaY79FvrJxI6murmoOxXz6nZlf819F48+IBKMnAIg3oIBRtZq5y498ObMtKnro5IitvizUg=="
-      },
-      "StyleCop.Analyzers.Unstable": {
-        "type": "Transitive",
-        "resolved": "1.2.0.556",
-        "contentHash": "zvn9Mqs/ox/83cpYPignI8hJEM2A93s2HkHs8HYMOAQW0PkampyoErAiIyKxgTLqbbad29HX/shv/6LGSjPJNQ=="
       },
       "System.Collections.Immutable": {
         "type": "Transitive",
