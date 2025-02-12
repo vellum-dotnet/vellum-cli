@@ -51,7 +51,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
-		<PackageReference Include="NuGet.Common" Version="6.12.1" />
+		<PackageReference Include="NuGet.Common" Version="6.13.1" />
 		<PackageReference Include="NuGet.Packaging" Version="6.12.1" />
 		<PackageReference Include="NuGet.Resolver" Version="6.12.1" />
 		<PackageReference Include="Spectre.Console" Version="0.49.1" />
