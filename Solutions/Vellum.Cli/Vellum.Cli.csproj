@@ -46,11 +46,11 @@
 		</PackageReference>
 		<PackageReference Include="Markdig" Version="0.39.1" />
 		<PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.3" />
 		<PackageReference Include="NuGet.Common" Version="6.12.1" />
 		<PackageReference Include="NuGet.Packaging" Version="6.12.1" />
 		<PackageReference Include="NuGet.Resolver" Version="6.12.1" />
