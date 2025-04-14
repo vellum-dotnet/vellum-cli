@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
 
         serviceCollection.AddSingleton<IConfiguration>(config);
         serviceCollection.AddCliServices(config);
+        serviceCollection.AddCommonServices();
         serviceCollection.AddContent();
     }
 
