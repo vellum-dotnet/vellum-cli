@@ -6,4 +6,13 @@ using System.Collections.Generic;
 
 namespace Vellum.Abstractions.Content;
 
-public record ContentSpecification(string? ContentType, int? Count, string? Path, List<string>? Tags);
+public record ContentSpecification
+{
+    public string? ContentType { get; init; }
+
+    public int? Count { get; init; }
+
+    public string? Path { get; init; }
+
+    public List<string>? Tags { get; init; }
+}

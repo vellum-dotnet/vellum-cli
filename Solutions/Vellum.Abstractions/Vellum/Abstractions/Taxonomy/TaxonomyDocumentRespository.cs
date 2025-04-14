@@ -68,7 +68,7 @@ public class TaxonomyDocumentRespository
                 {
                     IEnumerable<ContentFragment> results = await contentBlockParser.ParseAsync(taxonomyDocument, contentBlock).ConfigureAwait(false);
 
-                    if (!string.IsNullOrEmpty(contentBlock.Spec.ContentType))
+                    if (!string.IsNullOrEmpty(contentBlock.Spec?.ContentType))
                     {
                         IEnumerable<ContentFragment> filteredResults = results.Where(x => x.ContentType == contentBlock.Spec.ContentType);
                         taxonomyDocument.ContentFragments.AddRange(filteredResults);

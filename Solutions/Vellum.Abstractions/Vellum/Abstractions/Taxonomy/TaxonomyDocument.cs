@@ -39,12 +39,12 @@ public class TaxonomyDocument : Representation, ITaxonomyDocument
         {
             string fileName = string.Empty;
 
-            if (this.Navigation is null)
+            if (this.Navigation.Url is null)
             {
-                return fileName;
+                return string.Empty;
             }
 
-            if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
+            if (this.Navigation.Url.ToString().EndsWith('/') || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
             {
                 fileName = "index.html";
             }
@@ -64,12 +64,12 @@ public class TaxonomyDocument : Representation, ITaxonomyDocument
 
             string fileName;
 
-            if (this.Navigation is null)
+            if (this.Navigation.Url is null)
             {
                 return string.Empty;
             }
 
-            if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
+            if (this.Navigation.Url.ToString().EndsWith('/') || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
             {
                 fileName = "index";
             }

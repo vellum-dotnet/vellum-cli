@@ -4,4 +4,22 @@
 
 namespace Vellum.Abstractions.Content.Primitives;
 
-public record OpenGraph(string Title, string Description, string Image);
+public record OpenGraph
+{
+    public OpenGraph()
+    {
+    }
+
+    public OpenGraph(string title, string description, string image)
+    {
+        this.Title = title;
+        this.Description = description;
+        this.Image = image;
+    }
+
+    public string Title { get; init; } = string.Empty;
+
+    public string Description { get; init; } = string.Empty;
+
+    public string Image { get; init; } = string.Empty;
+}

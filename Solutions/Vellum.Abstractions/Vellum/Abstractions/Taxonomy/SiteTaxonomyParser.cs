@@ -22,7 +22,7 @@ public class SiteTaxonomyParser
             Title = x.Title,
         }).First();
 
-        root.Children = pages.Where(x => Url.AreEquivalent(x.Navigation!.Parent, root.Url!)).Select(x => new NavigationNode
+        root.Children = pages.Where(x => Url.AreEquivalent(x.Navigation!.Parent!, root.Url!)).Select(x => new NavigationNode
         {
             Description = x.MetaData!.Description,
             Header = x.Navigation!.Header,
@@ -34,7 +34,7 @@ public class SiteTaxonomyParser
 
         foreach (TaxonomyDocument page in pages)
         {
-            NavigationNode? parentNode = root.Children.Find(x => Url.AreEquivalent(x.Url!, page.Navigation!.Parent));
+            NavigationNode? parentNode = root.Children.Find(x => Url.AreEquivalent(x.Url!, page.Navigation!.Parent!));
             parentNode?.Children.Add(new NavigationNode
             {
                 Description = page.MetaData!.Description,
