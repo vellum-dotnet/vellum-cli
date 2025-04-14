@@ -2,13 +2,11 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.ContentFactories;
-
-using System.Collections.Generic;
-
 using Corvus.ContentHandling;
 using Microsoft.Extensions.DependencyInjection;
 using Vellum.Abstractions.Content.Converters;
+
+namespace Vellum.Abstractions.Content.ContentFactories;
 
 public static class ConverterFactoryExtensions
 {

@@ -2,24 +2,23 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Taxonomy
+using System.Collections.Generic;
+using NDepend.Path;
+
+namespace Vellum.Abstractions.Taxonomy;
+
+public class TaxonomyFileInfoRepository
 {
-    using System.Collections.Generic;
-    using NDepend.Path;
-
-    public class TaxonomyFileInfoRepository
+    public async IAsyncEnumerable<TaxonomyFileInfo> FindAllAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
     {
-        public async IAsyncEnumerable<TaxonomyFileInfo> FindAllAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
+        var siteTaxonomyLocator = new TaxonomyFileLocator();
+        var taxonomyFileParser = new TaxonomyFileInfoReader();
+
+        IEnumerable<IAbsoluteFilePath> files = siteTaxonomyLocator.LocateRecursively(siteTaxonomyDirectoryPath);
+
+        await foreach (TaxonomyFileInfo taxonomyFileInfo in taxonomyFileParser.ReadAsync(files))
         {
-            var siteTaxonomyLocator = new TaxonomyFileLocator();
-            var taxonomyFileParser = new TaxonomyFileInfoReader();
-
-            IEnumerable<IAbsoluteFilePath> files = siteTaxonomyLocator.LocateRecursively(siteTaxonomyDirectoryPath);
-
-            await foreach (TaxonomyFileInfo taxonomyFileInfo in taxonomyFileParser.ReadAsync(files))
-            {
-                yield return taxonomyFileInfo;
-            }
+            yield return taxonomyFileInfo;
         }
     }
 }

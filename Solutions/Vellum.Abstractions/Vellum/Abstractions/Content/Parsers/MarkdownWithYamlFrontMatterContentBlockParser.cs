@@ -2,97 +2,96 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Parsers
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+using NDepend.Path;
+using Vellum.Abstractions.Content.Formatting;
+using Vellum.Abstractions.Taxonomy;
+
+namespace Vellum.Abstractions.Content.Parsers;
+
+public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.Extensions.Caching.Memory;
-    using Microsoft.Extensions.FileSystemGlobbing;
-    using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
-    using NDepend.Path;
-    using Vellum.Abstractions.Content.Formatting;
-    using Vellum.Abstractions.Taxonomy;
+    private readonly IMemoryCache memoryCache;
+    private readonly ContentFormatter contentFormatter;
 
-    public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
+    public MarkdownWithYamlFrontMatterContentBlockParser(IMemoryCache memoryCache, ContentFormatter contentFormatter)
     {
-        private readonly IMemoryCache memoryCache;
-        private readonly ContentFormatter contentFormatter;
+        this.memoryCache = memoryCache;
+        this.contentFormatter = contentFormatter;
+    }
 
-        public MarkdownWithYamlFrontMatterContentBlockParser(IMemoryCache memoryCache, ContentFormatter contentFormatter)
+    public string ContentType { get; protected set; }
+
+    public async ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock)
+    {
+        var contentFragments = new List<ContentFragment>();
+
+        foreach (IAbsoluteFilePath contentFragmentAbsoluteFilePath in FindContentFragmentFiles(contentBlock.Spec.Path, taxonomyDocument.Path.ParentDirectoryPath))
         {
-            this.memoryCache = memoryCache;
-            this.contentFormatter = contentFormatter;
-        }
+            string cacheKey = $"{nameof(MarkdownWithYamlFrontMatterContentBlockParser)}::{contentFragmentAbsoluteFilePath}";
 
-        public string ContentType { get; protected set; }
-
-        public async ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock)
-        {
-            var contentFragments = new List<ContentFragment>();
-
-            foreach (IAbsoluteFilePath contentFragmentAbsoluteFilePath in FindContentFragmentFiles(contentBlock.Spec.Path, taxonomyDocument.Path.ParentDirectoryPath))
+            if (!this.memoryCache.TryGetValue(cacheKey, out ContentFragment cachedContentFragment))
             {
-                string cacheKey = $"{nameof(MarkdownWithYamlFrontMatterContentBlockParser)}::{contentFragmentAbsoluteFilePath}";
-
-                if (!this.memoryCache.TryGetValue(cacheKey, out ContentFragment cachedContentFragment))
+                try
                 {
-                    try
-                    {
-                        string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()).ConfigureAwait(false);
+                    string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()).ConfigureAwait(false);
 
-                        ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath.ToString());
+                    ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath.ToString());
 
-                        contentFragments.Add(contentFragment);
+                    contentFragments.Add(contentFragment);
 
-                        this.memoryCache.Set(cacheKey, contentFragment);
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new AggregateException(new InvalidOperationException($"Error parsing {contentFragmentAbsoluteFilePath}"), exception);
-                    }
+                    this.memoryCache.Set(cacheKey, contentFragment);
                 }
-                else
+                catch (Exception exception)
                 {
-                    contentFragments.Add(cachedContentFragment);
+                    throw new AggregateException(new InvalidOperationException($"Error parsing {contentFragmentAbsoluteFilePath}"), exception);
                 }
             }
-
-            // TODO: Content Block Filtering should be pulled out as the next stage in the processing pipeline.
-            if (contentBlock.Spec.Tags.Count > 0)
+            else
             {
-                contentFragments = contentFragments.Where(x => x.MetaData.ContainsKey("Tags"))
-                                                   .Where(t => ((List<object>)t.MetaData["Tags"])
-                                                   .Intersect(contentBlock.Spec.Tags).Any()).ToList();
+                contentFragments.Add(cachedContentFragment);
             }
-
-            if (contentBlock.Spec.Count > 0)
-            {
-                contentFragments = contentFragments.Take(contentBlock.Spec.Count).ToList();
-            }
-
-            for (int i = 0; i < contentFragments.Count; i++)
-            {
-                contentFragments[i].Position = i;
-            }
-
-            return contentFragments;
         }
 
-        private static IEnumerable<IAbsoluteFilePath> FindContentFragmentFiles(string contentFragmentPath, IAbsoluteDirectoryPath rootDirectory)
+        // TODO: Content Block Filtering should be pulled out as the next stage in the processing pipeline.
+        if (contentBlock.Spec.Tags.Count > 0)
         {
-            var matcher = new Matcher();
+            contentFragments = contentFragments.Where(x => x.MetaData.ContainsKey("Tags"))
+                .Where(t => ((List<object>)t.MetaData["Tags"])
+                    .Intersect(contentBlock.Spec.Tags).Any()).ToList();
+        }
 
-            matcher.AddInclude(contentFragmentPath);
+        if (contentBlock.Spec.Count > 0)
+        {
+            contentFragments = contentFragments.Take(contentBlock.Spec.Count).ToList();
+        }
 
-            PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(rootDirectory.DirectoryInfo));
+        for (int i = 0; i < contentFragments.Count; i++)
+        {
+            contentFragments[i].Position = i;
+        }
 
-            foreach (FilePatternMatch match in matches.Files)
-            {
-                yield return match.Path.ToRelativeFilePath().GetAbsolutePathFrom(rootDirectory);
-            }
+        return contentFragments;
+    }
+
+    private static IEnumerable<IAbsoluteFilePath> FindContentFragmentFiles(string contentFragmentPath, IAbsoluteDirectoryPath rootDirectory)
+    {
+        var matcher = new Matcher();
+
+        matcher.AddInclude(contentFragmentPath);
+
+        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(rootDirectory.DirectoryInfo));
+
+        foreach (FilePatternMatch match in matches.Files)
+        {
+            yield return match.Path.ToRelativeFilePath().GetAbsolutePathFrom(rootDirectory);
         }
     }
 }

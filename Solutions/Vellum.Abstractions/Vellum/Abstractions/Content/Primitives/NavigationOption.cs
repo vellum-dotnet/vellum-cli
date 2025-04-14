@@ -2,12 +2,11 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Primitives
-{
-    public class NavigationOption
-    {
-        public bool Visible { get; set; }
+namespace Vellum.Abstractions.Content.Primitives;
 
-        public bool Link { get; set; }
-    }
+public class NavigationOption
+{
+    public bool Visible { get; set; }
+
+    public bool Link { get; set; }
 }

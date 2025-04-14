@@ -2,26 +2,25 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content
+using System;
+using ImpromptuInterface;
+
+namespace Vellum.Abstractions.Content;
+
+public class ContentFragmentTypeFactory<T>
+    where T : class, IContent
 {
-    using System;
-    using ImpromptuInterface;
+    private readonly IServiceProvider serviceProvider;
 
-    public class ContentFragmentTypeFactory<T>
-        where T : class, IContent
+    public ContentFragmentTypeFactory(IServiceProvider serviceProvider)
     {
-        private readonly IServiceProvider serviceProvider;
+        this.serviceProvider = serviceProvider;
+    }
 
-        public ContentFragmentTypeFactory(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
+    public T Create(ContentFragment contentFragment)
+    {
+        DynamicContentFragment cf = new(contentFragment, this.serviceProvider);
 
-        public T Create(ContentFragment contentFragment)
-        {
-            DynamicContentFragment cf = new(contentFragment, this.serviceProvider);
-
-            return cf.ActLike<T>();
-        }
-  }
+        return cf.ActLike<T>();
+    }
 }

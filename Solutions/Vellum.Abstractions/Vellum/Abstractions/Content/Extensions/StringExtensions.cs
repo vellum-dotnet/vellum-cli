@@ -2,9 +2,9 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Extensions;
-
 using System;
+
+namespace Vellum.Abstractions.Content.Extensions;
 
 public static class StringExtensions
 {

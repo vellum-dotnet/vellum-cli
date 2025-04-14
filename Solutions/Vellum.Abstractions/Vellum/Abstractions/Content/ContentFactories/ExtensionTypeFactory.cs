@@ -2,12 +2,12 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.ContentFactories;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vellum.Abstractions.Content.Extensions;
+
+namespace Vellum.Abstractions.Content.ContentFactories;
 
 public class ExtensionTypeFactory : IExtensionTypeFactory
 {
@@ -22,7 +22,7 @@ public class ExtensionTypeFactory : IExtensionTypeFactory
         this.extensionDynamicProxyTypeFactory = extensionDynamicProxyTypeFactory;
     }
 
-    public object Create(ContentFragment cf)
+    public object? Create(ContentFragment cf)
     {
         if (!cf.Extensions.Any())
         {
@@ -36,7 +36,7 @@ public class ExtensionTypeFactory : IExtensionTypeFactory
         Type typeFactory = typeof(ContentFragmentTypeFactory<>);
         Type[] typeArgs = [extensionDynamicProxyType];
         Type genericTypeFactory = typeFactory.MakeGenericType(typeArgs);
-        dynamic typeFactoryInstance = Activator.CreateInstance(genericTypeFactory, args: this.serviceProvider);
+        dynamic? typeFactoryInstance = Activator.CreateInstance(genericTypeFactory, args: this.serviceProvider);
 
         if (typeFactoryInstance == null)
         {

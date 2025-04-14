@@ -2,23 +2,22 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Formatting
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Vellum.Abstractions.Content.Formatting;
+
+public class ContentFormatter : IContentFormatter
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private readonly IEnumerable<IContentTransform> transforms;
 
-    public class ContentFormatter : IContentFormatter
+    public ContentFormatter(IEnumerable<IContentTransform> transforms)
     {
-        private readonly IEnumerable<IContentTransform> transforms;
+        this.transforms = transforms;
+    }
 
-        public ContentFormatter(IEnumerable<IContentTransform> transforms)
-        {
-            this.transforms = transforms;
-        }
-
-        public string Apply(string html)
-        {
-            return this.transforms.Aggregate(html, (current, transform) => transform.Apply(current));
-        }
+    public string Apply(string html)
+    {
+        return this.transforms.Aggregate(html, (current, transform) => transform.Apply(current));
     }
 }

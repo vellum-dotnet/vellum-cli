@@ -2,10 +2,10 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Extensions;
-
 using System;
 using System.Collections.Generic;
+
+namespace Vellum.Abstractions.Content.Extensions;
 
 public interface IExtensionDynamicProxyTypeFactory
 {

@@ -2,16 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.IO
+using System.Threading.Tasks;
+
+using NDepend.Path;
+
+namespace Vellum.Abstractions.IO;
+
+public interface IFileReader<T>
 {
-    using System.Threading.Tasks;
+    string ContentType { get; }
 
-    using NDepend.Path;
-
-    public interface IFileReader<T>
-    {
-        string ContentType { get; }
-
-        Task<T> ReadAsync(IAbsoluteFilePath filePath);
-    }
+    Task<T> ReadAsync(IAbsoluteFilePath filePath);
 }

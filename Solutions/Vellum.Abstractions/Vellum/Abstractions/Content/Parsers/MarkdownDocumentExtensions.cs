@@ -2,16 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Parsers
-{
-    using System.Linq;
-    using Markdig.Syntax;
+using System.Linq;
+using Markdig.Syntax;
 
-    public static class MarkdownDocumentExtensions
+namespace Vellum.Abstractions.Content.Parsers;
+
+public static class MarkdownDocumentExtensions
+{
+    public static bool HasContentOtherThanYamlFrontMatter(this MarkdownDocument document)
     {
-        public static bool HasContentOtherThanYamlFrontMatter(this MarkdownDocument document)
-        {
-            return document.Descendants<ParagraphBlock>().Any();
-        }
+        return document.Descendants<ParagraphBlock>().Any();
     }
 }

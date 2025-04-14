@@ -2,19 +2,11 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content
+namespace Vellum.Abstractions.Content;
+
+public interface IBlogPost : IContent, IExtensible, IArticle, IPublishable, ICategorizable, ITaggable, IFaqable
 {
-    using System.Collections.Generic;
+    Dates? Dates { get; set; }
 
-#pragma warning disable CS8632
-
-    public interface IBlogPost : IContent, IExtensible, IArticle, IPublishable, ICategorizable, ITaggable, IFaqable
-    {
-        Dates? Dates { get; set; }
-
-        string? HeaderImageUrl { get; set; }
-    }
-
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-
+    string? HeaderImageUrl { get; set; }
 }

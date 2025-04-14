@@ -2,106 +2,81 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Plugins
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+using McMaster.NETCore.Plugins;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+using Spectre.IO;
+using Vellum.Cli.Abstractions.Commands;
+
+namespace Vellum.Cli.Plugins;
+
+public class CommandPluginHost : ICommandPluginHost
 {
-    using System;
-    using System.Collections.Generic;
-    using System.CommandLine;
-    using System.IO;
-    using System.Linq;
-    using McMaster.NETCore.Plugins;
-    using Microsoft.Extensions.FileSystemGlobbing;
-    using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
-    using Spectre.IO;
-    using Vellum.Cli.Abstractions.Commands;
-
-    public class CommandPluginHost : ICommandPluginHost
+    public List<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths)
     {
-        public bool RaiseExceptions { get; set; }
+        List<FileInfo> files = [];
+        List<PluginLoader> loaders = [];
+        Matcher matcher = new();
+        matcher.AddInclude("*.dll");
 
-        public List<ICommandPlugin> Discover(IEnumerable<DirectoryPath> pluginPaths)
+        DirectoryInfo commonDir = new(AppContext.BaseDirectory);
+
+        foreach (DirectoryPath directoryPath in pluginPaths)
         {
-            List<FileInfo> files = [];
-            List<PluginLoader> loaders = [];
-            Matcher matcher = new();
-            matcher.AddInclude("*.dll");
+            string result = System.IO.Path.GetRelativePath(directoryPath.FullPath, commonDir.FullName);
+            string relPath = System.IO.Path.Combine(commonDir.FullName, result, directoryPath.FullPath);
+            string fullPath = System.IO.Path.GetFullPath(relPath);
 
-            DirectoryInfo commonDir = new(AppContext.BaseDirectory);
+            PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(fullPath)));
 
-            foreach (DirectoryPath directoryPath in pluginPaths)
+            foreach (FilePatternMatch file in matches.Files)
             {
-                string result = System.IO.Path.GetRelativePath(directoryPath.FullPath, commonDir.FullName);
-                string relPath = System.IO.Path.Combine(commonDir.FullName, result, directoryPath.FullPath);
-                string fullPath = System.IO.Path.GetFullPath(relPath);
-
-                PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(fullPath)));
-
-                foreach (FilePatternMatch file in matches.Files)
-                {
-                    files.Add(new FileInfo(System.IO.Path.Join(fullPath, file.Path)));
-                }
+                files.Add(new FileInfo(System.IO.Path.Join(fullPath, file.Path)));
             }
+        }
 
-            foreach (FileInfo file in files.DistinctBy(x => x.Name))
-            {
-                PluginLoader loader = PluginLoader.CreateFromAssemblyFile(
-                    file.FullName,
-                    isUnloadable: false,
-                    sharedTypes: [typeof(ICommandPlugin)],
-                    config =>
-                    {
-                        config.IsLazyLoaded = false;
-                        config.EnableHotReload = false;
-                    });
+        foreach (FileInfo file in files.DistinctBy(x => x.Name))
+        {
+            PluginLoader loader = PluginLoader.CreateFromAssemblyFile(
+                file.FullName,
+                isUnloadable: true,
+                sharedTypes: [typeof(ICommandPlugin)],
+                config => config.EnableHotReload = true);
 
-                loaders.Add(loader);
-            }
+            loaders.Add(loader);
+        }
 
-            List<ICommandPlugin> plugins = [];
-            List<Exception> exceptions = [];
-            bool containPlugin = false;
-
+        List<ICommandPlugin> plugins = [];
+        try
+        {
             foreach (PluginLoader loader in loaders)
             {
-                try
+                foreach (Type pluginType in loader
+                             .LoadDefaultAssembly()
+                             .GetTypes()
+                             .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
                 {
-                    foreach (Type pluginType in loader
-                                 .LoadDefaultAssembly()
-                                 .GetTypes()
-                                 .Where(t => typeof(ICommandPlugin).IsAssignableFrom(t) && !t.IsAbstract))
+                    // This assumes the implementation of IPlugin has a parameterless constructor
+                    if (Activator.CreateInstance(pluginType) is ICommandPlugin plugin)
                     {
-                        // This assumes the implementation of IPlugin has a parameterless constructor
-                        if (Activator.CreateInstance(pluginType) is ICommandPlugin plugin)
-                        {
-                            containPlugin = true;
-                            plugins.Add(plugin);
-                        }
+                        plugins.Add(plugin);
                     }
                 }
-                catch (Exception ex)
-                {
-                    exceptions.Add(ex);
-                }
-                finally
-                {
-                    if (!containPlugin)
-                    {
-                        loader.Dispose();
-                    }
 
-                    containPlugin = false;
-                }
+                loader.Dispose();
             }
-
+        }
+        finally
+        {
             loaders.Clear();
             files.Clear();
-
-            if (this.RaiseExceptions && exceptions.Count > 0)
-            {
-                throw new AggregateException("One or more plugins failed to load", exceptions);
-            }
-
-            return plugins;
         }
+
+        return plugins;
     }
 }

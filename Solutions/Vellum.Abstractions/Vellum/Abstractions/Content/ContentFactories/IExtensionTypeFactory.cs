@@ -6,5 +6,5 @@ namespace Vellum.Abstractions.Content.ContentFactories;
 
 public interface IExtensionTypeFactory
 {
-    object Create(ContentFragment cf);
+    object? Create(ContentFragment cf);
 }

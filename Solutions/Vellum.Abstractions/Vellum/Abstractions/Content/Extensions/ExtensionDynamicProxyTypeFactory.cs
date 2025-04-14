@@ -2,8 +2,6 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Extensions;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +13,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 using Vellum.Abstractions.Caching;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+
+namespace Vellum.Abstractions.Content.Extensions;
 
 public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactory
 {

@@ -2,16 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content
+using System;
+
+namespace Vellum.Abstractions.Content;
+
+public class Dates
 {
-    using System;
+    public DateTime Date { get; set; }
 
-    public class Dates
-    {
-        public DateTime Date { get; set; }
+    public string Ordinal { get; set; }
 
-        public string Ordinal { get; set; }
-
-        public string Short { get; set; }
-    }
+    public string Short { get; set; }
 }

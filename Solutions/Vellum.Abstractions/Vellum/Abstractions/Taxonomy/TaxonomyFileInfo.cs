@@ -2,17 +2,16 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Taxonomy
+using System.Diagnostics;
+
+using NDepend.Path;
+
+namespace Vellum.Abstractions.Taxonomy;
+
+[DebuggerDisplay("{Path}")]
+public class TaxonomyFileInfo : Representation
 {
-    using System.Diagnostics;
+    public string Hash { get; set; }
 
-    using NDepend.Path;
-
-    [DebuggerDisplay("{Path}")]
-    public class TaxonomyFileInfo : Representation
-    {
-        public string Hash { get; set; }
-
-        public IAbsoluteFilePath Path { get; set; }
-    }
+    public IAbsoluteFilePath Path { get; set; }
 }

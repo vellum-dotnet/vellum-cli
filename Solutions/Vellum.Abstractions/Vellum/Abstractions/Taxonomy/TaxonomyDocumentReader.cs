@@ -2,41 +2,40 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Taxonomy
+using System.Threading.Tasks;
+
+using NDepend.Path;
+
+using Vellum.Abstractions.Content.Primitives;
+using Vellum.Abstractions.IO;
+using Vellum.Abstractions.Parsers;
+
+namespace Vellum.Abstractions.Taxonomy;
+
+public class TaxonomyDocumentReader : IFileReader<TaxonomyDocument>
 {
-    using System.Threading.Tasks;
+    public const string RegisteredContentType = WellKnown.Taxonomies.ContentTypes.Page;
 
-    using NDepend.Path;
+    public string ContentType => RegisteredContentType;
 
-    using Vellum.Abstractions.Content.Primitives;
-    using Vellum.Abstractions.IO;
-    using Vellum.Abstractions.Parsers;
-
-    public class TaxonomyDocumentReader : IFileReader<TaxonomyDocument>
+    public async Task<TaxonomyDocument> ReadAsync(IAbsoluteFilePath filePath)
     {
-        public const string RegisteredContentType = WellKnown.Taxonomies.ContentTypes.Page;
+        TaxonomyDocument template = await new YamlParser<TaxonomyDocument>().ParseAsync(filePath).ConfigureAwait(false);
+        template.Path = filePath;
 
-        public string ContentType => RegisteredContentType;
-
-        public async Task<TaxonomyDocument> ReadAsync(IAbsoluteFilePath filePath)
+        // set default (visible / enabled) if missing
+        template.Navigation.Footer ??= new NavigationOption
         {
-            TaxonomyDocument template = await new YamlParser<TaxonomyDocument>().ParseAsync(filePath).ConfigureAwait(false);
-            template.Path = filePath;
+            Link = true,
+            Visible = true,
+        };
 
-            // set default (visible / enabled) if missing
-            template.Navigation.Footer ??= new NavigationOption
-            {
-                Link = true,
-                Visible = true,
-            };
+        template.Navigation.Header ??= new NavigationOption
+        {
+            Link = true,
+            Visible = true,
+        };
 
-            template.Navigation.Header ??= new NavigationOption
-            {
-                Link = true,
-                Visible = true,
-            };
-
-            return template;
-        }
+        return template;
     }
 }

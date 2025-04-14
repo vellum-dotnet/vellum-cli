@@ -2,15 +2,14 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions
-{
-    public class Representation
-    {
-        public string ContentType { get; set; }
+namespace Vellum.Abstractions;
 
-        public string GetContentType()
-        {
-            return this.ContentType;
-        }
+public class Representation
+{
+    public string ContentType { get; set; }
+
+    public string GetContentType()
+    {
+        return this.ContentType;
     }
 }

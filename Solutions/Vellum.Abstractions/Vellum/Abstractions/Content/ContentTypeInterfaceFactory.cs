@@ -2,10 +2,10 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content;
-
 using System;
 using Vellum.Abstractions.Content.Extensions;
+
+namespace Vellum.Abstractions.Content;
 
 public class ContentTypeInterfaceFactory : IContentTypeInterfaceFactory
 {

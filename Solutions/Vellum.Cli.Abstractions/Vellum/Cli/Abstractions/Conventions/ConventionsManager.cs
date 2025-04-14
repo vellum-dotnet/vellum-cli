@@ -2,30 +2,26 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Conventions
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+using Spectre.IO;
+
+namespace Vellum.Cli.Abstractions.Conventions;
+
+public static class ConventionsManager
 {
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
-    using NDepend.Path;
-    using Newtonsoft.Json;
-
-    public static class ConventionsManager
+    public static async Task<ContentTypeConventionsRoot> LoadAsync(FilePath path)
     {
-        public static async Task<ContentTypeConventionsRoot> LoadAsync(IAbsoluteFilePath path)
-        {
-            ArgumentNullException.ThrowIfNull(path);
+        return System.IO.Path.Exists(path.FullPath) ?
+            JsonSerializer.Deserialize<ContentTypeConventionsRoot>(await File.ReadAllTextAsync(path.ToString()).ConfigureAwait(false)) : null;
+    }
 
-            return path.Exists ? JsonConvert.DeserializeObject<ContentTypeConventionsRoot>(await File.ReadAllTextAsync(path.ToString()).ConfigureAwait(false)) : null;
-        }
+    public static async Task SaveAsync(FilePath path, ContentTypeConventionsRoot conventionsRoot)
+    {
+        string json = JsonSerializer.Serialize(conventionsRoot, new JsonSerializerOptions { WriteIndented = true });
 
-        public static async Task SaveAsync(IAbsoluteFilePath path, ContentTypeConventionsRoot conventionsRoot)
-        {
-            ArgumentNullException.ThrowIfNull(path);
-
-            string json = JsonConvert.SerializeObject(conventionsRoot, Formatting.Indented);
-
-            await File.WriteAllTextAsync(path.ToString(), json).ConfigureAwait(false);
-        }
+        await File.WriteAllTextAsync(path.ToString(), json).ConfigureAwait(false);
     }
 }

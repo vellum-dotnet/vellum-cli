@@ -2,14 +2,13 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Parsers
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Vellum.Abstractions.Taxonomy;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Vellum.Abstractions.Taxonomy;
 
-    public interface IContentBlockParser
-    {
-        ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock);
-    }
+namespace Vellum.Abstractions.Content.Parsers;
+
+public interface IContentBlockParser
+{
+    ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock);
 }

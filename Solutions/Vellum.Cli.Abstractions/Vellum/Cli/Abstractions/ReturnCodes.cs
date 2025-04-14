@@ -2,12 +2,11 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions
+namespace Vellum.Cli.Abstractions;
+
+public static class ReturnCodes
 {
-    public static class ReturnCodes
-    {
-        public const int Exception = 2;
-        public const int Error = 1;
-        public const int Ok = 0;
-    }
+    public const int Exception = 2;
+    public const int Error = 1;
+    public const int Ok = 0;
 }

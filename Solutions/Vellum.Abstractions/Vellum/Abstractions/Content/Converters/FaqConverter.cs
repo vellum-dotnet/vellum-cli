@@ -2,10 +2,10 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Converters;
-
 using System.Collections.Generic;
 using System.Linq;
+
+namespace Vellum.Abstractions.Content.Converters;
 
 public class FaqConverter : IConverter<Dictionary<object, object>>
 {

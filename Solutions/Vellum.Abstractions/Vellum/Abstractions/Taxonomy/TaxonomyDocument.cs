@@ -2,75 +2,74 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Taxonomy
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+using NDepend.Path;
+
+using Vellum.Abstractions.Content;
+using Vellum.Abstractions.Content.Primitives;
+
+namespace Vellum.Abstractions.Taxonomy;
+
+[DebuggerDisplay("{Navigation.Url}")]
+public class TaxonomyDocument : Representation, ITaxonomyDocument
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
+    public List<ContentFragment> ContentFragments { get; set; } = new List<ContentFragment>();
 
-    using NDepend.Path;
+    public string Title { get; set; }
 
-    using Vellum.Abstractions.Content;
-    using Vellum.Abstractions.Content.Primitives;
+    public string Template { get; set; }
 
-    [DebuggerDisplay("{Navigation.Url}")]
-    public class TaxonomyDocument : Representation, ITaxonomyDocument
+    public IAbsoluteFilePath Path { get; set; }
+
+    public string Hash { get; set; }
+
+    public PageMetaData MetaData { get; set; }
+
+    public OpenGraph OpenGraph { get; set; }
+
+    public Navigation Navigation { get; set; }
+
+    public IEnumerable<ContentBlock> ContentBlocks { get; set; } = Enumerable.Empty<ContentBlock>();
+
+    public string FileUrl
     {
-        public List<ContentFragment> ContentFragments { get; set; } = new List<ContentFragment>();
-
-        public string Title { get; set; }
-
-        public string Template { get; set; }
-
-        public IAbsoluteFilePath Path { get; set; }
-
-        public string Hash { get; set; }
-
-        public PageMetaData MetaData { get; set; }
-
-        public OpenGraph OpenGraph { get; set; }
-
-        public Navigation Navigation { get; set; }
-
-        public IEnumerable<ContentBlock> ContentBlocks { get; set; } = Enumerable.Empty<ContentBlock>();
-
-        public string FileUrl
+        get
         {
-            get
+            string fileName = string.Empty;
+
+            if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
             {
-                string fileName = string.Empty;
-
-                if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
-                {
-                    fileName = "index.html";
-                }
-
-                return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName);
+                fileName = "index.html";
             }
+
+            return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName);
         }
+    }
 
-        public string TemplatePath
+    public string TemplatePath
+    {
+        get
         {
-            get
+            if (!string.IsNullOrEmpty(this.Template))
             {
-                if (!string.IsNullOrEmpty(this.Template))
-                {
-                    return Flurl.Url.Combine(this.Template).TrimStart('/');
-                }
-
-                string fileName;
-
-                if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
-                {
-                    fileName = "index";
-                }
-                else
-                {
-                    return Flurl.Url.Combine(System.IO.Path.ChangeExtension(this.Navigation.Url.ToString(), string.Empty)).TrimStart('/').TrimEnd('.');
-                }
-
-                return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName).TrimStart('/');
+                return Flurl.Url.Combine(this.Template).TrimStart('/');
             }
+
+            string fileName;
+
+            if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
+            {
+                fileName = "index";
+            }
+            else
+            {
+                return Flurl.Url.Combine(System.IO.Path.ChangeExtension(this.Navigation.Url.ToString(), string.Empty)).TrimStart('/').TrimEnd('.');
+            }
+
+            return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName).TrimStart('/');
         }
     }
 }

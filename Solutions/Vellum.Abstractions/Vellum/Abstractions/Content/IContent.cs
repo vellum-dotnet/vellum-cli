@@ -2,16 +2,15 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content
+using System;
+
+namespace Vellum.Abstractions.Content;
+
+public interface IContent
 {
-    using System;
+    string ContentType { get; set; }
 
-    public interface IContent
-    {
-        string ContentType { get; set; }
+    DateTime Date { get; set; }
 
-        DateTime Date { get; set; }
-
-        PublicationStatus PublicationStatus { get; set; }
-    }
+    PublicationStatus PublicationStatus { get; set; }
 }

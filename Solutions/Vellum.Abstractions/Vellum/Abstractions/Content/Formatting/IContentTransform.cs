@@ -2,10 +2,9 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Formatting
+namespace Vellum.Abstractions.Content.Formatting;
+
+public interface IContentTransform
 {
-    public interface IContentTransform
-    {
-        string Apply(string input);
-    }
+    string Apply(string input);
 }

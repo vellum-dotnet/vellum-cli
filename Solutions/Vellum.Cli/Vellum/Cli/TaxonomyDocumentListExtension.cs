@@ -16,7 +16,7 @@ using Vellum.Abstractions.Taxonomy;
 
 public static class TaxonomyDocumentListExtension
 {
-    private static ServiceProvider sp;
+    private static ServiceProvider? sp;
 
     public static void Configure(ServiceProvider serviceProvider)
     {
@@ -46,9 +46,12 @@ public static class TaxonomyDocumentListExtension
 
         foreach (ContentFragment contentFragment in contentFragments)
         {
-            ContentFragmentTypeFactory<T> contentFragmentTypeFactory = sp.GetContent<ContentFragmentTypeFactory<T>>(contentFragment.ContentType.AsContentFragmentFactory());
-            T item = contentFragmentTypeFactory.Create(contentFragment);
-            dataType.Add(item);
+            ContentFragmentTypeFactory<T>? contentFragmentTypeFactory = sp?.GetContent<ContentFragmentTypeFactory<T>>(contentFragment.ContentType.AsContentFragmentFactory());
+            T? item = contentFragmentTypeFactory?.Create(contentFragment);
+            if (item is not null)
+            {
+                dataType.Add(item);
+            }
         }
 
         return dataType;

@@ -2,20 +2,19 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Taxonomy
+using System.Collections.Generic;
+
+using Vellum.Abstractions.Content.Primitives;
+
+namespace Vellum.Abstractions.Taxonomy;
+
+public class SiteContext
 {
-    using System.Collections.Generic;
+    public bool Preview { get; set; }
 
-    using Vellum.Abstractions.Content.Primitives;
+    public NavigationNode Navigation { get; set; }
 
-    public class SiteContext
-    {
-        public bool Preview { get; set; }
+    public SiteDetails Details { get; set; }
 
-        public NavigationNode Navigation { get; set; }
-
-        public SiteDetails Details { get; set; }
-
-        public IEnumerable<TaxonomyDocument> Pages { get; set; }
-    }
+    public IEnumerable<TaxonomyDocument> Pages { get; set; }
 }

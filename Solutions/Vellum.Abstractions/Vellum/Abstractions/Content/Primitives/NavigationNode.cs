@@ -2,34 +2,33 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Abstractions.Content.Primitives
+using System.Collections.Generic;
+using System.Diagnostics;
+
+namespace Vellum.Abstractions.Content.Primitives;
+
+[DebuggerDisplay("{Url}")]
+public class NavigationNode
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
+    public string Description { get; set; }
 
-    [DebuggerDisplay("{Url}")]
-    public class NavigationNode
+    public string Id
     {
-        public string Description { get; set; }
-
-        public string Id
+        get
         {
-            get
-            {
-                return this.Url.ToString().TrimStart('/').Replace("/", "-").Replace(".html", string.Empty).ToLowerInvariant();
-            }
+            return this.Url.ToString().TrimStart('/').Replace("/", "-").Replace(".html", string.Empty).ToLowerInvariant();
         }
-
-        public NavigationOption Header { get; set; }
-
-        public NavigationOption Footer { get; set; }
-
-        public Url Url { get; set; }
-
-        public int Rank { get; set; }
-
-        public string Title { get; set; }
-
-        public List<NavigationNode> Children { get; set; } = new List<NavigationNode>();
     }
+
+    public NavigationOption Header { get; set; }
+
+    public NavigationOption Footer { get; set; }
+
+    public Url Url { get; set; }
+
+    public int Rank { get; set; }
+
+    public string Title { get; set; }
+
+    public List<NavigationNode> Children { get; set; } = new List<NavigationNode>();
 }
