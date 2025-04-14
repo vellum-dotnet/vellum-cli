@@ -38,7 +38,7 @@
         [Given(@"the following markdown files")]
         public void GivenTheFollowingMarkdownFiles(Table table)
         {
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 this.markdownDocumentRegistry.Register(row["document"], row["file"]);
             }
@@ -47,7 +47,7 @@
         [Given(@"the following html files")]
         public void GivenTheFollowingHtmlFiles(Table table)
         {
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 this.htmlDocumentRegistry.Register(row["document"], row["file"]);
             }
@@ -56,7 +56,7 @@
         [Given(@"the following content blocks")]
         public void GivenTheFollowingContentBlocks(Table table)
         {
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 this.contentBlockRegistry.Register(row["Id"], row["ContentType"], row["SpecPath"]);
             }
@@ -100,7 +100,7 @@
         [Then(@"Content Fragment should contain")]
         public void ThenContentFragmentShouldContain(Table table)
         {
-            var firstRow = table.Rows[0];
+            DataTableRow firstRow = table.Rows[0];
 
             string contentType = firstRow["ContentType"];
             var date = DateTime.Parse(firstRow["Date"]);
@@ -125,9 +125,9 @@
     [Then(@"the Content Fragment should contain the following Extensions:")]
         public void ThenTheContentFragmentShouldContainTheFollowingExtensions(Table table)
         {
-            List<string> extensions = new();
+            List<string> extensions = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 extensions.Add(row["ContentType"]);
             }
@@ -141,7 +141,7 @@
         public void ThenTheContentFragmentMetaDataShouldContain(Table table)
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
-            var firstRow = table.Rows[0];
+            DataTableRow firstRow = table.Rows[0];
             ((string)cf.MetaData["Title"]).ShouldBe<string>(firstRow["Title"]);
             ((string)cf.MetaData["Slug"]).ShouldBe(firstRow["Slug"]);
             ((string)cf.MetaData["Author"]).ShouldBe(firstRow["Author"]);
@@ -164,9 +164,9 @@
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
 
-            List<string> list = new();
+            List<string> list = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 list.Add(row["Value"].Trim());
             }
@@ -181,9 +181,9 @@
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
 
-            List<string> list = new();
+            List<string> list = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 list.Add(row["Key"].Trim());
             }
@@ -198,9 +198,9 @@
         {
             ContentFragment cf = this.scenarioContext.Get<ContentFragment>();
 
-            List<KeyValuePair<string, string>> expected = new();
+            List<KeyValuePair<string, string>> expected = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 expected.Add(new KeyValuePair<string, string>("Q", row["Question"]));
                 expected.Add(new KeyValuePair<string, string>("A", row["Answer"]));
@@ -233,7 +233,7 @@
             extensionTypeFactory.ShouldNotBeNull();
             cf.Extensions.Count().ShouldBeGreaterThan(0);
 
-            var blogPost = extensionTypeFactory.Create(cf) as IBlogPost;
+            IBlogPost blogPost = extensionTypeFactory.Create(cf) as IBlogPost;
 
             // We can use pattern matching
             if (blogPost is IPromotions promotions)
@@ -267,7 +267,7 @@
         public void ThenTheBlogPostShouldContain(Table table)
         {
             IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
-            var firstRow = table.Rows[0];
+            DataTableRow firstRow = table.Rows[0];
 
             string bodyHtmlDocumentName = firstRow["BodyHtmlDocumentName"];
             string bodyHtml = this.htmlDocumentRegistry.GetFileContent(bodyHtmlDocumentName);
@@ -287,9 +287,9 @@
         {
             IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
 
-            List<string> expected = new();
+            List<string> expected = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 expected.Add(row["Value"].Trim());
             }
@@ -302,9 +302,9 @@
         {
             IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
 
-            List<string> expected = new();
+            List<string> expected = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 expected.Add(row["Key"].Trim());
             }
@@ -318,9 +318,9 @@
         {
             IBlogPost blogPost = this.scenarioContext.Get<IBlogPost>();
 
-            List<(string, string)> expected = new();
+            List<(string, string)> expected = [];
 
-            foreach (var row in table.Rows)
+            foreach (DataTableRow row in table.Rows)
             {
                 expected.Add(new(row["Question"], row["Answer"]));
             }
