@@ -12,7 +12,7 @@ using NDepend.Path;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
-
+using Spectre.IO;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.ContentFactories;
 using Vellum.Abstractions.Content.Primitives;
@@ -25,35 +25,26 @@ namespace Vellum.Cli.Commands.Content;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ContentListCommand : AsyncCommand<ContentListCommand.Settings>
+public class ContentListCommand(IServiceCollection services) : AsyncCommand<ContentListCommand.Settings>
 {
-    private readonly IAppEnvironment appEnvironment;
-    private readonly IServiceCollection services;
-
-    public ContentListCommand(IAppEnvironment appEnvironment, IServiceCollection services)
-    {
-        this.appEnvironment = appEnvironment;
-        this.services = services;
-    }
-
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
-        this.services.AddWellKnownTaxonomyContentTypes();
-        this.services.AddWellKnownContentFragmentTypeFactories();
-        this.services.AddWellKnownContentBlockContentTypes();
-        this.services.AddWellKnownConverterFactories();
+        services.AddWellKnownTaxonomyContentTypes();
+        services.AddWellKnownContentFragmentTypeFactories();
+        services.AddWellKnownContentBlockContentTypes();
+        services.AddWellKnownConverterFactories();
 
-        ServiceProvider serviceProvider = this.services.BuildServiceProvider();
+        ServiceProvider serviceProvider = services.BuildServiceProvider();
 
         TaxonomyDocumentListExtension.Configure(serviceProvider);
 
         SiteDetailsRepository siteTaxonomyRepository = new();
-        SiteDetails siteTaxonomy = await siteTaxonomyRepository.FindAsync(settings.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
+        SiteDetails? siteTaxonomy = await siteTaxonomyRepository.FindAsync(settings.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
 
-        TaxonomyDocumentRespository taxonomyDocumentRepository = new(this.services);
+        TaxonomyDocumentRespository taxonomyDocumentRepository = new(services);
         SiteTaxonomyParser siteTaxonomyParser = new();
 
         IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(settings.SiteTaxonomyDirectoryPath);
@@ -75,7 +66,7 @@ public class ContentListCommand : AsyncCommand<ContentListCommand.Settings>
             // Filter by draft/published status if specified
             if ((settings.Draft && post.PublicationStatus == PublicationStatus.Draft) ||
                 (settings.Published && post.PublicationStatus == PublicationStatus.Published) ||
-                (!settings.Draft && !settings.Published))
+                settings is { Draft: false, Published: false })
             {
                 table.AddRow(
                     post.Title,
@@ -89,13 +80,13 @@ public class ContentListCommand : AsyncCommand<ContentListCommand.Settings>
 
         NavigationNode siteNavigation = siteTaxonomyParser.Parse(loaded);
 
-        SiteContext siteContext = new()
+        /*SiteContext siteContext = new()
         {
             Preview = false,
             Navigation = siteNavigation,
-            Pages = loaded,
-            Details = siteTaxonomy,
-        };
+            Pages = loaded!,
+            Details = siteTaxonomy!,
+        };*/
 
         stopwatch.Stop();
 
@@ -116,6 +107,6 @@ public class ContentListCommand : AsyncCommand<ContentListCommand.Settings>
 
         [CommandOption("--site-path|-s")]
         [Description("Path to the site taxonomy directory")]
-        public IAbsoluteDirectoryPath SiteTaxonomyDirectoryPath { get; set; } = null!;
+        public DirectoryPath SiteTaxonomyDirectoryPath { get; set; } = null!;
     }
 }

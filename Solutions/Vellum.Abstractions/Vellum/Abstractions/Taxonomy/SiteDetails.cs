@@ -4,20 +4,20 @@
 
 using System.Diagnostics;
 
-using NDepend.Path;
+using Spectre.IO;
 
 namespace Vellum.Abstractions.Taxonomy;
 
 [DebuggerDisplay("{Url} | {Description}")]
 public class SiteDetails : Representation
 {
-    public string Description { get; set; }
+    public required string Description { get; set; }
 
-    public IAbsoluteFilePath Path { get; set; }
+    public required FilePath Path { get; set; }
 
-    public string Theme { get; set; }
+    public required string Theme { get; set; }
 
-    public string Title { get; set; }
+    public required string Title { get; set; }
 
-    public string Url { get; set; }
+    public required string Url { get; set; }
 }

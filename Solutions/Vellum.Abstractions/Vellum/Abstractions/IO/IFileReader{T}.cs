@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 
-using NDepend.Path;
+using Spectre.IO;
 
 namespace Vellum.Abstractions.IO;
 
@@ -12,5 +12,5 @@ public interface IFileReader<T>
 {
     string ContentType { get; }
 
-    Task<T> ReadAsync(IAbsoluteFilePath filePath);
+    Task<T> ReadAsync(FilePath filePath);
 }

@@ -9,5 +9,5 @@ namespace Vellum.Abstractions.Content.Extensions;
 
 public interface IExtensionDynamicProxyTypeFactory
 {
-    Type Create(Type baseType, IEnumerable<Type> extensionTypes);
+    Type? Create(Type baseType, IEnumerable<Type> extensionTypes);
 }

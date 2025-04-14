@@ -2,21 +2,13 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+using System.Reflection.PortableExecutable;
+
 namespace Vellum.Abstractions.Content.Primitives;
 
-public class Navigation
+public record Navigation(Url Parent, int Rank, Url Url)
 {
-    public Url Parent { get; set; }
-
-    public int Rank { get; set; }
-
-    public Url Url { get; set; }
-
-#nullable enable
-
     public NavigationOption? Header { get; set; }
 
     public NavigationOption? Footer { get; set; }
-
-#nullable disable
 }

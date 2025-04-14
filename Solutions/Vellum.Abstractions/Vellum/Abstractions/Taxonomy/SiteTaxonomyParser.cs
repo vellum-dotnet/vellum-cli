@@ -12,20 +12,20 @@ public class SiteTaxonomyParser
 {
     public NavigationNode Parse(IReadOnlyCollection<TaxonomyDocument> pages)
     {
-        NavigationNode root = pages.Where(x => x.Navigation.Parent == null).Select(x => new NavigationNode
+        NavigationNode root = pages.Where(x => x.Navigation?.Parent is null).Select(x => new NavigationNode
         {
-            Description = x.MetaData.Description,
-            Header = x.Navigation.Header,
-            Footer = x.Navigation.Footer,
-            Url = x.Navigation.Url,
-            Rank = x.Navigation.Rank,
+            Description = x.MetaData!.Description,
+            Header = x.Navigation?.Header,
+            Footer = x.Navigation?.Footer,
+            Url = x.Navigation?.Url,
+            Rank = x.Navigation?.Rank,
             Title = x.Title,
         }).First();
 
-        root.Children = pages.Where(x => Url.AreEquivalent(x.Navigation.Parent, root.Url)).Select(x => new NavigationNode
+        root.Children = pages.Where(x => Url.AreEquivalent(x.Navigation!.Parent, root.Url!)).Select(x => new NavigationNode
         {
-            Description = x.MetaData.Description,
-            Header = x.Navigation.Header,
+            Description = x.MetaData!.Description,
+            Header = x.Navigation!.Header,
             Footer = x.Navigation.Footer,
             Url = x.Navigation.Url,
             Rank = x.Navigation.Rank,
@@ -34,11 +34,11 @@ public class SiteTaxonomyParser
 
         foreach (TaxonomyDocument page in pages)
         {
-            NavigationNode parentNode = root.Children.Find(x => Url.AreEquivalent(x.Url, page.Navigation.Parent));
+            NavigationNode? parentNode = root.Children.Find(x => Url.AreEquivalent(x.Url!, page.Navigation!.Parent));
             parentNode?.Children.Add(new NavigationNode
             {
-                Description = page.MetaData.Description,
-                Header = page.Navigation.Header,
+                Description = page.MetaData!.Description,
+                Header = page.Navigation!.Header,
                 Footer = page.Navigation.Footer,
                 Url = page.Navigation.Url,
                 Rank = page.Navigation.Rank,

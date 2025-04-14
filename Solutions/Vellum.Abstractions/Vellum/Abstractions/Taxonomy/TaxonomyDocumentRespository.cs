@@ -9,7 +9,7 @@ using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
-using NDepend.Path;
+using Spectre.IO;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.Parsers;
 using Vellum.Abstractions.IO;
@@ -25,7 +25,7 @@ public class TaxonomyDocumentRespository
         this.services = services;
     }
 
-    public async IAsyncEnumerable<TaxonomyDocument> LoadAllAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
+    public async IAsyncEnumerable<TaxonomyDocument> LoadAllAsync(DirectoryPath siteTaxonomyDirectoryPath)
     {
         ServiceProvider serviceProvider = this.services.BuildServiceProvider();
 
@@ -35,9 +35,9 @@ public class TaxonomyDocumentRespository
 
         await foreach (TaxonomyFileInfo file in files)
         {
-            IFileReader<TaxonomyDocument> reader = serviceProvider.GetContent<IFileReader<TaxonomyDocument>>(file.ContentType);
+            IFileReader<TaxonomyDocument>? reader = serviceProvider.GetContent<IFileReader<TaxonomyDocument>>(file.ContentType);
 
-            if (reader != null)
+            if (reader is not null)
             {
                 TaxonomyDocument taxonomyDocument = await reader.ReadAsync(file.Path).ConfigureAwait(false);
                 taxonomyDocument.Hash = file.Hash;
@@ -62,9 +62,9 @@ public class TaxonomyDocumentRespository
 
             foreach (ContentBlock contentBlock in taxonomyDocument.ContentBlocks)
             {
-                IContentBlockParser contentBlockParser = serviceProvider.GetContent<IContentBlockParser>(contentBlock.ContentType);
+                IContentBlockParser? contentBlockParser = serviceProvider.GetContent<IContentBlockParser>(contentBlock.ContentType);
 
-                if (contentBlockParser != null)
+                if (contentBlockParser is not null)
                 {
                     IEnumerable<ContentFragment> results = await contentBlockParser.ParseAsync(taxonomyDocument, contentBlock).ConfigureAwait(false);
 

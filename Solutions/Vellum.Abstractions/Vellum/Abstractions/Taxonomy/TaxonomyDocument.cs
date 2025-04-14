@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using NDepend.Path;
-
+using Spectre.IO;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.Primitives;
 
@@ -16,29 +15,34 @@ namespace Vellum.Abstractions.Taxonomy;
 [DebuggerDisplay("{Navigation.Url}")]
 public class TaxonomyDocument : Representation, ITaxonomyDocument
 {
-    public List<ContentFragment> ContentFragments { get; set; } = new List<ContentFragment>();
+    public List<ContentFragment> ContentFragments { get; set; } = [];
 
-    public string Title { get; set; }
+    public required string Title { get; set; }
 
-    public string Template { get; set; }
+    public required string Template { get; set; }
 
-    public IAbsoluteFilePath Path { get; set; }
+    public required FilePath Path { get; set; }
 
-    public string Hash { get; set; }
+    public required string Hash { get; set; }
 
-    public PageMetaData MetaData { get; set; }
+    public required PageMetaData MetaData { get; set; }
 
-    public OpenGraph OpenGraph { get; set; }
+    public required OpenGraph OpenGraph { get; set; }
 
-    public Navigation Navigation { get; set; }
+    public required Navigation Navigation { get; set; }
 
-    public IEnumerable<ContentBlock> ContentBlocks { get; set; } = Enumerable.Empty<ContentBlock>();
+    public IEnumerable<ContentBlock> ContentBlocks { get; set; } = [];
 
     public string FileUrl
     {
         get
         {
             string fileName = string.Empty;
+
+            if (this.Navigation is null)
+            {
+                return fileName;
+            }
 
             if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
             {
@@ -59,6 +63,11 @@ public class TaxonomyDocument : Representation, ITaxonomyDocument
             }
 
             string fileName;
+
+            if (this.Navigation is null)
+            {
+                return string.Empty;
+            }
 
             if (this.Navigation.Url.ToString().EndsWith("/") || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
             {

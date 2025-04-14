@@ -4,13 +4,14 @@
 
 using System.Threading.Tasks;
 using NDepend.Path;
+using Spectre.IO;
 using Vellum.Abstractions.Parsers;
 
 namespace Vellum.Abstractions.Taxonomy;
 
 public class SiteDetailsRepository
 {
-    public async Task<SiteDetails?> FindAsync(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
+    public async Task<SiteDetails?> FindAsync(DirectoryPath siteTaxonomyDirectoryPath)
     {
         SiteDetails? siteDetails = null;
 

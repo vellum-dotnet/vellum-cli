@@ -38,7 +38,7 @@ public class DynamicContentFragment : DynamicObject
 
     // If you try to get a value of a property
     // not defined in the class, this method is called.
-    public override bool TryGetMember(GetMemberBinder binder, out object result)
+    public override bool TryGetMember(GetMemberBinder binder, out object? result)
     {
         if (!this.dictionary.TryGetValue(binder.Name, out result))
         {
@@ -50,12 +50,12 @@ public class DynamicContentFragment : DynamicObject
         {
             if (list.Count() != 0 && list[0] is Dictionary<object, object>)
             {
-                List<object> converted = new();
+                List<object> converted = [];
                 foreach (object item in list)
                 {
                     if (item is Dictionary<object, object> entry)
                     {
-                        IConverter<Dictionary<object, object>> converter = this.serviceProvider.GetContent<IConverter<Dictionary<object, object>>>(binder.Name.AsConverter());
+                        IConverter<Dictionary<object, object>>? converter = this.serviceProvider.GetContent<IConverter<Dictionary<object, object>>>(binder.Name.AsConverter());
 
                         if (converter is null)
                         {
@@ -84,8 +84,13 @@ public class DynamicContentFragment : DynamicObject
 
     // If you try to set a value of a property that is
     // not defined in the class, this method is called.
-    public override bool TrySetMember(SetMemberBinder binder, object value)
+    public override bool TrySetMember(SetMemberBinder binder, object? value)
     {
+        if (value is null)
+        {
+            return false;
+        }
+
         // Converting the property name to lowercase
         // so that property names become case-insensitive.
         this.dictionary[binder.Name] = value;

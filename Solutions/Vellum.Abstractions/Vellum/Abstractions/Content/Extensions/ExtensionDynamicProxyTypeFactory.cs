@@ -18,9 +18,9 @@ namespace Vellum.Abstractions.Content.Extensions;
 
 public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactory
 {
-    public Type Create(Type baseType, IEnumerable<Type> extensionTypes)
+    public Type? Create(Type baseType, IEnumerable<Type> extensionTypes)
     {
-        IEnumerable<string> extensionNamespaces = extensionTypes.DistinctBy(x => x.Namespace).Select(x => x.Namespace);
+        IEnumerable<string?> extensionNamespaces = extensionTypes.DistinctBy(x => x.Namespace).Select(x => x.Namespace);
         string extensionNames = string.Join("_", extensionTypes.Select(x => x.FullName).Distinct().Order());
         string hash = ContentHashing.Hash(extensionNames);
         string dynamicTypeName = baseType.Name + "_Extensions_" + hash;
@@ -38,10 +38,15 @@ public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactor
             .AddModifiers(Token(SyntaxKind.PublicKeyword))
             .WithBaseList(BaseList(Token(SyntaxKind.ColonToken), baseTypes));
 
-        NamespaceDeclarationSyntax ns = NamespaceDeclaration(ParseName(baseType.Namespace)).AddMembers(interfaceBlock);
+        NamespaceDeclarationSyntax ns = NamespaceDeclaration(ParseName(baseType.Namespace!)).AddMembers(interfaceBlock);
 
-        foreach (string extensionNamespace in extensionNamespaces)
+        foreach (string? extensionNamespace in extensionNamespaces)
         {
+            if (extensionNamespace == null)
+            {
+                continue;
+            }
+
             ns = ns.AddUsings(UsingDirective(ParseName(extensionNamespace)));
         }
 
@@ -50,12 +55,12 @@ public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactor
         PortableExecutableReference mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
         PortableExecutableReference blog = MetadataReference.CreateFromFile(baseType.Assembly.Location);
         CSharpCompilationOptions options = new(OutputKind.DynamicallyLinkedLibrary);
-        var compilation = CSharpCompilation.Create(assemblyName: hash, syntaxTrees: new[] { cu.SyntaxTree }, references: new[] { mscorlib, blog }, options: options);
+        var compilation = CSharpCompilation.Create(assemblyName: hash, syntaxTrees: [cu.SyntaxTree], references: [mscorlib, blog], options: options);
 
         using var ms = new MemoryStream();
         EmitResult emitResult = compilation.Emit(ms);
 
-        var ourAssembly = Assembly.Load(ms.ToArray());
+        Assembly ourAssembly = Assembly.Load(ms.ToArray());
         return ourAssembly.ExportedTypes.FirstOrDefault(x => x.Name == dynamicTypeName);
 
         /*Directory.CreateDirectory(@"c:\code-gen");

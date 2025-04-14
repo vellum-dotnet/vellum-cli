@@ -10,7 +10,7 @@ public class Dates
 {
     public DateTime Date { get; set; }
 
-    public string Ordinal { get; set; }
+    public required string Ordinal { get; set; }
 
-    public string Short { get; set; }
+    public required string Short { get; set; }
 }

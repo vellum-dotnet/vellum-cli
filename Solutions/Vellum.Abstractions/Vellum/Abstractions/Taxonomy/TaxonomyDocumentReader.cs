@@ -5,7 +5,7 @@
 using System.Threading.Tasks;
 
 using NDepend.Path;
-
+using Spectre.IO;
 using Vellum.Abstractions.Content.Primitives;
 using Vellum.Abstractions.IO;
 using Vellum.Abstractions.Parsers;
@@ -18,13 +18,13 @@ public class TaxonomyDocumentReader : IFileReader<TaxonomyDocument>
 
     public string ContentType => RegisteredContentType;
 
-    public async Task<TaxonomyDocument> ReadAsync(IAbsoluteFilePath filePath)
+    public async Task<TaxonomyDocument> ReadAsync(FilePath filePath)
     {
         TaxonomyDocument template = await new YamlParser<TaxonomyDocument>().ParseAsync(filePath).ConfigureAwait(false);
         template.Path = filePath;
 
         // set default (visible / enabled) if missing
-        template.Navigation.Footer ??= new NavigationOption
+        template.Navigation!.Footer ??= new NavigationOption
         {
             Link = true,
             Visible = true,

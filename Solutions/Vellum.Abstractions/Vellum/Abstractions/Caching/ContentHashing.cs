@@ -18,7 +18,7 @@ public static class ContentHashing
             sha256Managed.ComputeHash(Encoding.UTF8.GetBytes(content));
 
             // Return as hexadecimal string
-            return string.Join(string.Empty, sha256Managed.Hash.Select(x => x.ToString("x2")));
+            return string.Concat(sha256Managed.Hash!.Select(x => x.ToString("x2")));
         }
     }
 }

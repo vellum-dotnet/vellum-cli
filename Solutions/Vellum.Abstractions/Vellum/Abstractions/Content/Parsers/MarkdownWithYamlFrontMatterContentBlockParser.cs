@@ -11,6 +11,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using NDepend.Path;
+using Spectre.IO;
 using Vellum.Abstractions.Content.Formatting;
 using Vellum.Abstractions.Taxonomy;
 
@@ -27,23 +28,28 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
         this.contentFormatter = contentFormatter;
     }
 
-    public string ContentType { get; protected set; }
+    public string ContentType { get; set; } = string.Empty;
 
     public async ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock)
     {
-        var contentFragments = new List<ContentFragment>();
+        List<ContentFragment> contentFragments = [];
 
-        foreach (IAbsoluteFilePath contentFragmentAbsoluteFilePath in FindContentFragmentFiles(contentBlock.Spec.Path, taxonomyDocument.Path.ParentDirectoryPath))
+        foreach (FilePath contentFragmentAbsoluteFilePath in FindContentFragmentFiles(contentBlock.Spec?.Path!, taxonomyDocument.Path!.GetDirectory()!.GetParent()!))
         {
             string cacheKey = $"{nameof(MarkdownWithYamlFrontMatterContentBlockParser)}::{contentFragmentAbsoluteFilePath}";
 
-            if (!this.memoryCache.TryGetValue(cacheKey, out ContentFragment cachedContentFragment))
+            if (!this.memoryCache.TryGetValue(cacheKey, out ContentFragment? cachedContentFragment))
             {
                 try
                 {
-                    string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()).ConfigureAwait(false);
+                    if (!FileSystem.Shared.File.Exists(contentFragmentAbsoluteFilePath))
+                    {
+                        throw new FileNotFoundException($"The content fragment file {contentFragmentAbsoluteFilePath} does not exist.");
+                    }
 
-                    ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath.ToString());
+                    string content = await File.ReadAllTextAsync(contentFragmentAbsoluteFilePath.ToString()!).ConfigureAwait(false);
+
+                    ContentFragment contentFragment = new MarkdownContentFragmentFactory(this.contentFormatter).Create(contentBlock, content, contentFragmentAbsoluteFilePath.ToString()!);
 
                     contentFragments.Add(contentFragment);
 
@@ -56,21 +62,21 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
             }
             else
             {
-                contentFragments.Add(cachedContentFragment);
+                contentFragments.Add(cachedContentFragment!);
             }
         }
 
         // TODO: Content Block Filtering should be pulled out as the next stage in the processing pipeline.
-        if (contentBlock.Spec.Tags.Count > 0)
+        if (contentBlock.Spec?.Tags?.Count > 0)
         {
             contentFragments = contentFragments.Where(x => x.MetaData.ContainsKey("Tags"))
                 .Where(t => ((List<object>)t.MetaData["Tags"])
                     .Intersect(contentBlock.Spec.Tags).Any()).ToList();
         }
 
-        if (contentBlock.Spec.Count > 0)
+        if (contentBlock.Spec is { Count: > 0 } && contentBlock.Spec?.Count.HasValue == true)
         {
-            contentFragments = contentFragments.Take(contentBlock.Spec.Count).ToList();
+            contentFragments = contentFragments.Take(contentBlock.Spec.Count.Value).ToList();
         }
 
         for (int i = 0; i < contentFragments.Count; i++)
@@ -81,17 +87,17 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
         return contentFragments;
     }
 
-    private static IEnumerable<IAbsoluteFilePath> FindContentFragmentFiles(string contentFragmentPath, IAbsoluteDirectoryPath rootDirectory)
+    private static IEnumerable<FilePath> FindContentFragmentFiles(string contentFragmentPath, DirectoryPath rootDirectory)
     {
         var matcher = new Matcher();
 
         matcher.AddInclude(contentFragmentPath);
 
-        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(rootDirectory.DirectoryInfo));
+        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(rootDirectory.FullPath)));
 
         foreach (FilePatternMatch match in matches.Files)
         {
-            yield return match.Path.ToRelativeFilePath().GetAbsolutePathFrom(rootDirectory);
+            yield return rootDirectory.CombineWithFilePath(match.Path);
         }
     }
 }

@@ -6,12 +6,15 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Dynamitey.DynamicObjects;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 using Vellum.Cli.Abstractions.Commands;
+using Vellum.Cli.Commands.Content;
 using Vellum.Cli.Commands.Environment;
 using Vellum.Cli.Commands.New;
 using Vellum.Cli.Commands.Plugins;
@@ -38,8 +41,7 @@ public static class Program
         }
         catch (ReflectionTypeLoadException)
         {
-            AnsiConsole.MarkupLine(
-                "[red]ERROR: One or more of your plugins are not compatible. Please run vellum-cli plugins clean[/]");
+            AnsiConsole.MarkupLine("[red]ERROR: One or more of your plugins are not compatible. Please run vellum-cli plugins clean[/]");
         }
 
         ServiceCollection registrations = [];
@@ -55,6 +57,15 @@ public static class Program
             config.CaseSensitivity(CaseSensitivity.None);
             config.ValidateExamples();
 
+            config.AddExample("content", "list", "-s", @"C:\_code\OSS\vellum-dotnet\endjin-com", "--published");
+
+            config.AddBranch("content", content =>
+            {
+                content.SetDescription("Perform operations on Vellum content.");
+                content.AddCommand<ContentListCommand>("list")
+                       .WithDescription("List all Vellum content files.");
+            });
+
             config.AddBranch("environment", environment =>
             {
                 environment.SetDescription("Manipulate the vellum-cli environment & settings.");
@@ -65,7 +76,7 @@ public static class Program
             });
 
             config.AddCommand<NewFileCommand>("new")
-                .WithDescription("Create new files based on templates.");
+                  .WithDescription("Create new files based on templates.");
 
             config.AddBranch("plugins", plugins =>
             {

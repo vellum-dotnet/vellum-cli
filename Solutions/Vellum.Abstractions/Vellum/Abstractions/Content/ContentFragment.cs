@@ -11,17 +11,17 @@ public record ContentFragment : IContent, IExtensible
 {
     public int Position { get; set; }
 
-    public string Id { get; set; }
+    public required string Id { get; set; }
 
-    public string ContentType { get; set; }
+    public required string ContentType { get; set; }
 
-    public IEnumerable<string> Extensions { get; set; }
+    public IEnumerable<string> Extensions { get; set; } = [];
 
     public Dictionary<string, dynamic> MetaData { get; set; } = new();
 
-    public string Hash { get; set; }
+    public required string Hash { get; set; }
 
-    public string Body { get; set; }
+    public required string Body { get; set; }
 
     public DateTime Date { get; set; }
 

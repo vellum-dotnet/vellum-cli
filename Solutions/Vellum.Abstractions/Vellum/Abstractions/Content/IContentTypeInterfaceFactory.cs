@@ -8,5 +8,5 @@ namespace Vellum.Abstractions.Content;
 
 public interface IContentTypeInterfaceFactory
 {
-    Type Resolve(string contentType);
+    Type? Resolve(string contentType);
 }

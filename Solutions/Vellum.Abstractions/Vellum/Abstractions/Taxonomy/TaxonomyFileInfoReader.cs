@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 
 using NDepend.Path;
+using Spectre.IO;
 using Vellum.Abstractions.Caching;
 using YamlDotNet.RepresentationModel;
 
@@ -14,19 +15,18 @@ namespace Vellum.Abstractions.Taxonomy;
 
 public class TaxonomyFileInfoReader
 {
-    public async IAsyncEnumerable<TaxonomyFileInfo> ReadAsync(IEnumerable<IAbsoluteFilePath> files)
+    public async IAsyncEnumerable<TaxonomyFileInfo> ReadAsync(IEnumerable<FilePath> files)
     {
-        foreach (IAbsoluteFilePath file in files)
+        foreach (FilePath file in files)
         {
-            var yaml = new YamlStream();
-            string contents = await File.ReadAllTextAsync(file.ToString());
+            YamlStream yaml = [];
+            string contents = await File.ReadAllTextAsync(file.ToString()!);
 
             yaml.Load(new StringReader(contents));
 
-            // Examine the stream
             if (yaml.Documents[0].RootNode is YamlMappingNode mapping)
             {
-                string contentType = ((YamlScalarNode)mapping.Children.FirstOrDefault(x => ((YamlScalarNode)x.Key).Value == "ContentType").Value).Value;
+                string? contentType = ((YamlScalarNode)mapping.Children.FirstOrDefault(x => ((YamlScalarNode)x.Key).Value == "ContentType").Value).Value ?? string.Empty;
 
                 yield return new TaxonomyFileInfo { ContentType = contentType, Path = file, Hash = ContentHashing.Hash(contents) };
             }

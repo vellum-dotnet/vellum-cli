@@ -10,25 +10,30 @@ namespace Vellum.Abstractions.Content.Primitives;
 [DebuggerDisplay("{Url}")]
 public class NavigationNode
 {
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     public string Id
     {
         get
         {
+            if (this.Url == null)
+            {
+                return string.Empty;
+            }
+
             return this.Url.ToString().TrimStart('/').Replace("/", "-").Replace(".html", string.Empty).ToLowerInvariant();
         }
     }
 
-    public NavigationOption Header { get; set; }
+    public NavigationOption? Header { get; set; }
 
-    public NavigationOption Footer { get; set; }
+    public NavigationOption? Footer { get; set; }
 
-    public Url Url { get; set; }
+    public Url? Url { get; set; }
 
-    public int Rank { get; set; }
+    public int? Rank { get; set; }
 
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
-    public List<NavigationNode> Children { get; set; } = new List<NavigationNode>();
+    public List<NavigationNode> Children { get; set; } = [];
 }

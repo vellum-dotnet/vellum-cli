@@ -9,19 +9,19 @@ using System.Linq;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 
-using NDepend.Path;
+using Spectre.IO;
 
 namespace Vellum.Abstractions.Taxonomy;
 
 public class TaxonomyFileLocator
 {
-    public IEnumerable<IAbsoluteFilePath> LocateRecursively(IAbsoluteDirectoryPath siteTaxonomyDirectoryPath)
+    public IEnumerable<FilePath> LocateRecursively(DirectoryPath siteTaxonomyDirectoryPath)
     {
         var matcher = new Matcher();
         matcher.AddInclude("**/*.yml");
 
-        PatternMatchingResult results = matcher.Execute(new DirectoryInfoWrapper(siteTaxonomyDirectoryPath.DirectoryInfo));
+        PatternMatchingResult results = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(siteTaxonomyDirectoryPath.FullPath)));
 
-        return results.Files.Select(x => Path.GetFullPath(Path.Combine(siteTaxonomyDirectoryPath.ToString(), x.Path)).ToAbsoluteFilePath());
+        return results.Files.Select(x => siteTaxonomyDirectoryPath.CombineWithFilePath(x.Path));
     }
 }

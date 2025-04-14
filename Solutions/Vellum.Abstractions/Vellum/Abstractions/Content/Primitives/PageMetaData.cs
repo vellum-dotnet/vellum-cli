@@ -8,9 +8,9 @@ namespace Vellum.Abstractions.Content.Primitives;
 
 public class PageMetaData
 {
-    public string CanonicalUrl { get; set; }
+    public string? CanonicalUrl { get; set; }
 
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
-    public List<string> Keywords { get; set; } = new List<string>();
+    public List<string> Keywords { get; set; } = [];
 }

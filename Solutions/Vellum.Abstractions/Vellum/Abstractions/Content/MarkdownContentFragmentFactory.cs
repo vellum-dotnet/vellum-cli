@@ -62,11 +62,11 @@ public class MarkdownContentFragmentFactory
 
     private (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) ConvertFrontMatterToMetaData(MarkdownDocument markdown, string contentFragmentAbsoluteFilePath)
     {
-        YamlFrontMatterBlock yamlBlock = markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
+        YamlFrontMatterBlock? yamlBlock = markdown.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
         if (yamlBlock == null)
         {
-            return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, Enumerable.Empty<string>(), new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath } });
+            return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, [], new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath } });
         }
 
         string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
@@ -75,15 +75,15 @@ public class MarkdownContentFragmentFactory
         frontMatter.Add("FilePath", contentFragmentAbsoluteFilePath);
 
         string contentType = string.Empty;
-        IEnumerable<string> extensions = Enumerable.Empty<string>();
+        IEnumerable<string> extensions = [];
 
-        if (frontMatter.TryGetValue("ContentType", out dynamic contentTypeDynamic))
+        if (frontMatter.TryGetValue("ContentType", out dynamic? contentTypeDynamic))
         {
             contentType = contentTypeDynamic;
             frontMatter.Remove("ContentType");
         }
 
-        if (frontMatter.TryGetValue("Extensions", out dynamic extensionsDynamic))
+        if (frontMatter.TryGetValue("Extensions", out dynamic? extensionsDynamic))
         {
             if (extensionsDynamic is IEnumerable<object> objects)
             {
@@ -94,7 +94,7 @@ public class MarkdownContentFragmentFactory
         }
 
         PublicationStatus status = PublicationStatus.Unknown;
-        if (frontMatter.TryGetValue("PublicationStatus", out dynamic statusDynamic))
+        if (frontMatter.TryGetValue("PublicationStatus", out dynamic? statusDynamic))
         {
             status = PublicationStatusEnumParser.Parse(statusDynamic);
             frontMatter.Remove("PublicationStatus");
@@ -102,7 +102,7 @@ public class MarkdownContentFragmentFactory
 
         DateTime date = DateTime.MaxValue;
 
-        if (frontMatter.TryGetValue("Date", out dynamic dateDynamic))
+        if (frontMatter.TryGetValue("Date", out dynamic? dateDynamic))
         {
             if (DateTime.TryParse(dateDynamic, out DateTime dateTime))
             {

@@ -14,15 +14,7 @@ public class ContentBlockRegistry
         ArgumentNullException.ThrowIfNull(contentType);
         ArgumentNullException.ThrowIfNull(specPath);
 
-        ContentBlock contentBlock = new()
-        {
-            ContentType = contentType,
-            Id = id,
-            Spec = new ContentSpecification
-            {
-                Path = specPath
-            }
-        };
+        ContentBlock contentBlock = new(new ContentSpecification(null, null, specPath, null), contentType, id);
 
         this.documents.Add(id, contentBlock);
     }

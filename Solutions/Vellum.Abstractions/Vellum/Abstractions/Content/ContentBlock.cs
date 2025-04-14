@@ -4,11 +4,4 @@
 
 namespace Vellum.Abstractions.Content;
 
-public class ContentBlock
-{
-    public ContentSpecification Spec { get; set; }
-
-    public string ContentType { get; set; }
-
-    public string Id { get; set; }
-}
+public record ContentBlock(ContentSpecification Spec, string ContentType, string Id);

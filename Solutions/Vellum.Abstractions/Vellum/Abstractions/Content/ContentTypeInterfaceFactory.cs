@@ -9,7 +9,7 @@ namespace Vellum.Abstractions.Content;
 
 public class ContentTypeInterfaceFactory : IContentTypeInterfaceFactory
 {
-    public Type Resolve(string contentType)
+    public Type? Resolve(string contentType)
     {
         switch (contentType)
         {

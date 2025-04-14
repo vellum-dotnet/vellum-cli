@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-using NDepend.Path;
+using Spectre.IO;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.Primitives;
 
@@ -15,7 +15,7 @@ public interface ITaxonomyDocument
 
     string Template { get; set; }
 
-    IAbsoluteFilePath Path { get; set; }
+    FilePath Path { get; set; }
 
     string Hash { get; set; }
 

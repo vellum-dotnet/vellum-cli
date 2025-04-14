@@ -6,7 +6,7 @@ namespace Vellum.Abstractions;
 
 public class Representation
 {
-    public string ContentType { get; set; }
+    public required string ContentType { get; set; }
 
     public string GetContentType()
     {

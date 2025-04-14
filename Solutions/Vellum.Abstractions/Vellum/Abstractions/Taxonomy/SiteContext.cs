@@ -12,9 +12,9 @@ public class SiteContext
 {
     public bool Preview { get; set; }
 
-    public NavigationNode Navigation { get; set; }
+    public required NavigationNode Navigation { get; set; }
 
-    public SiteDetails Details { get; set; }
+    public required SiteDetails Details { get; set; }
 
-    public IEnumerable<TaxonomyDocument> Pages { get; set; }
+    public required Dictionary<string, object> Pages { get; set; }
 }

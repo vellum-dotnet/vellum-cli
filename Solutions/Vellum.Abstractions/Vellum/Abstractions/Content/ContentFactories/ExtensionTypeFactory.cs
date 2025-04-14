@@ -29,10 +29,16 @@ public class ExtensionTypeFactory : IExtensionTypeFactory
             return null;
         }
 
-        IEnumerable<Type> extensionTypes = cf.Extensions.Select(contentType => this.contentTypeInterfaceFactory.Resolve(contentType)).Where(result => result != null);
+        IEnumerable<Type?> extensionTypes = cf.Extensions.Select(contentType => this.contentTypeInterfaceFactory.Resolve(contentType)).Where(result => result != null);
 
-        Type contentFragmentType = this.contentTypeInterfaceFactory.Resolve(cf.ContentType);
-        Type extensionDynamicProxyType = this.extensionDynamicProxyTypeFactory.Create(contentFragmentType, extensionTypes);
+        Type? contentFragmentType = this.contentTypeInterfaceFactory.Resolve(cf.ContentType);
+
+        if (contentFragmentType is null || extensionTypes is null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        Type extensionDynamicProxyType = this.extensionDynamicProxyTypeFactory.Create(contentFragmentType, extensionTypes!)!;
         Type typeFactory = typeof(ContentFragmentTypeFactory<>);
         Type[] typeArgs = [extensionDynamicProxyType];
         Type genericTypeFactory = typeFactory.MakeGenericType(typeArgs);

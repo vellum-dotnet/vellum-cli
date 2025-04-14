@@ -39,6 +39,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The service collection, for chaining.</returns>
     private static IServiceCollection AddCliServices(this IServiceCollection services, IConfiguration config)
     {
+        services.AddSingleton<IServiceCollection>(services);
         services.AddLogging(builder => builder.AddConsole());
         services.AddSingleton<IAppEnvironment, FileSystemRoamingProfileAppEnvironment>();
         services.AddSingleton<IAppEnvironmentConfiguration, FileSystemRoamingProfileAppEnvironment>();

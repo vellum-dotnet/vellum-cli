@@ -5,18 +5,17 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using NDepend.Path;
-
+using Spectre.IO;
 using YamlDotNet.Serialization;
 
 namespace Vellum.Abstractions.Parsers;
 
 public class YamlParser<T>
 {
-    public async Task<T> ParseAsync(IAbsoluteFilePath filePath)
+    public async Task<T> ParseAsync(FilePath filePath)
     {
         IDeserializer deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().IgnoreFields().Build();
-        string content = await File.ReadAllTextAsync(filePath.ToString()).ConfigureAwait(continueOnCapturedContext: false);
+        string content = await File.ReadAllTextAsync(filePath.ToString()!).ConfigureAwait(continueOnCapturedContext: false);
 
         return deserializer.Deserialize<T>(content);
     }

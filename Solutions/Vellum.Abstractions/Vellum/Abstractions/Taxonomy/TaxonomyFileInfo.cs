@@ -4,14 +4,14 @@
 
 using System.Diagnostics;
 
-using NDepend.Path;
+using Spectre.IO;
 
 namespace Vellum.Abstractions.Taxonomy;
 
 [DebuggerDisplay("{Path}")]
 public class TaxonomyFileInfo : Representation
 {
-    public string Hash { get; set; }
+    public required string Hash { get; set; }
 
-    public IAbsoluteFilePath Path { get; set; }
+    public required FilePath Path { get; set; }
 }

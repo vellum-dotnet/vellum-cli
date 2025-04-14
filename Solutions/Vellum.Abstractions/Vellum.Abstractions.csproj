@@ -32,6 +32,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis" Version="4.13.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.4" />
+    <PackageReference Include="Spectre.IO" Version="0.18.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
