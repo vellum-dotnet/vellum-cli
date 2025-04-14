@@ -34,7 +34,7 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
     {
         List<ContentFragment> contentFragments = [];
 
-        foreach (FilePath contentFragmentAbsoluteFilePath in FindContentFragmentFiles(contentBlock.Spec?.Path!, taxonomyDocument.Path!.GetDirectory()!.GetParent()!))
+        foreach (FilePath contentFragmentAbsoluteFilePath in FindContentFragmentFiles(contentBlock.Spec?.Path!, taxonomyDocument.Path.GetDirectory()))
         {
             string cacheKey = $"{nameof(MarkdownWithYamlFrontMatterContentBlockParser)}::{contentFragmentAbsoluteFilePath}";
 
@@ -97,7 +97,7 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
 
         foreach (FilePatternMatch match in matches.Files)
         {
-            yield return rootDirectory.CombineWithFilePath(match.Path);
+            yield return new FilePath(match.Path).MakeAbsolute(rootDirectory);
         }
     }
 }
