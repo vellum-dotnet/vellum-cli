@@ -12,13 +12,10 @@ public static class ContentHashing
 {
     public static string Hash(string content)
     {
-        using (var sha256Managed = SHA256.Create())
-        {
-            // Compute hash from text parameter
-            sha256Managed.ComputeHash(Encoding.UTF8.GetBytes(content));
+        using var sha256Managed = SHA256.Create();
+        byte[] textData = Encoding.UTF8.GetBytes(content);
+        byte[] hash = sha256Managed.ComputeHash(textData);
 
-            // Return as hexadecimal string
-            return string.Concat(sha256Managed.Hash!.Select(x => x.ToString("x2")));
-        }
+        return string.Concat(sha256Managed.Hash!.Select(x => x.ToString("x2")));
     }
 }

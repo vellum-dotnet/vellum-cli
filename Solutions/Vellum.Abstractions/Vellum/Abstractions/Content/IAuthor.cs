@@ -16,7 +16,7 @@ public interface IAuthor : IContent, IAuthorId
 
     string FirstName { get; set; }
 
-    string FullName => $"{FirstName} {LastName}";
+    string FullName => $"{this.FirstName} {this.LastName}";
 
     string GitHub { get; set; }
 

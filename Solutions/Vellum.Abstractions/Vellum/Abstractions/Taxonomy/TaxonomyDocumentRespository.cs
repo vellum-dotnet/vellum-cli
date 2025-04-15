@@ -58,7 +58,8 @@ public class TaxonomyDocumentRespository
         // throw new InvalidOperationException($"There is no ContentBlockParser registered for ContentType {contentBlock.ContentType}");
         await foreach (TaxonomyDocument taxonomyDocument in taxonomyDocuments)
         {
-            taxonomyDocument.ContentBlocks ??= new List<ContentBlock>();
+            taxonomyDocument.ContentBlocks ??= [];
+            taxonomyDocument.ContentFragments ??= [];
 
             foreach (ContentBlock contentBlock in taxonomyDocument.ContentBlocks)
             {

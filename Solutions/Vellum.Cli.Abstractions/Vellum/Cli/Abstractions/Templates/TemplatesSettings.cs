@@ -10,5 +10,5 @@ public class TemplatesSettings
 {
     public DefaultTemplate DefaultTemplate { get; set; }
 
-    public List<TemplatePackage> Packages { get; set; } = new List<TemplatePackage>();
+    public List<TemplatePackage> Packages { get; set; } = [];
 }

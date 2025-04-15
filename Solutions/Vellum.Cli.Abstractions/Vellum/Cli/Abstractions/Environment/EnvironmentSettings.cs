@@ -9,7 +9,7 @@ namespace Vellum.Cli.Abstractions.Environment;
 
 public class EnvironmentSettings
 {
-    public Dictionary<string, string> Configuration { get; set; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Configuration { get; set; } = [];
 
     public string Username { get; set; }
 

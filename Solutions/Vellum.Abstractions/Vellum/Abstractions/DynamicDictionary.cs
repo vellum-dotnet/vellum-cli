@@ -10,7 +10,7 @@ namespace Vellum.Abstractions;
 public class DynamicDictionary : DynamicObject
 {
     // The inner dictionary.
-    private readonly Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>();
+    private readonly Dictionary<string, dynamic> dictionary = [];
 
     // This property returns the number of elements
     // in the inner dictionary.
