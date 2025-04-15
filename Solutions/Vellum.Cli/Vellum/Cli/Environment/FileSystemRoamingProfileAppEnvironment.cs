@@ -74,7 +74,7 @@ public class FileSystemRoamingProfileAppEnvironment : IAppEnvironment
 
                 IEnumerable<string> dirs = Directory.EnumerateDirectories(directory!, "*.*", SearchOption.AllDirectories);
 
-                dirs = dirs.Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net8.0"));
+                dirs = dirs.Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net9.0"));
 
                 foreach (string dir in dirs)
                 {

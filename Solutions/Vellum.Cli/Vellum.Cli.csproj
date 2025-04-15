@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>vellum-cli</AssemblyName>
     <NoWarn>$(NoWarn);RCS1021;NU5104;</NoWarn>
   </PropertyGroup>
