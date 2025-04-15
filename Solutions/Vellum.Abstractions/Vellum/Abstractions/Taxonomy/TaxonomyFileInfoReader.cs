@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using NDepend.Path;
 using Spectre.IO;
 using Vellum.Abstractions.Caching;
 using YamlDotNet.RepresentationModel;

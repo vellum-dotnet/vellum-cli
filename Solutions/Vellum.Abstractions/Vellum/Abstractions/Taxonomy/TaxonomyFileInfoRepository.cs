@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Collections.Generic;
-using NDepend.Path;
 using Spectre.IO;
 
 namespace Vellum.Abstractions.Taxonomy;

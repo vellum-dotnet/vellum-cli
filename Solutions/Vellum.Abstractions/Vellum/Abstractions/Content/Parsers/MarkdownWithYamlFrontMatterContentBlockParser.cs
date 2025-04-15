@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
-using NDepend.Path;
 using Spectre.IO;
 using Vellum.Abstractions.Content.Formatting;
 using Vellum.Abstractions.Taxonomy;

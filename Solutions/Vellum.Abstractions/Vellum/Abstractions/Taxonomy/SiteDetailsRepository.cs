@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Threading.Tasks;
-using NDepend.Path;
 using Spectre.IO;
 using Vellum.Abstractions.Parsers;
 

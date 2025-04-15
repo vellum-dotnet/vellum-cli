@@ -18,8 +18,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NDepend.Path" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Spectre.Console" Version="0.50.0" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.50.0" />
     <PackageReference Include="Spectre.IO" Version="0.18.0" />

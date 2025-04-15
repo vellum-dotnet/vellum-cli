@@ -40,11 +40,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Markdig" Version="0.40.0" />
-    <PackageReference Include="Spectre.Console" Version="0.50.0" />
-    <PackageReference Include="Spectre.Console.Cli" Version="0.50.0" />
-    <PackageReference Include="Spectre.IO" Version="0.18.0" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
@@ -54,6 +49,9 @@
     <PackageReference Include="NuGet.Common" Version="6.13.2" />
     <PackageReference Include="NuGet.Packaging.Core" Version="6.9.1" />
     <PackageReference Include="NuGet.Resolver" Version="6.13.2" />
+    <PackageReference Include="Spectre.Console" Version="0.50.0" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.50.0" />
+    <PackageReference Include="Spectre.IO" Version="0.18.0" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
@@ -66,6 +64,7 @@
     <ProjectReference Include="..\Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj" PrivateAssets="all">
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Vellum.Rendering.Scriban\Vellum.Rendering.Scriban.csproj" />
   </ItemGroup>
 
 </Project>

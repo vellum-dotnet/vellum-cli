@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using NDepend.Path;
-
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Spectre.IO;
@@ -18,7 +16,7 @@ using Vellum.Abstractions.Content.ContentFactories;
 using Vellum.Abstractions.Content.Primitives;
 using Vellum.Abstractions.Taxonomy;
 using Vellum.Cli.Abstractions;
-using Vellum.Cli.Abstractions.Environment;
+using Vellum.Rendering.Scriban;
 
 namespace Vellum.Cli.Commands.Content;
 
@@ -89,6 +87,10 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
         };*/
 
         stopwatch.Stop();
+
+        ScribanRenderer renderer = new();
+
+        await renderer.RenderAsync(@"c:\temp\scriban\test.html", "<html><head><title>{{title}} - {{date}}</title></head></html>", blogs.First());
 
         AnsiConsole.WriteLine($"Rendering Took: {stopwatch.Elapsed}");
 

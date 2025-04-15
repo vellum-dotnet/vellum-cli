@@ -146,22 +146,6 @@
           "StyleCop.Analyzers.Unstable": "1.2.0.556"
         }
       },
-      "System.CommandLine": {
-        "type": "Direct",
-        "requested": "[2.0.0-beta4.22272.1, )",
-        "resolved": "2.0.0-beta4.22272.1",
-        "contentHash": "1uqED/q2H0kKoLJ4+hI2iPSBSEdTuhfCYADeJrAqERmiGQ2NNacYKRNEQ+gFbU4glgVyK8rxI+ZOe1onEtr/Pg=="
-      },
-      "System.CommandLine.Rendering": {
-        "type": "Direct",
-        "requested": "[0.4.0-alpha.22272.1, )",
-        "resolved": "0.4.0-alpha.22272.1",
-        "contentHash": "PQd7HStYn6RYjc5zuerR41sALm3qFDutzDHISB5DYbExSgll6s8zghfyYFdLioLPWpFxVyMj3L9Ki69jqqum/g==",
-        "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
-          "System.CommandLine": "2.0.0-beta4.22272.1"
-        }
-      },
       "YamlDotNet": {
         "type": "Direct",
         "requested": "[16.3.0, )",
@@ -936,11 +920,6 @@
           "Microsoft.SourceLink.Common": "1.1.1"
         }
       },
-      "NDepend.Path": {
-        "type": "Transitive",
-        "resolved": "2.0.0",
-        "contentHash": "Or7WkRmJ0R9Lcd4EWGdPPO+3C2Tp7yKAAzhS7MKQ5uC9175hzkXVcTFdMkKIUjeCuqdq/Dr1JHsIZIXPtTd8QA=="
-      },
       "Newtonsoft.Json": {
         "type": "Transitive",
         "resolved": "13.0.3",
@@ -1082,6 +1061,11 @@
         "type": "Transitive",
         "resolved": "4.3.2",
         "contentHash": "leXiwfiIkW7Gmn7cgnNcdtNAU70SjmKW3jxGj1iKHOvdn0zRWsgv/l2OJUO5zdGdiv2VRFnAsxxhDgMzofPdWg=="
+      },
+      "Scriban": {
+        "type": "Transitive",
+        "resolved": "6.2.0",
+        "contentHash": "Mpd/9Q6LQn9jPGZR11gfytuZ5ivNgjnds1RB/3HzAdivhreX5mosRtqI87Zjafdxmm7HRgjZgdDYhiGVdytLwA=="
       },
       "StyleCop.Analyzers.Unstable": {
         "type": "Transitive",
@@ -1706,7 +1690,6 @@
           "Microsoft.Extensions.Caching.Memory": "[9.0.4, )",
           "Microsoft.Extensions.DependencyInjection": "[9.0.4, )",
           "Microsoft.Extensions.FileSystemGlobbing": "[9.0.4, )",
-          "NDepend.Path": "[2.0.0, )",
           "Spectre.IO": "[0.18.0, )",
           "System.Linq.Async": "[6.0.1, )",
           "YamlDotNet": "[16.3.0, )"
@@ -1715,8 +1698,6 @@
       "vellum.cli.abstractions": {
         "type": "Project",
         "dependencies": {
-          "NDepend.Path": "[2.0.0, )",
-          "Newtonsoft.Json": "[13.0.3, )",
           "Spectre.Console": "[0.50.0, )",
           "Spectre.Console.Cli": "[0.50.0, )",
           "Spectre.IO": "[0.18.0, )"
@@ -1726,16 +1707,21 @@
         "type": "Project",
         "dependencies": {
           "CloudinaryDotNet": "[1.27.5, )",
-          "System.CommandLine": "[2.0.0-beta4.22272.1, )",
           "Vellum.Cli.Abstractions": "[1.0.0, )"
         }
       },
       "vellum.cli.tinify": {
         "type": "Project",
         "dependencies": {
-          "System.CommandLine": "[2.0.0-beta4.22272.1, )",
           "Tinify": "[1.8.0, )",
           "Vellum.Cli.Abstractions": "[1.0.0, )"
+        }
+      },
+      "vellum.rendering.scriban": {
+        "type": "Project",
+        "dependencies": {
+          "Scriban": "[6.2.0, )",
+          "Spectre.IO": "[0.18.0, )"
         }
       }
     }
