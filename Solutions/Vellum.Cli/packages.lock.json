@@ -14,9 +14,9 @@
       },
       "Markdig": {
         "type": "Direct",
-        "requested": "[0.40.0, )",
-        "resolved": "0.40.0",
-        "contentHash": "4ve14zs+gt1irldTQE3y5FLAHuzmhW7T99lAAvVipe/q2LWT/nUCO0iICb9TXGvMX6n7Z1OZroFXkdSy91rO8w=="
+        "requested": "[0.41.1, )",
+        "resolved": "0.41.1",
+        "contentHash": "e9QXUg2agxd9iWV3hO5fA4Qp2avMuXFiElatzD8hp69yIEgESrdhKvDFf9y9NOlPe9jO7AA6W1JAnntLmqwRwA=="
       },
       "McMaster.NETCore.Plugins": {
         "type": "Direct",
@@ -1064,8 +1064,8 @@
       },
       "Scriban": {
         "type": "Transitive",
-        "resolved": "6.2.0",
-        "contentHash": "Mpd/9Q6LQn9jPGZR11gfytuZ5ivNgjnds1RB/3HzAdivhreX5mosRtqI87Zjafdxmm7HRgjZgdDYhiGVdytLwA=="
+        "resolved": "6.2.1",
+        "contentHash": "jauX7gvreKvlD1+tkQ9D1i0kNg2p3P1ZqkDftJeTB7JAF7zKtafpyKTtr3m5Kr6d4GYw0CDfRcm2P07/efwdqQ=="
       },
       "StyleCop.Analyzers.Unstable": {
         "type": "Transitive",
@@ -1684,7 +1684,7 @@
           "Flurl": "[4.0.0, )",
           "Humanizer": "[2.14.1, )",
           "ImpromptuInterface": "[8.0.6, )",
-          "Markdig": "[0.40.0, )",
+          "Markdig": "[0.41.1, )",
           "Microsoft.CSharp": "[4.7.0, )",
           "Microsoft.CodeAnalysis": "[4.13.0, )",
           "Microsoft.Extensions.Caching.Memory": "[9.0.4, )",
@@ -1720,7 +1720,7 @@
       "vellum.rendering.scriban": {
         "type": "Project",
         "dependencies": {
-          "Scriban": "[6.2.0, )",
+          "Scriban": "[6.2.1, )",
           "Spectre.IO": "[0.18.0, )"
         }
       }
