@@ -2,41 +2,39 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Plugins
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Spectre.IO;
+using Vellum.Cli.Abstractions.Packages;
+
+namespace Vellum.Cli.Abstractions.Plugins;
+
+public class PluginPackage
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using NDepend.Path;
-    using Newtonsoft.Json;
-    using Vellum.Cli.Abstractions.Packages;
+    public string Name { get; set; }
 
-    public class PluginPackage
+    public string Version { get; set; }
+
+    public DirectoryPath RepositoryPath { get; set; }
+
+    public List<PackageDetail> Details { get; } = [];
+
+    [JsonIgnore]
+    public List<string> Plugins { get; } = [];
+
+    public string Id
     {
-        public string Name { get; set; }
-
-        public string Version { get; set; }
-
-        public IAbsoluteDirectoryPath RepositoryPath { get; set; }
-
-        public List<PackageDetail> Details { get; } = new List<PackageDetail>();
-
-        [JsonIgnore]
-        public List<string> Plugins { get; } = new List<string>();
-
-        public string Id
+        get
         {
-            get
-            {
-                return $"{this.Name}.{this.Version}";
-            }
+            return $"{this.Name}.{this.Version}";
         }
+    }
 
-        public IAbsoluteDirectoryPath PluginPath
+    public DirectoryPath PluginPath
+    {
+        get
         {
-            get
-            {
-                return Path.Combine(this.RepositoryPath.ToString(), this.Name, this.Version).ToAbsoluteDirectoryPath();
-            }
+            return System.IO.Path.Combine(this.RepositoryPath.ToString(), this.Name, this.Version);
         }
     }
 }

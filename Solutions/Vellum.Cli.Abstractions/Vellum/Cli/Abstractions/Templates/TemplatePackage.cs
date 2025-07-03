@@ -2,38 +2,34 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Vellum.Cli.Abstractions.Templates
+using System.Collections.Generic;
+using System.IO;
+
+namespace Vellum.Cli.Abstractions.Templates;
+
+public class TemplatePackage
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using NDepend.Path;
-    using Newtonsoft.Json;
-    using Vellum.Cli.Abstractions.Packages;
+    public string PackageId { get; set; }
 
-    public class TemplatePackage
+    public string Version { get; set; }
+
+    public List<Template> Templates { get; } = [];
+
+    public string Id
     {
-        public string PackageId { get; set; }
-
-        public string Version { get; set; }
-
-        public List<Template> Templates { get; } = new List<Template>();
-
-        public string Id
+        get
         {
-            get
-            {
-                return $"{this.PackageId}.{this.Version}";
-            }
+            return $"{this.PackageId}.{this.Version}";
         }
+    }
 
-        public string TemplateRepositoryPath { get; set; }
+    public string TemplateRepositoryPath { get; set; }
 
-        public string InstalltionPath
+    public string InstallationPath
+    {
+        get
         {
-            get
-            {
-                return Path.Join(this.TemplateRepositoryPath, this.PackageId, this.Version);
-            }
-         }
+            return Path.Join(this.TemplateRepositoryPath, this.PackageId, this.Version);
+        }
     }
 }
