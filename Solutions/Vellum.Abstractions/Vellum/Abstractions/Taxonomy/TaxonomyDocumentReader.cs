@@ -23,13 +23,13 @@ public class TaxonomyDocumentReader : IFileReader<TaxonomyDocument>
         template.Path = filePath;
 
         // set default (visible / enabled) if missing
-        template.Navigation!.Footer ??= new NavigationOption
+        template.Navigation!.Footer ??= new()
         {
             Link = true,
             Visible = true,
         };
 
-        template.Navigation.Header ??= new NavigationOption
+        template.Navigation.Header ??= new()
         {
             Link = true,
             Visible = true,

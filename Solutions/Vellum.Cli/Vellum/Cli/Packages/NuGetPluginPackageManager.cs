@@ -99,9 +99,9 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
             PackageResolverContext resolverContext = new(
                 dependencyBehavior,
-                new[] { packageId },
-                Enumerable.Empty<string>(),
-                Enumerable.Empty<PackageReference>(),
+                [packageId],
+                [],
+                [],
                 packageIdentities,
                 availablePackages,
                 sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
@@ -136,7 +136,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
                     DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                         packageToInstall,
-                        new PackageDownloadContext(cacheContext),
+                        new(cacheContext),
                         SettingsUtility.GetGlobalPackagesFolder(settings),
                         NullLogger.Instance,
                         CancellationToken.None).ConfigureAwait(false);

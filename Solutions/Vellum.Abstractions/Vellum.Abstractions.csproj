@@ -23,14 +23,13 @@
     <PackageReference Include="Flurl" Version="4.0.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="ImpromptuInterface" Version="8.0.6" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
-    <PackageReference Include="Markdig" Version="0.41.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.13.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.4" />
-    <PackageReference Include="Spectre.IO" Version="0.18.0" />
-    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+    <PackageReference Include="Markdig" Version="0.41.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.14.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.8" />
+    <PackageReference Include="Spectre.IO" Version="0.20.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.3" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 

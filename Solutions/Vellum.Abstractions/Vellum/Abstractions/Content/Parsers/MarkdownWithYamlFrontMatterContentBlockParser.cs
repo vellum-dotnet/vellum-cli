@@ -92,7 +92,7 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
 
         matcher.AddInclude(contentFragmentPath);
 
-        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(rootDirectory.FullPath)));
+        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new(rootDirectory.FullPath)));
 
         foreach (FilePatternMatch match in matches.Files)
         {

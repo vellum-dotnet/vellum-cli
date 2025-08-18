@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Scriban" Version="6.2.1" />
-    <PackageReference Include="Spectre.IO" Version="0.18.0" />
+    <PackageReference Include="Spectre.IO" Version="0.20.0" />
   </ItemGroup>
 
 </Project>

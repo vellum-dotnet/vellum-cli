@@ -47,7 +47,7 @@ public class MarkdownContentFragmentFactory
 
         (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) result = this.ConvertFrontMatterToMetaData(doc, contentFragmentAbsoluteFilePath);
 
-        return new ContentFragment
+        return new()
         {
             Body = body,
             ContentType = result.ContentType ?? contentBlock.ContentType,
@@ -66,7 +66,7 @@ public class MarkdownContentFragmentFactory
 
         if (yamlBlock == null)
         {
-            return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, [], new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath } });
+            return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, [], new() { { "FilePath", contentFragmentAbsoluteFilePath } });
         }
 
         string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));

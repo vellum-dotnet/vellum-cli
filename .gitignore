@@ -352,3 +352,6 @@ MigrationBackup/
 
 *.sbom.*
 coverage.cobertura.xml
+/Samples/NestedContentFactoryDemo
+/.claude
+/.devcontainer

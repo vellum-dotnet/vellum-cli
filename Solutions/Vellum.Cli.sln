@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vellum.Abstractions.Specs",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vellum.Rendering.Scriban", "Vellum.Rendering.Scriban\Vellum.Rendering.Scriban.csproj", "{5CDCD298-903D-4B4D-92FD-6CA56B7CB488}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vellum.Rending.Razor", "Vellum.Rending.Razor\Vellum.Rending.Razor.csproj", "{F4E19E69-D80F-4823-80EB-98BF609521FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{5CDCD298-903D-4B4D-92FD-6CA56B7CB488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CDCD298-903D-4B4D-92FD-6CA56B7CB488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CDCD298-903D-4B4D-92FD-6CA56B7CB488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4E19E69-D80F-4823-80EB-98BF609521FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4E19E69-D80F-4823-80EB-98BF609521FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4E19E69-D80F-4823-80EB-98BF609521FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4E19E69-D80F-4823-80EB-98BF609521FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

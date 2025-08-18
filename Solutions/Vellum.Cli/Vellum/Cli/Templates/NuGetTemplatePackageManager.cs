@@ -115,10 +115,10 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
 
             var resolverContext = new PackageResolverContext(
                 DependencyBehavior.Highest,
-                new[] { packageId },
-                Enumerable.Empty<string>(),
-                Enumerable.Empty<PackageReference>(),
-                Enumerable.Empty<PackageIdentity>(),
+                [packageId],
+                [],
+                [],
+                [],
                 availablePackages,
                 sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
                 NullLogger.Instance);
@@ -147,7 +147,7 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
 
                 DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                     packageToInstall,
-                    new PackageDownloadContext(cacheContext),
+                    new(cacheContext),
                     SettingsUtility.GetGlobalPackagesFolder(settings),
                     NullLogger.Instance,
                     CancellationToken.None).ConfigureAwait(false);
@@ -180,7 +180,7 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
             {
                 foreach (string item in contentItem.Items)
                 {
-                    templatePackageMetaData.Templates.Add(new Template { NestedFilePath = item });
+                    templatePackageMetaData.Templates.Add(new() { NestedFilePath = item });
                 }
             }
 

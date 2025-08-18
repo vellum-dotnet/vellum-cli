@@ -17,7 +17,7 @@ public class Url
 
     public static implicit operator string(Url url) => url.ToString();
 
-    public static explicit operator Url(string url) => new Url(url);
+    public static explicit operator Url(string url) => new(url);
 
     public static bool AreEquivalent(Url first, Url second)
     {
