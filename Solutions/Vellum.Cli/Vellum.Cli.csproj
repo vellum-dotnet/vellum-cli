@@ -64,6 +64,8 @@
     <ProjectReference Include="..\Vellum.Cli.Tinify\Vellum.Cli.Tinify.csproj" PrivateAssets="all">
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Vellum.Middleware.Abstractions\Vellum.Middleware.Abstractions.csproj" />
+    <ProjectReference Include="..\Vellum.Middleware\Vellum.Middleware.csproj" />
     <ProjectReference Include="..\Vellum.Rendering.Scriban\Vellum.Rendering.Scriban.csproj" />
   </ItemGroup>
 

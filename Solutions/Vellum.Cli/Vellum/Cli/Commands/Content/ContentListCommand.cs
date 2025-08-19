@@ -11,17 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Spectre.IO;
-using Vellum.Abstractions.Content;
+
 using Vellum.Abstractions.Content.ContentFactories;
-using Vellum.Abstractions.Content.Primitives;
-using Vellum.Abstractions.Taxonomy;
 using Vellum.Cli.Abstractions;
-using Vellum.Rendering.Scriban;
+using Vellum.Middleware;
+using Vellum.Middleware.Abstractions;
 
 namespace Vellum.Cli.Commands.Content;
-
-using System.Collections.Generic;
-using System.Linq;
 
 public class ContentListCommand(IServiceCollection services) : AsyncCommand<ContentListCommand.Settings>
 {
@@ -35,20 +31,31 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
         services.AddWellKnownContentBlockContentTypes();
         services.AddWellKnownConverterFactories();
 
-        ServiceProvider serviceProvider = services.BuildServiceProvider();
+        IVellumBuilder builder = new VellumBuilder();
+        builder.UseStandardMiddleware(services, settings.SiteTaxonomyDirectoryPath, settings.OutputDirectoryPath);
 
-        TaxonomyDocumentListExtension.Configure(serviceProvider);
+        IVellumPipeline pipeline = builder.Build();
 
-        SiteDetailsRepository siteTaxonomyRepository = new();
-        SiteDetails? siteTaxonomy = await siteTaxonomyRepository.FindAsync(settings.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
+        VellumContext initialContext = new();
+
+        await pipeline.ExecuteAsync(initialContext);
+
+#pragma warning disable SA1123 // Do not place regions within elements
+        #region old
+        /*
+        SiteDetailsRepository siteDetailsRepository = new();
+        SiteDetails? siteDetails = await siteDetailsRepository.FindAsync(settings.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
 
         TaxonomyDocumentRespository taxonomyDocumentRepository = new(services);
-        SiteTaxonomyParser siteTaxonomyParser = new();
 
         IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(settings.SiteTaxonomyDirectoryPath);
         List<TaxonomyDocument> loaded = await taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments).ToListAsync();
 
+        ServiceProvider serviceProvider = services.BuildServiceProvider();
+        TaxonomyDocumentListExtension.Configure(serviceProvider);
+        List<ContentFragment> foo = loaded.GetAllBlogPostsWithAuthorsAsContentFragments();
         List<IAuthor> authors = loaded.GetAllAuthors();
+
         List<IBlogPost> blogs = loaded.GetAllBlogPosts();
 
         Table table = new();
@@ -68,7 +75,7 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
             {
                 table.AddRow(
                     post.Title,
-                    post.Author(authors).Email,
+                    post.AuthorId,
                     post.Date.ToShortDateString(),
                     status);
             }
@@ -76,21 +83,23 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
 
         AnsiConsole.Write(table);
 
+        SiteTaxonomyParser siteTaxonomyParser = new();
         NavigationNode siteNavigation = siteTaxonomyParser.Parse(loaded);
 
-        /*SiteContext siteContext = new()
+        SiteContext siteContext = new()
         {
             Preview = false,
             Navigation = siteNavigation,
             Pages = loaded!,
             Details = siteTaxonomy!,
-        };*/
+        };
+        ScribanRenderer renderer = new();
+        await renderer.RenderAsync(@"c:\temp\scriban\test.html", "<html><head><title>{{title}} - {{date}}</title></head></html>", blogs.First());
+        */
+        #endregion
 
         stopwatch.Stop();
-
-        ScribanRenderer renderer = new();
-
-        await renderer.RenderAsync(@"c:\temp\scriban\test.html", "<html><head><title>{{title}} - {{date}}</title></head></html>", blogs.First());
+#pragma warning restore SA1123 // Do not place regions within elements
 
         AnsiConsole.WriteLine($"Rendering Took: {stopwatch.Elapsed}");
 
@@ -110,5 +119,9 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
         [CommandOption("--site-path|-s")]
         [Description("Path to the site taxonomy directory")]
         public DirectoryPath SiteTaxonomyDirectoryPath { get; set; } = null!;
+
+        [CommandOption("--output-path|-o")]
+        [Description("Path to the output directory")]
+        public DirectoryPath OutputDirectoryPath { get; set; } = null!;
     }
 }

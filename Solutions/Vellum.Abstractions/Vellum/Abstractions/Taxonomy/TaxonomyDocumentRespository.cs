@@ -29,11 +29,9 @@ public class TaxonomyDocumentRespository
     {
         ServiceProvider serviceProvider = this.services.BuildServiceProvider();
 
-        var taxonomyFileInfoRepository = new TaxonomyFileInfoRepository();
+        TaxonomyFileInfoRepository taxonomyFileInfoRepository = new();
 
-        IAsyncEnumerable<TaxonomyFileInfo> files = taxonomyFileInfoRepository.FindAllAsync(siteTaxonomyDirectoryPath);
-
-        await foreach (TaxonomyFileInfo file in files)
+        await foreach (TaxonomyFileInfo file in taxonomyFileInfoRepository.FindAllAsync(siteTaxonomyDirectoryPath))
         {
             IFileReader<TaxonomyDocument>? reader = serviceProvider.GetContent<IFileReader<TaxonomyDocument>>(file.ContentType);
 

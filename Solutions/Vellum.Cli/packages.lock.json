@@ -1701,6 +1701,20 @@
           "Vellum.Cli.Abstractions": "[1.0.0, )"
         }
       },
+      "vellum.middleware": {
+        "type": "Project",
+        "dependencies": {
+          "Vellum.Abstractions": "[1.0.0, )",
+          "Vellum.Middleware.Abstractions": "[1.0.0, )"
+        }
+      },
+      "vellum.middleware.abstractions": {
+        "type": "Project",
+        "dependencies": {
+          "Spectre.IO": "[0.20.0, )",
+          "Vellum.Abstractions": "[1.0.0, )"
+        }
+      },
       "vellum.rendering.scriban": {
         "type": "Project",
         "dependencies": {

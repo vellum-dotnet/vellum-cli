@@ -33,10 +33,6 @@
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Vellum\Abstractions\Parsers\" />
-  </ItemGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>RCS1029; CS1591; SA1600;</NoWarn>
   </PropertyGroup>

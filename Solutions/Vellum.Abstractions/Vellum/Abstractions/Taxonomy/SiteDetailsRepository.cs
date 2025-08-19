@@ -13,16 +13,19 @@ public class SiteDetailsRepository
     public async Task<SiteDetails?> FindAsync(DirectoryPath siteTaxonomyDirectoryPath)
     {
         SiteDetails? siteDetails = null;
+        TaxonomyFileInfoRepository taxonomyFileInfoRepository = new();
 
-        await foreach (TaxonomyFileInfo file in new TaxonomyFileInfoRepository().FindAllAsync(siteTaxonomyDirectoryPath))
+        await foreach (TaxonomyFileInfo file in taxonomyFileInfoRepository.FindAllAsync(siteTaxonomyDirectoryPath))
         {
-            if (file.ContentType == WellKnown.Taxonomies.ContentTypes.Site)
+            if (file.ContentType != WellKnown.Taxonomies.ContentTypes.Site)
             {
-                siteDetails = await new YamlParser<SiteDetails>().ParseAsync(file.Path).ConfigureAwait(false);
-                siteDetails.Path = file.Path;
-
-                break;
+                continue;
             }
+
+            siteDetails = await new YamlParser<SiteDetails>().ParseAsync(file.Path).ConfigureAwait(false);
+            siteDetails.Path = file.Path;
+
+            break;
         }
 
         return siteDetails;
