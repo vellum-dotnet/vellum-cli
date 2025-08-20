@@ -1,4 +1,4 @@
-﻿// <copyright file="TemplateSettingsManager.cs" company="Endjin Limited">
+// <copyright file="TemplateSettingsManager.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -12,5 +12,5 @@ public class TemplateSettingsManager : SettingsManager<TemplatesSettings>
     public TemplateSettingsManager(IAppEnvironment appEnvironment)
         : base(appEnvironment)
     {
-        }
+    }
 }

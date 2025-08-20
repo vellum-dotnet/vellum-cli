@@ -1,4 +1,4 @@
-﻿// <copyright file="UninstallTemplateCommand.cs" company="Endjin Limited">
+// <copyright file="UninstallTemplateCommand.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

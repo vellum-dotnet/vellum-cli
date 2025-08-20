@@ -1,4 +1,4 @@
-﻿// <copyright file="PageMetaData.cs" company="Endjin Limited">
+// <copyright file="PageMetaData.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

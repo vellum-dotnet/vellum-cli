@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentHashing.cs" company="Endjin Limited">
+// <copyright file="ContentHashing.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

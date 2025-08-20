@@ -1,4 +1,3 @@
-﻿namespace Vellum.Abstractions.Specs;
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +9,7 @@ using Vellum.Abstractions.Content.Extensions;
 using Vellum.Abstractions.Content.Formatting;
 using Vellum.Abstractions.Specs.Abstractions.Content.Formatting;
 
+namespace Vellum.Abstractions.Specs;
 [Binding]
 public class ContainerSetup
 {

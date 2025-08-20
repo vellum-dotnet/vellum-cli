@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 public record SseMessage
 {
@@ -13,7 +13,7 @@ public record SseMessage
 
     [JsonPropertyName("timestamp")]
     public string Timestamp { get; init; } = null!;
-    
+
     [JsonPropertyName("changes")]
     public List<Change> Changes { get; init; } = [];
 }
@@ -76,7 +76,7 @@ public class SseHolder : ISseHolder
         string clientId = this.CreateId();
         CancellationTokenSource cancel = new();
         SseClient client = new(Response: context.Response, Cancel: cancel);
-        
+
         if (this.clients.TryAdd(clientId, client))
         {
             this.HandshakeAsync(clientId, client);
@@ -111,7 +111,7 @@ public class SseHolder : ISseHolder
             client.Response.Headers.Append("Content-Type", new("text/event-stream"));
             client.Response.Headers.Append("Cache-Control", new("no-cache"));
             client.Response.Headers.Append("Connection", new("keep-alive"));
-            
+
             // Send ID to client-side after connecting
             await client.Response.WriteAsync($"data: {clientIdJson}\r\r", client.Cancel.Token);
             await client.Response.Body.FlushAsync(client.Cancel.Token);
@@ -125,7 +125,7 @@ public class SseHolder : ISseHolder
     private void OnShutdown()
     {
         List<KeyValuePair<string, SseClient>> tmpClients = [];
-        
+
         foreach (KeyValuePair<string, SseClient> c in this.clients)
         {
             c.Value.Cancel.Cancel();
@@ -140,7 +140,7 @@ public class SseHolder : ISseHolder
     public void RemoveClient(string id)
     {
         KeyValuePair<string, SseClient> target = this.clients.FirstOrDefault(c => c.Key == id);
-        
+
         if (string.IsNullOrEmpty(target.Key))
         {
             return;

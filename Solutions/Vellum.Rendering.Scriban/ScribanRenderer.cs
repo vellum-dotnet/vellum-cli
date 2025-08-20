@@ -1,4 +1,4 @@
-﻿using Scriban;
+using Scriban;
 using Spectre.IO;
 
 namespace Vellum.Rendering.Scriban;

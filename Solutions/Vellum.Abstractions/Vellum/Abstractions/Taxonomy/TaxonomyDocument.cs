@@ -1,10 +1,9 @@
-﻿// <copyright file="TaxonomyDocument.cs" company="Endjin Limited">
+// <copyright file="TaxonomyDocument.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 using Spectre.IO;
 using Vellum.Abstractions.Content;

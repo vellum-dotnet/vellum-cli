@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Vellum.Abstractions.Rendering;
 
 namespace Vellum.Cli.Rendering.Razor;

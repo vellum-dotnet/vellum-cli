@@ -1,4 +1,4 @@
-﻿// <copyright file="NewFileCommand.cs" company="Endjin Limited">
+// <copyright file="NewFileCommand.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

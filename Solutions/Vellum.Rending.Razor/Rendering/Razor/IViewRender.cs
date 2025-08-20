@@ -1,4 +1,4 @@
-﻿namespace Vellum.Cli.Rendering.Razor;
+namespace Vellum.Cli.Rendering.Razor;
 
 public interface IViewRender
 {

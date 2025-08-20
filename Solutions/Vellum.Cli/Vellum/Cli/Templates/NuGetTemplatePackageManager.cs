@@ -1,4 +1,4 @@
-﻿// <copyright file="NuGetTemplatePackageManager.cs" company="Endjin Limited">
+// <copyright file="NuGetTemplatePackageManager.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -88,114 +88,112 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
         var sourceRepositoryProvider =
             new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
-        using (var cacheContext = new SourceCacheContext())
+        using var cacheContext = new SourceCacheContext();
+        IEnumerable<SourceRepository> repositories = sourceRepositoryProvider.GetRepositories();
+        var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
+
+        foreach (SourceRepository sourceRepository in repositories)
         {
-            IEnumerable<SourceRepository> repositories = sourceRepositoryProvider.GetRepositories();
-            var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
+            DependencyInfoResource dependencyInfoResource =
+                await sourceRepository.GetResourceAsync<DependencyInfoResource>().ConfigureAwait(false);
 
-            foreach (SourceRepository sourceRepository in repositories)
-            {
-                DependencyInfoResource dependencyInfoResource =
-                    await sourceRepository.GetResourceAsync<DependencyInfoResource>().ConfigureAwait(false);
-
-                IEnumerable<SourcePackageDependencyInfo> dependencyInfo = await dependencyInfoResource.ResolvePackages(
-                    packageId,
-                    nugetFramework,
-                    cacheContext,
-                    NullLogger.Instance,
-                    CancellationToken.None).ConfigureAwait(false);
-
-                if (dependencyInfo == null)
-                {
-                    continue;
-                }
-
-                availablePackages.AddRange(dependencyInfo);
-            }
-
-            var resolverContext = new PackageResolverContext(
-                DependencyBehavior.Highest,
-                [packageId],
-                [],
-                [],
-                [],
-                availablePackages,
-                sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
-                NullLogger.Instance);
-
-            var resolver = new PackageResolver();
-
-            SourcePackageDependencyInfo? packageToInstall = resolver.Resolve(resolverContext, CancellationToken.None)
-                .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
-                .FirstOrDefault();
-
-            var packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
-
-            var packageExtractionContext = new PackageExtractionContext(
-                PackageSaveMode.Defaultv3,
-                XmlDocFileSaveMode.None,
-                ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
-                NullLogger.Instance);
-
-            string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
-            PackageReaderBase packageReader;
-
-            if (installedPath == null && packageToInstall != null)
-            {
-                DownloadResource downloadResource = await packageToInstall.Source
-                    .GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
-
-                DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
-                    packageToInstall,
-                    new(cacheContext),
-                    SettingsUtility.GetGlobalPackagesFolder(settings),
-                    NullLogger.Instance,
-                    CancellationToken.None).ConfigureAwait(false);
-
-                await PackageExtractor.ExtractPackageAsync(
-                    downloadResult.PackageSource,
-                    downloadResult.PackageStream,
-                    packagePathResolver,
-                    packageExtractionContext,
-                    CancellationToken.None).ConfigureAwait(false);
-
-                packageReader = downloadResult.PackageReader;
-            }
-            else
-            {
-                packageReader = new PackageFolderReader(installedPath);
-            }
-
-            PackageIdentity identity =
-                await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
-
-            var templatePackageMetaData = new TemplatePackage
-            {
-                PackageId = identity.Id,
-                Version = identity.Version.OriginalVersion,
-                TemplateRepositoryPath = templateRepositoryPath.ToString(),
-            };
-
-            foreach (FrameworkSpecificGroup contentItem in packageReader.GetContentItems())
-            {
-                foreach (string item in contentItem.Items)
-                {
-                    templatePackageMetaData.Templates.Add(new() { NestedFilePath = item });
-                }
-            }
-
-            var packageFileExtractor = new PackageFileExtractor(
-                templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
-                XmlDocFileSaveMode.None);
-
-            await packageReader.CopyFilesAsync(
-                templatePackageMetaData.InstallationPath,
-                templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
-                packageFileExtractor.ExtractPackageFile,
+            IEnumerable<SourcePackageDependencyInfo> dependencyInfo = await dependencyInfoResource.ResolvePackages(
+                packageId,
+                nugetFramework,
+                cacheContext,
                 NullLogger.Instance,
                 CancellationToken.None).ConfigureAwait(false);
 
-            return templatePackageMetaData;
+            if (dependencyInfo == null)
+            {
+                continue;
+            }
+
+            availablePackages.AddRange(dependencyInfo);
         }
+
+        var resolverContext = new PackageResolverContext(
+            DependencyBehavior.Highest,
+            [packageId],
+            [],
+            [],
+            [],
+            availablePackages,
+            sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
+            NullLogger.Instance);
+
+        var resolver = new PackageResolver();
+
+        SourcePackageDependencyInfo? packageToInstall = resolver.Resolve(resolverContext, CancellationToken.None)
+            .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
+            .FirstOrDefault();
+
+        var packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
+
+        var packageExtractionContext = new PackageExtractionContext(
+            PackageSaveMode.Defaultv3,
+            XmlDocFileSaveMode.None,
+            ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
+            NullLogger.Instance);
+
+        string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
+        PackageReaderBase packageReader;
+
+        if (installedPath == null && packageToInstall != null)
+        {
+            DownloadResource downloadResource = await packageToInstall.Source
+                .GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
+
+            DownloadResourceResult downloadResult = await downloadResource.GetDownloadResourceResultAsync(
+                packageToInstall,
+                new(cacheContext),
+                SettingsUtility.GetGlobalPackagesFolder(settings),
+                NullLogger.Instance,
+                CancellationToken.None).ConfigureAwait(false);
+
+            await PackageExtractor.ExtractPackageAsync(
+                downloadResult.PackageSource,
+                downloadResult.PackageStream,
+                packagePathResolver,
+                packageExtractionContext,
+                CancellationToken.None).ConfigureAwait(false);
+
+            packageReader = downloadResult.PackageReader;
+        }
+        else
+        {
+            packageReader = new PackageFolderReader(installedPath);
+        }
+
+        PackageIdentity identity =
+            await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
+
+        var templatePackageMetaData = new TemplatePackage
+        {
+            PackageId = identity.Id,
+            Version = identity.Version.OriginalVersion,
+            TemplateRepositoryPath = templateRepositoryPath.ToString(),
+        };
+
+        foreach (FrameworkSpecificGroup contentItem in packageReader.GetContentItems())
+        {
+            foreach (string item in contentItem.Items)
+            {
+                templatePackageMetaData.Templates.Add(new() { NestedFilePath = item });
+            }
+        }
+
+        var packageFileExtractor = new PackageFileExtractor(
+            templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
+            XmlDocFileSaveMode.None);
+
+        await packageReader.CopyFilesAsync(
+            templatePackageMetaData.InstallationPath,
+            templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
+            packageFileExtractor.ExtractPackageFile,
+            NullLogger.Instance,
+            CancellationToken.None).ConfigureAwait(false);
+
+        return templatePackageMetaData;
     }
 }

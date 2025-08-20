@@ -1,9 +1,9 @@
-﻿namespace Vellum.Abstractions.Specs;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 
+namespace Vellum.Abstractions.Specs;
 public class MarkdownDocumentRegistry
 {
     private readonly Dictionary<string, string> documents = new();

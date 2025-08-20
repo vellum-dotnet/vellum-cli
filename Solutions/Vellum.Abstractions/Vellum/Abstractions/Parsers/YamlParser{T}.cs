@@ -1,4 +1,4 @@
-﻿// <copyright file="YamlParser{T}.cs" company="Endjin Limited">
+// <copyright file="YamlParser{T}.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

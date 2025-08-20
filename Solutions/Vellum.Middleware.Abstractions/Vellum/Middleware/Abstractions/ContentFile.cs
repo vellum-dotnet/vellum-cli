@@ -11,12 +11,12 @@ public record ContentFile
     /// Gets the file path.
     /// </summary>
     public required FilePath Path { get; init; }
-    
+
     /// <summary>
     /// Gets the raw content of the file.
     /// </summary>
     public string? Content { get; init; }
-    
+
     /// <summary>
     /// Gets metadata associated with the file.
     /// </summary>

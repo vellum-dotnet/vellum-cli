@@ -1,4 +1,4 @@
-﻿using Spectre.IO;
+using Spectre.IO;
 
 namespace Vellum.Cli.Rendering.Razor;
 

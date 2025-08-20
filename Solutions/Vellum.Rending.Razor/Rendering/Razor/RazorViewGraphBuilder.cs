@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Spectre.IO;
 using Vellum.Cli.Rendering.Razor;
 

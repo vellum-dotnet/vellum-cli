@@ -1,9 +1,9 @@
-﻿namespace Vellum.Abstractions.Specs;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 
+namespace Vellum.Abstractions.Specs;
 public class HtmlDocumentRegistry
 {
     private readonly Dictionary<string, string> documents = new();
@@ -31,7 +31,7 @@ public class HtmlDocumentRegistry
         return File.ReadAllText(this.GetFile(documentName).FullName);
     }
 
-  private static string GetRepoRoot()
+    private static string GetRepoRoot()
     {
         string directory = AppContext.BaseDirectory;
 

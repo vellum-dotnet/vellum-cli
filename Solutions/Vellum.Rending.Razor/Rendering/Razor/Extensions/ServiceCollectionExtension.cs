@@ -1,4 +1,4 @@
-﻿// <copyright file="ServiceCollectionExtension.cs" company="Endjin Limited">
+// <copyright file="ServiceCollectionExtension.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -6,16 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using System;
-using System.IO;
-using System.Linq;
-using Vellum.Abstractions;
 using Vellum.Abstractions.Rendering;
-using Vellum.Cli.Rendering.Razor;
 
 namespace Vellum.Cli.Rendering.Razor.Extensions;
 

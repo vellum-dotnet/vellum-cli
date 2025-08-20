@@ -10,7 +10,7 @@ public class VellumPipeline : IVellumPipeline
     private readonly ImmutableDictionary<PipelineStage, ImmutableList<Func<RequestDelegate, RequestDelegate>>> stageMiddleware;
     private readonly Dictionary<PipelineStage, RequestDelegate> cachedPipelines = new();
     private readonly PipelineStage[] stagesWithMiddleware;
-    
+
     /// <summary>
     /// Initializes a new instance of the VellumPipeline class.
     /// </summary>
@@ -20,7 +20,7 @@ public class VellumPipeline : IVellumPipeline
         this.stageMiddleware = stageMiddleware;
         // Pre-compute stages that have middleware for efficient skipping
         this.stagesWithMiddleware = stageMiddleware.Keys.OrderBy(s => (int)s).ToArray();
-        
+
         // Pre-build all pipelines for caching
         foreach (KeyValuePair<PipelineStage, ImmutableList<Func<RequestDelegate, RequestDelegate>>> kvp in stageMiddleware)
         {
@@ -29,7 +29,7 @@ public class VellumPipeline : IVellumPipeline
             this.cachedPipelines[kvp.Key] = pipeline;
         }
     }
-    
+
     /// <summary>
     /// Executes the pipeline with the given context.
     /// </summary>
@@ -43,22 +43,22 @@ public class VellumPipeline : IVellumPipeline
             // No middleware at all, nothing to do
             return;
         }
-        
+
         // Thread context through stages
         VellumContext currentContext = context;
-        
+
         // Only execute stages that have middleware
         foreach (PipelineStage stage in this.stagesWithMiddleware)
         {
             // Update context with current stage
             currentContext = currentContext with { CurrentStage = stage };
-            
+
             // Get the middleware list for this stage
             ImmutableList<Func<RequestDelegate, RequestDelegate>> middlewareList = this.stageMiddleware[stage];
-            
+
             // Create a container to capture the final context
             ContextContainer container = new(currentContext);
-            
+
             // Create a terminal that captures the context
             ValueTask Terminal(VellumContext ctx)
             {
@@ -73,27 +73,27 @@ public class VellumPipeline : IVellumPipeline
             {
                 pipeline = middleware(pipeline);
             }
-            
+
             // Execute the pipeline with the current context
             await pipeline(currentContext);
-            
+
             // Update the current context for the next stage
             currentContext = container.Context;
         }
     }
-    
+
     private RequestDelegate BuildStagePipeline(ImmutableList<Func<RequestDelegate, RequestDelegate>> middlewareList)
     {
         // Terminal delegate - does nothing
         RequestDelegate pipeline = async ctx => await ValueTask.CompletedTask;
-        
+
         // Build the pipeline by chaining middleware in reverse order
         // This ensures the first middleware runs first
         foreach (Func<RequestDelegate, RequestDelegate> middleware in middlewareList.Reverse())
         {
             pipeline = middleware(pipeline);
         }
-        
+
         return pipeline;
     }
 }

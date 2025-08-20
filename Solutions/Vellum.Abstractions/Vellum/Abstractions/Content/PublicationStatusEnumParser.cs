@@ -1,4 +1,4 @@
-﻿// <copyright file="PublicationStatusEnumParser.cs" company="Endjin Limited">
+// <copyright file="PublicationStatusEnumParser.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

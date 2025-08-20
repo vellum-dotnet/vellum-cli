@@ -24,7 +24,7 @@ public class VellumContextBuilder
     public VellumContextBuilder()
     {
     }
-    
+
     /// <summary>
     /// Creates a builder from an existing context.
     /// </summary>
@@ -36,13 +36,13 @@ public class VellumContextBuilder
         {
             currentStage = context.CurrentStage
         };
-        
+
         // Copy items
         foreach (KeyValuePair<string, object?> item in context.Items)
         {
             builder.items[item.Key] = item.Value;
         }
-        
+
         // Copy stage data
         foreach (KeyValuePair<PipelineStage, ImmutableDictionary<string, object?>> stage in context.StageData)
         {
@@ -53,16 +53,16 @@ public class VellumContextBuilder
             }
             builder.stageData[stage.Key] = stageDict;
         }
-        
+
         // Copy metrics
         foreach (KeyValuePair<string, object?> metric in context.StageMetrics)
         {
             builder.stageMetrics[metric.Key] = metric.Value;
         }
-        
+
         // Copy content files
         builder.contentFiles.AddRange(context.ContentFiles);
-        
+
         // Copy processed content
         builder.processedContent.AddRange(context.ProcessedContent);
 
@@ -72,7 +72,7 @@ public class VellumContextBuilder
 
         return builder;
     }
-    
+
     /// <summary>
     /// Sets the current pipeline stage.
     /// </summary>
@@ -83,7 +83,7 @@ public class VellumContextBuilder
         this.currentStage = stage;
         return this;
     }
-    
+
     /// <summary>
     /// Sets an item in the context.
     /// </summary>
@@ -95,7 +95,7 @@ public class VellumContextBuilder
         this.items[key] = value;
         return this;
     }
-    
+
     /// <summary>
     /// Sets data for a specific pipeline stage.
     /// </summary>
@@ -109,11 +109,11 @@ public class VellumContextBuilder
         {
             this.stageData[stage] = new Dictionary<string, object?>();
         }
-        
+
         this.stageData[stage][key] = value;
         return this;
     }
-    
+
     /// <summary>
     /// Sets a metric value.
     /// </summary>
@@ -125,7 +125,7 @@ public class VellumContextBuilder
         this.stageMetrics[key] = value;
         return this;
     }
-    
+
     /// <summary>
     /// Sets the content files collection.
     /// </summary>
@@ -137,7 +137,7 @@ public class VellumContextBuilder
         this.contentFiles.AddRange(files);
         return this;
     }
-    
+
     /// <summary>
     /// Adds a single content file.
     /// </summary>
@@ -148,7 +148,7 @@ public class VellumContextBuilder
         this.contentFiles.Add(file);
         return this;
     }
-    
+
     /// <summary>
     /// Sets the processed content collection.
     /// </summary>
@@ -160,7 +160,7 @@ public class VellumContextBuilder
         this.processedContent.AddRange(content);
         return this;
     }
-    
+
     /// <summary>
     /// Adds a single processed content item.
     /// </summary>
@@ -171,7 +171,7 @@ public class VellumContextBuilder
         this.processedContent.Add(content);
         return this;
     }
-    
+
     /// <summary>
     /// Builds an immutable VellumContext from the builder's current state.
     /// </summary>
@@ -179,14 +179,14 @@ public class VellumContextBuilder
     public VellumContext Build()
     {
         // Convert stage data to immutable
-        ImmutableDictionary<PipelineStage, ImmutableDictionary<string, object?>>.Builder stageDataBuilder = 
+        ImmutableDictionary<PipelineStage, ImmutableDictionary<string, object?>>.Builder stageDataBuilder =
             ImmutableDictionary.CreateBuilder<PipelineStage, ImmutableDictionary<string, object?>>();
-        
+
         foreach (KeyValuePair<PipelineStage, Dictionary<string, object?>> stage in this.stageData)
         {
             stageDataBuilder[stage.Key] = stage.Value.ToImmutableDictionary();
         }
-        
+
         return new VellumContext
         {
             CurrentStage = this.currentStage,
@@ -202,7 +202,7 @@ public class VellumContextBuilder
     public VellumContextBuilder AddSiteDetails(SiteDetails details)
     {
         this.siteDetails = details;
-        
+
         return this;
     }
 

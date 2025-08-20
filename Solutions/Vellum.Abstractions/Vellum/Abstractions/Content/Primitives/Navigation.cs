@@ -1,8 +1,6 @@
-﻿// <copyright file="Navigation.cs" company="Endjin Limited">
+// <copyright file="Navigation.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
-
-using System.Reflection.PortableExecutable;
 
 namespace Vellum.Abstractions.Content.Primitives;
 

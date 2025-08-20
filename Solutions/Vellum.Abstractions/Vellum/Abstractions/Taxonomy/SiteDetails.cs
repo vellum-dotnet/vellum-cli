@@ -1,4 +1,4 @@
-﻿// <copyright file="SiteDetails.cs" company="Endjin Limited">
+// <copyright file="SiteDetails.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

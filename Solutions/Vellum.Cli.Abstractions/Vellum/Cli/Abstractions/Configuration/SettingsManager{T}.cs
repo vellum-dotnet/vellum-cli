@@ -1,4 +1,4 @@
-﻿// <copyright file="SettingsManager{T}.cs" company="Endjin Limited">
+// <copyright file="SettingsManager{T}.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 

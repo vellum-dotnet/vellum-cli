@@ -1,9 +1,9 @@
-﻿namespace Vellum.Abstractions.Specs;
 
 using System;
 using System.Collections.Generic;
 using Vellum.Abstractions.Content;
 
+namespace Vellum.Abstractions.Specs;
 public class ContentBlockRegistry
 {
     private readonly Dictionary<string, ContentBlock> documents = new();

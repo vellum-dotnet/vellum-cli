@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Spectre.IO;
 
 namespace Vellum.Cli.Rendering.Razor;

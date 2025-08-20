@@ -12,14 +12,14 @@ public interface IVellumBuilder
     /// <param name="middleware">The middleware factory function.</param>
     /// <returns>The builder for fluent configuration.</returns>
     IVellumBuilder UseInStage(PipelineStage stage, Func<RequestDelegate, RequestDelegate> middleware);
-    
+
     /// <summary>
     /// Registers a plugin with the pipeline.
     /// </summary>
     /// <param name="plugin">The plugin to register.</param>
     /// <returns>The builder for fluent configuration.</returns>
     IVellumBuilder UsePlugin(IVellumPlugin plugin);
-    
+
     /// <summary>
     /// Builds the configured pipeline.
     /// </summary>

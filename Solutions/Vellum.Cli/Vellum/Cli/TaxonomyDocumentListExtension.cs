@@ -1,11 +1,10 @@
-﻿// <copyright file="TaxonomyDocumentListExtension.cs" company="Endjin Limited">
+// <copyright file="TaxonomyDocumentListExtension.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,8 +12,6 @@ using Vellum.Abstractions;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.ContentFactories;
 using Vellum.Abstractions.Taxonomy;
-
-using static Vellum.Abstractions.WellKnown;
 
 namespace Vellum.Cli;
 

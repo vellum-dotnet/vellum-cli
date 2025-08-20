@@ -1,12 +1,10 @@
-﻿// <copyright file="Program.cs" company="Endjin Limited">
+// <copyright file="Program.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-
-using Dynamitey.DynamicObjects;
 
 using Microsoft.Extensions.DependencyInjection;
 

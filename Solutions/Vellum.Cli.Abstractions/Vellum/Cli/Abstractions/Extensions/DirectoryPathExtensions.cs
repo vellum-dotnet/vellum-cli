@@ -1,14 +1,12 @@
-﻿// <copyright file="DirectoryPathExtensions.cs" company="Endjin Limited">
+// <copyright file="DirectoryPathExtensions.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 
 using Spectre.IO;
-using Path = Spectre.IO.Path;
 
 namespace Vellum.Cli.Abstractions.Extensions;
 
@@ -51,7 +49,7 @@ public static class DirectoryPathExtensions
     {
         var fileUri = new Uri(filePath.FullPath);
         var referenceUri = new Uri(referencePath.FullPath);
-        return Uri.UnescapeDataString(referenceUri.MakeRelativeUri(fileUri).ToString().Replace('/',  System.IO.Path.DirectorySeparatorChar));
+        return Uri.UnescapeDataString(referenceUri.MakeRelativeUri(fileUri).ToString().Replace('/', System.IO.Path.DirectorySeparatorChar));
     }
 
     public static FilePath GetChildFileWithName(this DirectoryPath directory, string fileName)

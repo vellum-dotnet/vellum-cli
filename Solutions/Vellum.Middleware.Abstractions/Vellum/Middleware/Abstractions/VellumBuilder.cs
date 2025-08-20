@@ -8,7 +8,7 @@ namespace Vellum.Middleware.Abstractions;
 public class VellumBuilder : IVellumBuilder
 {
     private readonly Dictionary<PipelineStage, List<Func<RequestDelegate, RequestDelegate>>> stageMiddleware = new();
-    
+
     /// <summary>
     /// Adds middleware to a specific pipeline stage.
     /// </summary>
@@ -21,11 +21,11 @@ public class VellumBuilder : IVellumBuilder
         {
             this.stageMiddleware[stage] = [];
         }
-        
+
         this.stageMiddleware[stage].Add(middleware);
         return this;
     }
-    
+
     /// <summary>
     /// Registers a plugin with the pipeline.
     /// </summary>
@@ -36,7 +36,7 @@ public class VellumBuilder : IVellumBuilder
         plugin.Configure(this);
         return this;
     }
-    
+
     /// <summary>
     /// Builds the configured pipeline.
     /// </summary>
@@ -49,7 +49,7 @@ public class VellumBuilder : IVellumBuilder
                 kvp => kvp.Key,
                 kvp => kvp.Value.ToImmutableList()
             );
-        
+
         return new VellumPipeline(immutableMiddleware);
     }
 }

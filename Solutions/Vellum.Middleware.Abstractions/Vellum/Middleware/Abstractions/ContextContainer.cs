@@ -9,7 +9,7 @@ internal class ContextContainer
     /// Gets or sets the current context.
     /// </summary>
     public VellumContext Context { get; set; }
-    
+
     /// <summary>
     /// Initializes a new instance of the ContextContainer class.
     /// </summary>

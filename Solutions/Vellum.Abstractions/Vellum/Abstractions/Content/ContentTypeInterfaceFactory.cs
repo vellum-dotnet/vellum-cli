@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeInterfaceFactory.cs" company="Endjin Limited">
+// <copyright file="ContentTypeInterfaceFactory.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
