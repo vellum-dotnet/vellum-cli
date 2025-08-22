@@ -12,10 +12,8 @@ using Vellum.Abstractions.Content.Primitives;
 namespace Vellum.Abstractions.Taxonomy;
 
 [DebuggerDisplay("{Navigation.Url}")]
-public class TaxonomyDocument : Representation, ITaxonomyDocument
+public record TaxonomyDocument : Representation, ITaxonomyDocument
 {
-    public List<ContentFragment> ContentFragments { get; set; } = [];
-
     public required string Title { get; set; }
 
     public required string Template { get; set; }
@@ -30,9 +28,11 @@ public class TaxonomyDocument : Representation, ITaxonomyDocument
 
     public required Navigation Navigation { get; set; }
 
-    public IEnumerable<ContentBlock> ContentBlocks { get; set; } = [];
+    public required List<ContentBlock> ContentBlocks { get; set; } = [];
 
-    public string FileUrl
+    public required List<ContentFragment> ContentFragments { get; set; } = [];
+
+   /* public string FileUrl
     {
         get
         {
@@ -79,5 +79,5 @@ public class TaxonomyDocument : Representation, ITaxonomyDocument
 
             return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName).TrimStart('/');
         }
-    }
+    }*/
 }

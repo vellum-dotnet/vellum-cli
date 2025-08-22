@@ -17,10 +17,7 @@ public static class TaxonomyDocumentReaderContentFactoryExtensions
     /// </summary>
     /// <param name="serviceCollection">The service collection to which to add the content.</param>
     /// <returns>The service collection wth the content added.</returns>
-    public static IServiceCollection AddWellKnownTaxonomyContentTypes(this IServiceCollection serviceCollection)
-    {
-        return serviceCollection.AddContent(factory => factory.RegisterContent());
-    }
+    public static IServiceCollection AddWellKnownTaxonomyContentTypes(this IServiceCollection serviceCollection) => serviceCollection.AddContent(factory => factory.RegisterContent());
 
     /// <summary>
     /// Registers the content management content types with the factory.

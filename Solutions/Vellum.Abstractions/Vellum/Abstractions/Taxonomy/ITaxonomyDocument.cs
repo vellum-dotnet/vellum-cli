@@ -25,7 +25,9 @@ public interface ITaxonomyDocument
 
     Navigation Navigation { get; set; }
 
-    IEnumerable<ContentBlock> ContentBlocks { get; set; }
+    List<ContentBlock> ContentBlocks { get; set; }
+
+    List<ContentFragment> ContentFragments { get; set; }
 
     string ContentType { get; set; }
 }

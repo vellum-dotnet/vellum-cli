@@ -9,7 +9,7 @@ using Spectre.IO;
 namespace Vellum.Abstractions.Taxonomy;
 
 [DebuggerDisplay("{Path}")]
-public class TaxonomyFileInfo : Representation
+public record TaxonomyFileInfo : Representation
 {
     public required string Hash { get; set; }
 

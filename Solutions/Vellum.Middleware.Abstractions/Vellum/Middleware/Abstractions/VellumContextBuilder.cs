@@ -17,6 +17,7 @@ public class VellumContextBuilder
     private readonly List<ProcessedContent> processedContent = [];
     private SiteDetails? siteDetails = null;
     private List<TaxonomyDocument> taxonomyDocuments = [];
+    private SiteContext? siteContext = null;
 
     /// <summary>
     /// Initializes a new instance of the VellumContextBuilder class.
@@ -189,13 +190,15 @@ public class VellumContextBuilder
 
         return new VellumContext
         {
+            ContentFiles = this.contentFiles.ToImmutableList(),
             CurrentStage = this.currentStage,
             Items = this.items.ToImmutableDictionary(),
+            ProcessedContent = this.processedContent.ToImmutableList(),
+            SiteContext = this.siteContext,
+            SiteDetails = this.siteDetails,
             StageData = stageDataBuilder.ToImmutable(),
             StageMetrics = this.stageMetrics.ToImmutableDictionary(),
-            ContentFiles = this.contentFiles.ToImmutableList(),
-            ProcessedContent = this.processedContent.ToImmutableList(),
-            SiteDetails = this.siteDetails
+            TaxonomyDocuments = this.taxonomyDocuments.ToImmutableList(),
         };
     }
 
@@ -209,6 +212,13 @@ public class VellumContextBuilder
     public VellumContextBuilder AddTaxonomyDocuments(List<TaxonomyDocument> documents)
     {
         this.taxonomyDocuments = documents;
+
+        return this;
+    }
+
+    public VellumContextBuilder AddSiteContext(SiteContext context)
+    {
+        this.siteContext = context;
 
         return this;
     }

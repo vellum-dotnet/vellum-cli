@@ -29,6 +29,12 @@ public static class VellumBuilderExtensions
         return builder.UseInStage(PipelineStage.Loading, middleware.InvokeAsync);
     }
 
+    public static IVellumBuilder UseSiteContextLoader(this IVellumBuilder builder)
+    {
+        SiteContextLoaderMiddleware middleware = new();
+        return builder.UseInStage(PipelineStage.Parsing, middleware.InvokeAsync);
+    }
+
     /// <summary>
     /// Adds all standard middleware components in the correct 
     /// </summary>
@@ -40,6 +46,7 @@ public static class VellumBuilderExtensions
     {
         return builder
             .UseSiteDetailsLoader(siteTaxonomyDirectoryPath)
-            .UseSiteTaxonomyLoader(services, siteTaxonomyDirectoryPath);
+            .UseSiteTaxonomyLoader(services, siteTaxonomyDirectoryPath)
+            .UseSiteContextLoader();
     }
 }

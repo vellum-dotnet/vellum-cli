@@ -33,7 +33,7 @@ public class SiteTaxonomyLoaderMiddleware
     {
         return async context =>
         {
-            TaxonomyDocumentRespository taxonomyDocumentRepository = new(this.services);
+            TaxonomyDocumentRepository taxonomyDocumentRepository = new(this.services);
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(this.siteTaxonomyDirectoryPath);
             List<TaxonomyDocument> loaded = await taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments).ToListAsync();

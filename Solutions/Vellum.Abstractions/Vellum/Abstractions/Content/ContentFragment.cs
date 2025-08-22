@@ -21,8 +21,6 @@ public record ContentFragment : IContent, IExtensible
 
     public required string Hash { get; set; }
 
-    public required string Body { get; set; }
-
     public DateTime Date { get; set; }
 
     public PublicationStatus PublicationStatus { get; set; }

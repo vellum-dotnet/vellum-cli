@@ -46,7 +46,7 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
         SiteDetailsRepository siteDetailsRepository = new();
         SiteDetails? siteDetails = await siteDetailsRepository.FindAsync(settings.SiteTaxonomyDirectoryPath).ConfigureAwait(false);
 
-        TaxonomyDocumentRespository taxonomyDocumentRepository = new(services);
+        TaxonomyDocumentRepository taxonomyDocumentRepository = new(services);
 
         IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(settings.SiteTaxonomyDirectoryPath);
         List<TaxonomyDocument> loaded = await taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments).ToListAsync();

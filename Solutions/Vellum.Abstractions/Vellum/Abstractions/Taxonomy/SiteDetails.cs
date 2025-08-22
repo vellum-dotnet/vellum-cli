@@ -9,7 +9,7 @@ using Spectre.IO;
 namespace Vellum.Abstractions.Taxonomy;
 
 [DebuggerDisplay("{Url} | {Description}")]
-public class SiteDetails : Representation
+public record SiteDetails : Representation
 {
     public required string Description { get; set; }
 

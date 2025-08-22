@@ -10,7 +10,7 @@ public record VellumContext
 {
     public SiteDetails? SiteDetails { get; init; } = null;
 
-    public List<TaxonomyDocument> TaxonomyDocuments { get; init; } = [];
+    public ImmutableList<TaxonomyDocument> TaxonomyDocuments { get; init; } = [];
 
     /// <summary>
     /// Gets the current pipeline stage.
@@ -41,6 +41,8 @@ public record VellumContext
     /// Gets the processed content after transformation stages.
     /// </summary>
     public ImmutableList<ProcessedContent> ProcessedContent { get; init; } = ImmutableList<ProcessedContent>.Empty;
+
+    public SiteContext? SiteContext { get; set; }
 
     /// <summary>
     /// Sets data for a specific pipeline stage.

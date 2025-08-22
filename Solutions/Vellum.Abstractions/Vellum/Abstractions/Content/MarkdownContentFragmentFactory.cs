@@ -39,17 +39,10 @@ public class MarkdownContentFragmentFactory
     {
         MarkdownDocument doc = Markdown.Parse(content, this.pipeline);
 
-        string body = string.Empty;
-        if (doc.HasContentOtherThanYamlFrontMatter())
-        {
-            body = this.RenderMarkdown(doc);
-        }
-
         (string ContentType, PublicationStatus PublicationStatus, DateTime Date, IEnumerable<string> Extensions, Dictionary<string, dynamic> MetaData) result = this.ConvertFrontMatterToMetaData(doc, contentFragmentAbsoluteFilePath);
 
-        return new()
+        return new ContentFragment
         {
-            Body = body,
             ContentType = result.ContentType ?? contentBlock.ContentType,
             Date = result.Date,
             Extensions = result.Extensions,
@@ -66,7 +59,7 @@ public class MarkdownContentFragmentFactory
 
         if (yamlBlock == null)
         {
-            return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, [], new() { { "FilePath", contentFragmentAbsoluteFilePath } });
+            return (string.Empty, PublicationStatus.Unknown, DateTime.MinValue, [], new Dictionary<string, dynamic> { { "FilePath", contentFragmentAbsoluteFilePath } });
         }
 
         string yaml = string.Join(Environment.NewLine, yamlBlock.Lines.Lines.Select(l => l.ToString()).Where(x => !string.IsNullOrEmpty(x)));
@@ -111,13 +104,18 @@ public class MarkdownContentFragmentFactory
             }
         }
 
+        if (markdown.HasContentOtherThanYamlFrontMatter())
+        {
+            frontMatter.TryAdd("Body", this.RenderMarkdown(markdown));
+        }
+
         return (contentType, status, date, extensions, frontMatter);
     }
 
     private string RenderMarkdown(MarkdownDocument doc)
     {
-        using var writer = new StringWriter();
-        var renderer = new HtmlRenderer(writer);
+        using StringWriter writer = new();
+        HtmlRenderer renderer = new(writer);
         this.pipeline.Setup(renderer);
         renderer.Render(doc);
 

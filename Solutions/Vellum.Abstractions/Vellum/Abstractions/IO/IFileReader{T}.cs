@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 
-using Spectre.IO;
+using Vellum.Abstractions.Taxonomy;
 
 namespace Vellum.Abstractions.IO;
 
@@ -12,5 +12,5 @@ public interface IFileReader<T>
 {
     string ContentType { get; }
 
-    Task<T> ReadAsync(FilePath filePath);
+    Task<T> ReadAsync(TaxonomyFileInfo taxonomyFileInfo);
 }

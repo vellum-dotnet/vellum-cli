@@ -1,4 +1,4 @@
-// <copyright file="TaxonomyDocumentRespository.cs" company="Endjin Limited">
+// <copyright file="TaxonomyDocumentRepository.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -16,11 +16,11 @@ using Vellum.Abstractions.IO;
 
 namespace Vellum.Abstractions.Taxonomy;
 
-public class TaxonomyDocumentRespository
+public class TaxonomyDocumentRepository
 {
     private readonly IServiceCollection services;
 
-    public TaxonomyDocumentRespository(IServiceCollection services)
+    public TaxonomyDocumentRepository(IServiceCollection services)
     {
         this.services = services;
     }
@@ -37,14 +37,7 @@ public class TaxonomyDocumentRespository
 
             if (reader is not null)
             {
-                TaxonomyDocument taxonomyDocument = await reader.ReadAsync(file.Path).ConfigureAwait(false);
-                taxonomyDocument.Hash = file.Hash;
-
-                yield return taxonomyDocument;
-            }
-            else
-            {
-                // console.Error.Write($"Cannot Read file with ContentType {file.ContentType}" + System.Environment.NewLine);
+                yield return await reader.ReadAsync(file).ConfigureAwait(false);
             }
         }
     }
@@ -53,12 +46,8 @@ public class TaxonomyDocumentRespository
     {
         ServiceProvider serviceProvider = this.services.BuildServiceProvider();
 
-        // throw new InvalidOperationException($"There is no ContentBlockParser registered for ContentType {contentBlock.ContentType}");
         await foreach (TaxonomyDocument taxonomyDocument in taxonomyDocuments)
         {
-            taxonomyDocument.ContentBlocks ??= [];
-            taxonomyDocument.ContentFragments ??= [];
-
             foreach (ContentBlock contentBlock in taxonomyDocument.ContentBlocks)
             {
                 IContentBlockParser? contentBlockParser = serviceProvider.GetContent<IContentBlockParser>(contentBlock.ContentType);
@@ -69,17 +58,12 @@ public class TaxonomyDocumentRespository
 
                     if (!string.IsNullOrEmpty(contentBlock.Spec?.ContentType))
                     {
-                        IEnumerable<ContentFragment> filteredResults = results.Where(x => x.ContentType == contentBlock.Spec.ContentType);
-                        taxonomyDocument.ContentFragments.AddRange(filteredResults);
+                        taxonomyDocument.ContentFragments.AddRange(results.Where(x => x.ContentType == contentBlock.Spec.ContentType));
                     }
                     else
                     {
                         taxonomyDocument.ContentFragments.AddRange(results);
                     }
-                }
-                else
-                {
-                    Console.WriteLine($"There is no ContentBlockParser registered for ContentType {contentBlock.ContentType}");
                 }
             }
 

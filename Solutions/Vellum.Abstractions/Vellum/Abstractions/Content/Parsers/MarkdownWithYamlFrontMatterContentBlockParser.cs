@@ -29,7 +29,7 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
 
     public string ContentType { get; set; } = string.Empty;
 
-    public async ValueTask<IEnumerable<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock)
+    public async ValueTask<List<ContentFragment>> ParseAsync(TaxonomyDocument taxonomyDocument, ContentBlock contentBlock)
     {
         List<ContentFragment> contentFragments = [];
 

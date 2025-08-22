@@ -4,12 +4,9 @@
 
 namespace Vellum.Abstractions;
 
-public class Representation
+public record Representation
 {
     public required string ContentType { get; set; }
 
-    public string GetContentType()
-    {
-        return this.ContentType;
-    }
+    public string GetContentType() => this.ContentType;
 }
