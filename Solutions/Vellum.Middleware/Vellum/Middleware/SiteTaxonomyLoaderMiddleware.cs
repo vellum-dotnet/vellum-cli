@@ -37,7 +37,7 @@ public class SiteTaxonomyLoaderMiddleware
 
             IAsyncEnumerable<TaxonomyDocument> taxonomyDocuments = taxonomyDocumentRepository.LoadAllAsync(this.siteTaxonomyDirectoryPath);
             List<TaxonomyDocument> loaded = await taxonomyDocumentRepository.LoadContentFragmentsAsync(taxonomyDocuments).ToListAsync();
-
+            
             VellumContextBuilder builder = VellumContextBuilder.From(context);
 
             if (loaded.Count > 0)
