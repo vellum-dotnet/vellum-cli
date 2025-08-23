@@ -28,9 +28,9 @@ public static class VellumBuilderExtensions
         SiteTaxonomyLoaderMiddleware middleware = new(services, siteTaxonomyDirectoryPath);
         return builder.UseInStage(PipelineStage.Loading, middleware.InvokeAsync);
     }
-    public static IVellumBuilder UseContentFragmentParsingLoader(this IVellumBuilder builder)
+    public static IVellumBuilder UseContentFragmentParsingLoader(this IVellumBuilder builder, IServiceCollection services)
     {
-        ContentFragmentParsingMiddleware middleware = new();
+        ContentFragmentParsingMiddleware middleware = new(services);
         return builder.UseInStage(PipelineStage.PreParsing, middleware.InvokeAsync);
     }
 
@@ -52,7 +52,7 @@ public static class VellumBuilderExtensions
         return builder
             .UseSiteDetailsLoader(siteTaxonomyDirectoryPath)
             .UseSiteTaxonomyLoader(services, siteTaxonomyDirectoryPath)
-            .UseContentFragmentParsingLoader()
+            .UseContentFragmentParsingLoader(services)
             .UseSiteContextLoader();
     }
 }

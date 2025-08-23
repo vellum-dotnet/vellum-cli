@@ -30,6 +30,7 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
         services.AddWellKnownContentFragmentTypeFactories();
         services.AddWellKnownContentBlockContentTypes();
         services.AddWellKnownConverterFactories();
+        services.AddContentFragmentTransformers();
 
         IVellumBuilder builder = new VellumBuilder();
         builder.UseStandardMiddleware(services, settings.SiteTaxonomyDirectoryPath, settings.OutputDirectoryPath);
