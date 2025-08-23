@@ -88,11 +88,11 @@ public class MarkdownWithYamlFrontMatterContentBlockParser : IContentBlockParser
 
     private static IEnumerable<FilePath> FindContentFragmentFiles(string contentFragmentPath, DirectoryPath rootDirectory)
     {
-        var matcher = new Matcher();
+        Matcher matcher = new();
 
         matcher.AddInclude(contentFragmentPath);
 
-        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new(rootDirectory.FullPath)));
+        PatternMatchingResult matches = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(rootDirectory.FullPath)));
 
         foreach (FilePatternMatch match in matches.Files)
         {

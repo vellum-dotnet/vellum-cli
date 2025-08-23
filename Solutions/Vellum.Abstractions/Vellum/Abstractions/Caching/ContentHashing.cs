@@ -12,7 +12,7 @@ public static class ContentHashing
 {
     public static string Hash(string content)
     {
-        using var sha256Managed = SHA256.Create();
+        using SHA256 sha256Managed = SHA256.Create();
         byte[] textData = Encoding.UTF8.GetBytes(content);
         byte[] hash = sha256Managed.ComputeHash(textData);
 

@@ -55,9 +55,9 @@ public class ExtensionDynamicProxyTypeFactory : IExtensionDynamicProxyTypeFactor
         PortableExecutableReference mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
         PortableExecutableReference blog = MetadataReference.CreateFromFile(baseType.Assembly.Location);
         CSharpCompilationOptions options = new(OutputKind.DynamicallyLinkedLibrary);
-        var compilation = CSharpCompilation.Create(assemblyName: hash, syntaxTrees: [cu.SyntaxTree], references: [mscorlib, blog], options: options);
+        CSharpCompilation compilation = CSharpCompilation.Create(assemblyName: hash, syntaxTrees: [cu.SyntaxTree], references: [mscorlib, blog], options: options);
 
-        using var ms = new MemoryStream();
+        using MemoryStream ms = new MemoryStream();
         EmitResult emitResult = compilation.Emit(ms);
 
         Assembly ourAssembly = Assembly.Load(ms.ToArray());

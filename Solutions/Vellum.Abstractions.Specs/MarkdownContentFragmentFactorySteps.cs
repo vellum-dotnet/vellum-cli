@@ -103,7 +103,7 @@ public class MarkdownContentFragmentFactorySteps
         DataTableRow firstRow = table.Rows[0];
 
         string contentType = firstRow["ContentType"];
-        var date = DateTime.Parse(firstRow["Date"]);
+        DateTime date = DateTime.Parse(firstRow["Date"]);
         string hash = firstRow["Hash"];
         string id = firstRow["Id"];
         int position = int.Parse(firstRow["Position"]);
@@ -150,8 +150,8 @@ public class MarkdownContentFragmentFactorySteps
 
         string actualFilePath = Path.GetFullPath(((string)cf.MetaData["FilePath"]).NormaliseCrossPlatformDirectorySeparators());
         string expectedFilePath = Path.GetFullPath(firstRow["FilePath"].NormaliseCrossPlatformDirectorySeparators());
-        var actualFileInfo = new FileInfo(actualFilePath);
-        var expectedFileInfo = new FileInfo(expectedFilePath);
+        FileInfo actualFileInfo = new FileInfo(actualFilePath);
+        FileInfo expectedFileInfo = new FileInfo(expectedFilePath);
 
         actualFileInfo.ShouldSatisfyAllConditions(
             f => f.Name.ShouldBe(expectedFileInfo.Name),

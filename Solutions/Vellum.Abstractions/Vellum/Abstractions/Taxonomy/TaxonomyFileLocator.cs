@@ -17,7 +17,7 @@ public class TaxonomyFileLocator
 {
     public IEnumerable<FilePath> LocateRecursively(DirectoryPath siteTaxonomyDirectoryPath)
     {
-        var matcher = new Matcher();
+        Matcher matcher = new();
         matcher.AddInclude("**/*.yml");
 
         PatternMatchingResult results = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(siteTaxonomyDirectoryPath.FullPath)));

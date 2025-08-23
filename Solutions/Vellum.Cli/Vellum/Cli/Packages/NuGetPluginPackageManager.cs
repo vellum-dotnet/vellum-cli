@@ -54,7 +54,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
     private async Task<PluginPackage?> GetLatestTemplatePackage(string packageId, string version, string frameworkVersion, DirectoryPath pluginRepositoryPath)
     {
-        var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
+        NuGetFramework nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
         ISettings settings = Settings.LoadSpecificSettings(root: string.Empty, appEnvironment.NuGetConfigFilePath.ToString());
         SourceRepositoryProvider sourceRepositoryProvider = new(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
@@ -107,7 +107,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
                 sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
                 NullLogger.Instance);
 
-            var resolver = new PackageResolver();
+            PackageResolver resolver = new PackageResolver();
 
             try
             {
@@ -120,7 +120,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
                 PackagePathResolver packagePathResolver = new(SettingsUtility.GetGlobalPackagesFolder(settings));
 
-                var packageExtractionContext = new PackageExtractionContext(
+                PackageExtractionContext packageExtractionContext = new PackageExtractionContext(
                     PackageSaveMode.Defaultv3,
                     XmlDocFileSaveMode.None,
                     ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
@@ -157,7 +157,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
                 PackageIdentity identity = await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
 
-                var packageMetaData = new PluginPackage
+                PluginPackage packageMetaData = new PluginPackage
                 {
                     Name = identity.Id,
                     Version = identity.Version.OriginalVersion,

@@ -84,11 +84,11 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
     {
         ISettings settings = NuGet.Configuration.Settings.LoadSpecificSettings(root: string.Empty, this.appEnvironment.NuGetConfigFilePath.ToString());
 
-        var nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
-        var sourceRepositoryProvider =
+        NuGetFramework nugetFramework = NuGetFramework.ParseFolder(frameworkVersion);
+        SourceRepositoryProvider sourceRepositoryProvider =
             new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
 
-        using var cacheContext = new SourceCacheContext();
+        using SourceCacheContext cacheContext = new SourceCacheContext();
         IEnumerable<SourceRepository> repositories = sourceRepositoryProvider.GetRepositories();
         var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
 
@@ -112,7 +112,7 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
             availablePackages.AddRange(dependencyInfo);
         }
 
-        var resolverContext = new PackageResolverContext(
+        PackageResolverContext resolverContext = new PackageResolverContext(
             DependencyBehavior.Highest,
             [packageId],
             [],
@@ -122,15 +122,15 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
             sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
             NullLogger.Instance);
 
-        var resolver = new PackageResolver();
+        PackageResolver resolver = new PackageResolver();
 
         SourcePackageDependencyInfo? packageToInstall = resolver.Resolve(resolverContext, CancellationToken.None)
             .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)))
             .FirstOrDefault();
 
-        var packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
+        PackagePathResolver packagePathResolver = new PackagePathResolver(SettingsUtility.GetGlobalPackagesFolder(settings));
 
-        var packageExtractionContext = new PackageExtractionContext(
+        PackageExtractionContext packageExtractionContext = new PackageExtractionContext(
             PackageSaveMode.Defaultv3,
             XmlDocFileSaveMode.None,
             ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
@@ -168,7 +168,7 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
         PackageIdentity identity =
             await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
 
-        var templatePackageMetaData = new TemplatePackage
+        TemplatePackage templatePackageMetaData = new TemplatePackage
         {
             PackageId = identity.Id,
             Version = identity.Version.OriginalVersion,
@@ -183,7 +183,7 @@ public class NuGetTemplatePackageManager : ITemplatePackageManager
             }
         }
 
-        var packageFileExtractor = new PackageFileExtractor(
+        PackageFileExtractor packageFileExtractor = new PackageFileExtractor(
             templatePackageMetaData.Templates.Select(template => template.NestedFilePath),
             XmlDocFileSaveMode.None);
 

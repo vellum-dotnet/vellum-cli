@@ -35,7 +35,7 @@ public class SiteTaxonomyParser
         foreach (TaxonomyDocument page in pages)
         {
             NavigationNode? parentNode = root.Children.Find(x => Url.AreEquivalent(x.Url!, page.Navigation!.Parent!));
-            parentNode?.Children.Add(new()
+            parentNode?.Children.Add(new NavigationNode
             {
                 Description = page.MetaData!.Description,
                 Header = page.Navigation!.Header,
@@ -46,7 +46,7 @@ public class SiteTaxonomyParser
             });
         }
 
-        var sorted = root.Children.OrderBy(x => x.Rank).ToList();
+        List<NavigationNode> sorted = root.Children.OrderBy(x => x.Rank).ToList();
 
         foreach (NavigationNode node in sorted)
         {

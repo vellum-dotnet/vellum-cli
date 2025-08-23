@@ -22,7 +22,7 @@ public class PluginUninstallCommand(IAppEnvironment appEnvironment)
     {
         AnsiConsole.WriteLine($"Uninstalling plugin with package id '{settings.PackageId}'");
 
-        var packageManager = new NuGetPluginPackageManager(appEnvironment);
+        NuGetPluginPackageManager packageManager = new(appEnvironment);
 
         try
         {

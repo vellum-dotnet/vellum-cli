@@ -11,8 +11,8 @@ public class TaxonomyFileInfoRepository
 {
     public async IAsyncEnumerable<TaxonomyFileInfo> FindAllAsync(DirectoryPath siteTaxonomyDirectoryPath)
     {
-        var siteTaxonomyLocator = new TaxonomyFileLocator();
-        var taxonomyFileParser = new TaxonomyFileInfoReader();
+        TaxonomyFileLocator siteTaxonomyLocator = new();
+        TaxonomyFileInfoReader taxonomyFileParser = new();
 
         IEnumerable<FilePath> files = siteTaxonomyLocator.LocateRecursively(siteTaxonomyDirectoryPath);
 

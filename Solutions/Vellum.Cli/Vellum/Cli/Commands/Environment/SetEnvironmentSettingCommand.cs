@@ -16,7 +16,7 @@ public class SetEnvironmentSettingCommand(IAppEnvironmentConfiguration appEnviro
 {
     public override int Execute(CommandContext context, Settings settings)
     {
-        var settingsManager = new EnvironmentSettingsManager(appEnvironmentConfiguration);
+        EnvironmentSettingsManager settingsManager = new(appEnvironmentConfiguration);
 
         EnvironmentSettings envSettings = settingsManager.LoadSettings(nameof(EnvironmentSettings)) ?? new EnvironmentSettings();
 

@@ -24,7 +24,7 @@ public class UninstallTemplateCommand(IAppEnvironment appEnvironment) : AsyncCom
         TemplateSettingsManager templateSettingsManager = new(appEnvironment);
         TemplatesSettings currentSettings = templateSettingsManager.LoadSettings(nameof(TemplatesSettings)) ?? new TemplatesSettings();
 
-        var packageManager = new NuGetTemplatePackageManager(appEnvironment);
+        NuGetTemplatePackageManager packageManager = new(appEnvironment);
 
         if (currentSettings.Packages.Exists(templatePackage => templatePackage.PackageId == settings.PackageId))
         {
