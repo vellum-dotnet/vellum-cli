@@ -1704,6 +1704,8 @@
       "vellum.middleware": {
         "type": "Project",
         "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "[9.0.8, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.8, )",
           "Vellum.Abstractions": "[1.0.0, )",
           "Vellum.Middleware.Abstractions": "[1.0.0, )"
         }
