@@ -5,7 +5,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Corvus.Testing.ReqnRoll.NUnit" Version="4.0.3" />
+    <PackageReference Include="Corvus.Testing.ReqnRoll.NUnit" Version="4.0.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vellum.Cli\Vellum.Cli.csproj" />
