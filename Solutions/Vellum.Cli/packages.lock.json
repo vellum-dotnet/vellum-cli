@@ -25,9 +25,9 @@
       },
       "Markdig": {
         "type": "Direct",
-        "requested": "[0.39.1, )",
-        "resolved": "0.39.1",
-        "contentHash": "QrH/Aq9A5P7fIdy4tEBQGqVvrJoEew9+jL0k2WlrmgD0yxXP0UUtdkhJWgpVgwT18R0ubpt9cyF+LQXbTUSOrg=="
+        "requested": "[1.1.3, )",
+        "resolved": "1.1.3",
+        "contentHash": "wboYc6YToID7koq+onej7rjd/kv4urZaZ4QMiJoF/jXt/ZlXe2Af9gWG4nOe5tk654UaOPYvKL64iFum7qWEYA=="
       },
       "McMaster.NETCore.Plugins": {
         "type": "Direct",
