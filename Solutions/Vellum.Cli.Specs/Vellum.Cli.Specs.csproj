@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSTest.Sdk/4.2.3">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <!-- No tests yet: don't fail the run on MTP's zero-tests exit code. Remove once real tests exist. -->
+    <TestingPlatformCommandLineArguments>--ignore-exit-code 8</TestingPlatformCommandLineArguments>
   </PropertyGroup>
-  <ItemGroup>
-	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-	  <PackageReference Include="MSTest.TestAdapter" Version="3.10.2" />
-	  <PackageReference Include="MSTest.TestFramework" Version="3.10.2" />
-	  <PackageReference Include="Reqnroll.MsTest" Version="3.0.0" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vellum.Cli\Vellum.Cli.csproj" />
   </ItemGroup>

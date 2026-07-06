@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ namespace Vellum.Cli.Commands.Content;
 
 public class ContentListCommand(IServiceCollection services) : AsyncCommand<ContentListCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         Stopwatch stopwatch = new();
         stopwatch.Start();
@@ -30,6 +31,7 @@ public class ContentListCommand(IServiceCollection services) : AsyncCommand<Cont
         services.AddWellKnownContentFragmentTypeFactories();
         services.AddWellKnownContentBlockContentTypes();
         services.AddWellKnownConverterFactories();
+        services.AddVellumContentExtensibility();
         services.AddContentFragmentTransformers();
 
         IVellumBuilder builder = new VellumBuilder();

@@ -32,52 +32,52 @@ public record TaxonomyDocument : Representation, ITaxonomyDocument
 
     public required List<ContentFragment> ContentFragments { get; set; } = [];
 
-   /* public string FileUrl
-    {
-        get
-        {
-            string fileName = string.Empty;
+    /* public string FileUrl
+     {
+         get
+         {
+             string fileName = string.Empty;
 
-            if (this.Navigation.Url is null)
-            {
-                return string.Empty;
-            }
+             if (this.Navigation.Url is null)
+             {
+                 return string.Empty;
+             }
 
-            if (this.Navigation.Url.ToString().EndsWith('/') || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
-            {
-                fileName = "index.html";
-            }
+             if (this.Navigation.Url.ToString().EndsWith('/') || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
+             {
+                 fileName = "index.html";
+             }
 
-            return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName);
-        }
-    }
+             return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName);
+         }
+     }
 
-    public string TemplatePath
-    {
-        get
-        {
-            if (!string.IsNullOrEmpty(this.Template))
-            {
-                return Flurl.Url.Combine(this.Template).TrimStart('/');
-            }
+     public string TemplatePath
+     {
+         get
+         {
+             if (!string.IsNullOrEmpty(this.Template))
+             {
+                 return Flurl.Url.Combine(this.Template).TrimStart('/');
+             }
 
-            string fileName;
+             string fileName;
 
-            if (this.Navigation.Url is null)
-            {
-                return string.Empty;
-            }
+             if (this.Navigation.Url is null)
+             {
+                 return string.Empty;
+             }
 
-            if (this.Navigation.Url.ToString().EndsWith('/') || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
-            {
-                fileName = "index";
-            }
-            else
-            {
-                return Flurl.Url.Combine(System.IO.Path.ChangeExtension(this.Navigation.Url.ToString(), string.Empty)).TrimStart('/').TrimEnd('.');
-            }
+             if (this.Navigation.Url.ToString().EndsWith('/') || string.IsNullOrEmpty(System.IO.Path.GetExtension(this.Navigation.Url.ToString())))
+             {
+                 fileName = "index";
+             }
+             else
+             {
+                 return Flurl.Url.Combine(System.IO.Path.ChangeExtension(this.Navigation.Url.ToString(), string.Empty)).TrimStart('/').TrimEnd('.');
+             }
 
-            return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName).TrimStart('/');
-        }
-    }*/
+             return Flurl.Url.Combine(this.Navigation.Url.ToString(), fileName).TrimStart('/');
+         }
+     }*/
 }

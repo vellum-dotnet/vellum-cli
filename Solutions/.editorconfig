@@ -115,6 +115,10 @@ dotnet_separate_import_directive_groups = false
 # IDE0005: Remove unnecessary using directives
 dotnet_diagnostic.IDE0005.severity = warning
 
+# IDE0060: Only flag unused parameters on non-public members; public signatures may be
+# deliberate API surface or convention-based (e.g. ASP.NET Core Startup.Configure).
+dotnet_code_quality_unused_parameters = non_public
+
 # Naming conventions
 dotnet_naming_rule.interface_should_be_prefixed_with_i.severity = warning
 dotnet_naming_rule.interface_should_be_prefixed_with_i.symbols = interface

@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <!--
+      Run the .editorconfig-driven code-style (IDExxxx) analyzers as part of the build, so builds
+      (VS, CLI and CI) report the same diagnostics that the Visual Studio editor shows live.
+    -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!--
+      IDE0005 (unnecessary usings) only reports during build when XML documentation generation is
+      enabled (https://github.com/dotnet/roslyn/issues/41640). CS1591 (missing XML comment) is
+      suppressed so that enabling doc generation doesn't demand doc comments everywhere; the
+      StyleCop documentation rules govern that where it matters.
+    -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+</Project>

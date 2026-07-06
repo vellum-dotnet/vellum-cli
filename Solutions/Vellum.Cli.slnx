@@ -1,0 +1,15 @@
+<Solution>
+  <Project Path="Vellum.Abstractions.Specs/Vellum.Abstractions.Specs.csproj" />
+  <Project Path="Vellum.Abstractions/Vellum.Abstractions.csproj" />
+  <Project Path="Vellum.Cli.Abstractions/Vellum.Cli.Abstractions.csproj" />
+  <Project Path="Vellum.Cli.Cloudinary.Specs/Vellum.Cli.Cloudinary.Specs.csproj" />
+  <Project Path="Vellum.Cli.Cloudinary/Vellum.Cli.Cloudinary.csproj" />
+  <Project Path="Vellum.Cli.Specs/Vellum.Cli.Specs.csproj" />
+  <Project Path="Vellum.Cli.Tinify/Vellum.Cli.Tinify.csproj" />
+  <Project Path="Vellum.Cli/Vellum.Cli.csproj" />
+  <Project Path="Vellum.Middleware.Abstractions/Vellum.Middleware.Abstractions.csproj" />
+  <Project Path="Vellum.Middleware/Vellum.Middleware.csproj" />
+  <Project Path="Vellum.Rendering.Scriban/Vellum.Rendering.Scriban.csproj" />
+  <Project Path="Vellum.Rending.Razor/Vellum.Rending.Razor.csproj" />
+  <Project Path="Vellum.Templates.Blog/Vellum.Templates.Blog.csproj" />
+</Solution>

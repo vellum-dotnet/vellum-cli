@@ -356,3 +356,9 @@ coverage.cobertura.xml
 /.claude
 /.devcontainer
 .packages/
+# ZeroFailed downloaded extensions (only .zf/config.ps1 is source-controlled)
+.zf/extensions/
+
+# Build process outputs
+_codeCoverage/
+_packages/

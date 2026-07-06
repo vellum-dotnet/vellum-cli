@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Spectre.Console;
@@ -17,7 +18,7 @@ namespace Vellum.Cli.Commands.Templates;
 
 public class UninstallTemplateCommand(IAppEnvironment appEnvironment) : AsyncCommand<UninstallTemplateCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         AnsiConsole.WriteLine($"Uninstalling template package '{settings.PackageId}'");
 

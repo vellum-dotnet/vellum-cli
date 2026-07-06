@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using Vellum.Abstractions;
 using Vellum.Abstractions.Content;
 using Vellum.Abstractions.Content.Transformations;
 using Vellum.Abstractions.Taxonomy;

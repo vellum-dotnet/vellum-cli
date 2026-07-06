@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
             .Build();
 
         serviceCollection.AddSingleton<IConfiguration>(config);
-        serviceCollection.AddCliServices(config);
+        serviceCollection.AddCliServices();
         serviceCollection.AddCommonServices();
         serviceCollection.AddContent();
     }
@@ -36,9 +36,8 @@ public static class ServiceCollectionExtensions
     /// Adds services required by the command line application to the service collection.
     /// </summary>
     /// <param name="services">The service collection to add to.</param>
-    /// <param name="config">The <see cref="IConfiguration"/>.</param>
     /// <returns>The service collection, for chaining.</returns>
-    private static IServiceCollection AddCliServices(this IServiceCollection services, IConfiguration config)
+    private static IServiceCollection AddCliServices(this IServiceCollection services)
     {
         services.AddSingleton<IServiceCollection>(services);
         services.AddLogging(builder => builder.AddConsole());

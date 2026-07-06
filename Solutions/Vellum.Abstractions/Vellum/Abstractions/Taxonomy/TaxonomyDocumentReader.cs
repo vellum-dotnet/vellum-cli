@@ -4,8 +4,6 @@
 
 using System.Threading.Tasks;
 
-using Spectre.IO;
-
 using Vellum.Abstractions.Content.Primitives;
 using Vellum.Abstractions.IO;
 using Vellum.Abstractions.Parsers;

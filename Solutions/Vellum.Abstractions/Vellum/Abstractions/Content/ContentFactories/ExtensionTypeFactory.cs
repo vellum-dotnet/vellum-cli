@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vellum.Abstractions.Content.Extensions;
+using ImpromptuInterface;
 
 namespace Vellum.Abstractions.Content.ContentFactories;
 
@@ -13,13 +13,11 @@ public class ExtensionTypeFactory : IExtensionTypeFactory
 {
     private readonly IServiceProvider serviceProvider;
     private readonly IContentTypeInterfaceFactory contentTypeInterfaceFactory;
-    private readonly IExtensionDynamicProxyTypeFactory extensionDynamicProxyTypeFactory;
 
-    public ExtensionTypeFactory(IServiceProvider serviceProvider, IContentTypeInterfaceFactory contentTypeInterfaceFactory, IExtensionDynamicProxyTypeFactory extensionDynamicProxyTypeFactory)
+    public ExtensionTypeFactory(IServiceProvider serviceProvider, IContentTypeInterfaceFactory contentTypeInterfaceFactory)
     {
         this.serviceProvider = serviceProvider;
         this.contentTypeInterfaceFactory = contentTypeInterfaceFactory;
-        this.extensionDynamicProxyTypeFactory = extensionDynamicProxyTypeFactory;
     }
 
     public object? Create(ContentFragment cf)
@@ -29,26 +27,36 @@ public class ExtensionTypeFactory : IExtensionTypeFactory
             return null;
         }
 
-        IEnumerable<Type?> extensionTypes = cf.Extensions.Select(contentType => this.contentTypeInterfaceFactory.Resolve(contentType)).Where(result => result != null);
+        List<Type> targetTypes = [this.ResolveOrThrow(cf, cf.ContentType)];
 
-        Type? contentFragmentType = this.contentTypeInterfaceFactory.Resolve(cf.ContentType);
-
-        if (contentFragmentType is null || extensionTypes is null)
+        foreach (string extension in cf.Extensions)
         {
-            throw new InvalidOperationException();
+            Type extensionType = this.ResolveOrThrow(cf, extension);
+
+            if (!targetTypes.Contains(extensionType))
+            {
+                targetTypes.Add(extensionType);
+            }
         }
 
-        Type extensionDynamicProxyType = this.extensionDynamicProxyTypeFactory.Create(contentFragmentType, extensionTypes!)!;
-        Type typeFactory = typeof(ContentFragmentTypeFactory<>);
-        Type[] typeArgs = [extensionDynamicProxyType];
-        Type genericTypeFactory = typeFactory.MakeGenericType(typeArgs);
-        dynamic? typeFactoryInstance = Activator.CreateInstance(genericTypeFactory, args: this.serviceProvider);
+        Type[] types = [.. targetTypes];
+        DynamicContentFragment dynamicFragment = new(cf, this.serviceProvider, types);
 
-        if (typeFactoryInstance == null)
+        return Impromptu.DynamicActLike(dynamicFragment, types);
+    }
+
+    private Type ResolveOrThrow(ContentFragment cf, string contentType)
+    {
+        Type? resolved = this.contentTypeInterfaceFactory.Resolve(contentType);
+
+        if (resolved is null)
         {
-            throw new InvalidOperationException();
+            cf.MetaData.TryGetValue("FilePath", out dynamic? filePath);
+
+            throw new InvalidOperationException(
+                $"No content type interface is registered for content type '{contentType}' (content fragment '{cf.Id}'{(filePath is null ? string.Empty : $", file '{filePath}'")}). Register one via services.AddContentTypeInterface<TInterface>(\"{contentType}\").");
         }
 
-        return typeFactoryInstance.Create(cf);
+        return resolved;
     }
 }

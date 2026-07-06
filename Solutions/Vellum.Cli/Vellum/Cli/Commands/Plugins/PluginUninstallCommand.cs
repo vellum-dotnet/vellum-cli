@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Spectre.Console;
@@ -18,7 +19,7 @@ namespace Vellum.Cli.Commands.Plugins;
 public class PluginUninstallCommand(IAppEnvironment appEnvironment)
     : AsyncCommand<PluginUninstallCommand.PluginUninstallSettings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, PluginUninstallSettings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, PluginUninstallSettings settings, CancellationToken cancellationToken)
     {
         AnsiConsole.WriteLine($"Uninstalling plugin with package id '{settings.PackageId}'");
 

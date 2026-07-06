@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+using System.Threading;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -13,7 +15,7 @@ namespace Vellum.Cli.Tinify.Commands.Settings;
 
 public class ListCommand : Command
 {
-    public override int Execute(CommandContext context)
+    protected override int Execute(CommandContext context, CancellationToken cancellationToken)
     {
         TinifySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
         TinifySettings settings = settingsManager.LoadSettings(nameof(TinifySettings));

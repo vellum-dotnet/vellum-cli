@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Spectre.Console;
@@ -23,7 +24,7 @@ public class NewFileCommand(IAppEnvironment appEnvironment) : AsyncCommand<NewFi
 {
     private readonly IAppEnvironment appEnvironment = appEnvironment;
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         EnvironmentSettingsManager settingsManager = new(this.appEnvironment);
         EnvironmentSettings environmentSettings = settingsManager.LoadSettings(nameof(EnvironmentSettings));

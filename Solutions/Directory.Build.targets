@@ -1,0 +1,20 @@
+<Project>
+  <!--
+    Endjin.RecommendedPractices injects StyleCop/Roslynator via its package .targets. NuGet's
+    command-line restore cannot see PackageReference items added by package targets (it evaluates
+    projects with ExcludeRestorePackageImports=true), so 'dotnet build' and CI silently run WITHOUT
+    the analyzers, while Visual Studio's nomination-based restore runs WITH them - letting analyzer
+    violations slip through CLI builds and fail later in the IDE.
+
+    Declaring the same references only during restore evaluation puts the analyzers into
+    project.assets.json (so CLI/CI builds enforce them too) without duplicating the build-time items
+    that the package targets provide.
+
+    NOTE: keep these versions in sync with Endjin.Common.Net.targets in the referenced
+    Endjin.RecommendedPractices package when it is upgraded.
+  -->
+  <ItemGroup Condition="'$(ExcludeRestorePackageImports)' == 'true' and ('$(MSBuildProjectName)' == 'Vellum.Cli' or '$(MSBuildProjectName)' == 'Vellum.Abstractions' or '$(MSBuildProjectName)' == 'Vellum.Cli.Abstractions' or '$(MSBuildProjectName)' == 'Vellum.Cli.Cloudinary' or '$(MSBuildProjectName)' == 'Vellum.Cli.Tinify' or '$(MSBuildProjectName)' == 'Vellum.Templates.Blog')">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="all" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.13.1" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

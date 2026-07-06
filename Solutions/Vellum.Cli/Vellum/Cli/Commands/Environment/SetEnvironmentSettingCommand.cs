@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 
 using Spectre.Console.Cli;
 
@@ -14,7 +15,7 @@ namespace Vellum.Cli.Commands.Environment;
 
 public class SetEnvironmentSettingCommand(IAppEnvironmentConfiguration appEnvironmentConfiguration) : Command<SetEnvironmentSettingCommand.Settings>
 {
-    public override int Execute(CommandContext context, Settings settings)
+    protected override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         EnvironmentSettingsManager settingsManager = new(appEnvironmentConfiguration);
 

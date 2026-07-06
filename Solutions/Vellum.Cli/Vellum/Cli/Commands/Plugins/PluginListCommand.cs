@@ -2,6 +2,8 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+using System.Threading;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Spectre.IO;
@@ -13,7 +15,7 @@ namespace Vellum.Cli.Commands.Plugins;
 
 public class PluginListCommand(IAppEnvironment appEnvironment) : Command
 {
-    public override int Execute(CommandContext context)
+    protected override int Execute(CommandContext context, CancellationToken cancellationToken)
     {
         foreach (DirectoryPath pluginPath in appEnvironment.PluginPaths)
         {

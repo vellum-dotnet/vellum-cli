@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -16,7 +17,7 @@ namespace Vellum.Cli.Tinify.Commands.Settings;
 
 public class UpdateCommand : Command<UpdateCommand.Settings>
 {
-    public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+    protected override int Execute([NotNull] CommandContext context, [NotNull] Settings settings, CancellationToken cancellationToken)
     {
         TinifySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
         TinifySettings tinifySettings = new(settings.Key);

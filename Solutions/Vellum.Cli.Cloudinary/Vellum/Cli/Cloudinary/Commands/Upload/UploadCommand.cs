@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using CloudinaryDotNet;
@@ -21,7 +22,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Upload;
 
 public class UploadCommand : AsyncCommand<UploadCommand.UploadCommandSettings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, UploadCommandSettings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, UploadCommandSettings settings, CancellationToken cancellationToken)
     {
         if (settings.File == null)
         {

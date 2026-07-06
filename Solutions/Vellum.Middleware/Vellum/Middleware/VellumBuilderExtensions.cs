@@ -41,9 +41,10 @@ public static class VellumBuilderExtensions
     }
 
     /// <summary>
-    /// Adds all standard middleware components in the correct 
+    /// Adds all standard middleware components in the correct order.
     /// </summary>
     /// <param name="builder">The Vellum builder.</param>
+    /// <param name="services">The service collection the middleware components resolve their dependencies from.</param>
     /// <param name="siteTaxonomyDirectoryPath">The directory path of the site taxonomy.</param>
     /// <param name="outputDirectory">The output directory.</param>
     /// <returns>The builder for fluent configuration.</returns>

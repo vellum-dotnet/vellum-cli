@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.Threading;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -15,7 +16,7 @@ namespace Vellum.Cli.Cloudinary.Commands.Settings;
 
 public class UpdateCommand : Command<UpdateCommand.Settings>
 {
-    public override int Execute(CommandContext context, Settings settings)
+    protected override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         CloudinarySettingsManager settingsManager = new(new FileSystemRoamingProfileAppEnvironment());
         CloudinarySettings cloudinarySettings = new(settings.Cloud, settings.Key, settings.Secret);

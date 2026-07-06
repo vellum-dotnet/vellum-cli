@@ -1,12 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <AssemblyName>Vellum.Cli.Rendering.Razor</AssemblyName>
     <RootNamespace>Vellum.Cli.Rendering.Razor</RootNamespace>
+    <!--
+      ASPDEPR003: Razor runtime compilation is deprecated in favour of build-time compilation or
+      Hot Reload, but runtime compilation of user-supplied .cshtml templates is this project's
+      entire purpose (SSG template rendering), so neither replacement applies. Suppressed until
+      the renderer moves to an alternative runtime Razor engine.
+    -->
+    <NoWarn>$(NoWarn);ASPDEPR003</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>

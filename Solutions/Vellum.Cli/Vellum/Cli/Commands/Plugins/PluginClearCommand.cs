@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -16,7 +17,7 @@ namespace Vellum.Cli.Commands.Plugins;
 
 public class PluginClearCommand(IAppEnvironment appEnvironment) : Command
 {
-    public override int Execute(CommandContext context)
+    protected override int Execute(CommandContext context, CancellationToken cancellationToken)
     {
         IEnumerable<DirectoryPath> paths = appEnvironment.PluginPaths;
 

@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Spectre.Console;
@@ -18,7 +19,7 @@ namespace Vellum.Cli.Commands.Plugins;
 
 public class PluginInstallCommand(IAppEnvironment appEnvironment) : AsyncCommand<PluginInstallCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         string message = $"Installing plugin from package '{settings.PackageId}'";
 

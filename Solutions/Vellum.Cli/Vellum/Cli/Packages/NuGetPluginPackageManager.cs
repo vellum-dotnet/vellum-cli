@@ -107,7 +107,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
                 sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
                 NullLogger.Instance);
 
-            PackageResolver resolver = new PackageResolver();
+            PackageResolver resolver = new();
 
             try
             {
@@ -120,17 +120,23 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
                 PackagePathResolver packagePathResolver = new(SettingsUtility.GetGlobalPackagesFolder(settings));
 
-                PackageExtractionContext packageExtractionContext = new PackageExtractionContext(
+                PackageExtractionContext packageExtractionContext = new(
                     PackageSaveMode.Defaultv3,
                     XmlDocFileSaveMode.None,
                     ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
                     NullLogger.Instance);
 
                 FrameworkReducer frameworkReducer = new();
-                string installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
+
+                if (packageToInstall is null)
+                {
+                    throw new InvalidOperationException($"Unable to resolve package '{packageId}'.");
+                }
+
+                string? installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
                 PackageReaderBase packageReader;
 
-                if (string.IsNullOrEmpty(installedPath) && packageToInstall != null)
+                if (string.IsNullOrEmpty(installedPath))
                 {
                     DownloadResource downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None).ConfigureAwait(false);
 
@@ -157,7 +163,7 @@ public class NuGetPluginPackageManager(IAppEnvironment appEnvironment)
 
                 PackageIdentity identity = await packageReader.GetIdentityAsync(CancellationToken.None).ConfigureAwait(false);
 
-                PluginPackage packageMetaData = new PluginPackage
+                PluginPackage packageMetaData = new()
                 {
                     Name = identity.Id,
                     Version = identity.Version.OriginalVersion,

@@ -47,8 +47,8 @@ public static class DirectoryPathExtensions
 
     public static string GetRelativePathFrom(this FilePath filePath, DirectoryPath referencePath)
     {
-        Uri fileUri = new Uri(filePath.FullPath);
-        Uri referenceUri = new Uri(referencePath.FullPath);
+        Uri fileUri = new(filePath.FullPath);
+        Uri referenceUri = new(referencePath.FullPath);
         return Uri.UnescapeDataString(referenceUri.MakeRelativeUri(fileUri).ToString().Replace('/', System.IO.Path.DirectorySeparatorChar));
     }
 

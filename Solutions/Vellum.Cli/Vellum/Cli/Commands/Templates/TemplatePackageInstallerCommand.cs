@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Spectre.Console;
@@ -18,7 +19,7 @@ namespace Vellum.Cli.Commands.Templates;
 public class TemplatePackageInstallerCommand(IAppEnvironment appEnvironment)
     : AsyncCommand<TemplatePackageInstallerCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         AnsiConsole.WriteLine($"Installing template from package '{settings.PackageId}'");
 

@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Spectre.Console;
@@ -20,7 +21,7 @@ namespace Vellum.Cli.Tinify.Commands.Optimize;
 
 public class OptimizeCommand : AsyncCommand<OptimizeCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] Settings settings)
+    protected override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] Settings settings, CancellationToken cancellationToken)
     {
         if (settings.FilePath == null)
         {

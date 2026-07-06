@@ -34,10 +34,10 @@ public static class ServiceCollectionExtensions
     {
         // Add all standard transformers here
         services.AddAuthorIdResolver();
-        
+
         // Add additional transformers as they are created
         // services.AddTransient<IContentFragmentTransformer, YourNextTransformer>();
-        
+
         return services;
     }
 }

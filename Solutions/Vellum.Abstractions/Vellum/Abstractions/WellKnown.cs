@@ -42,6 +42,10 @@ public static class WellKnown
             public const string Hero = "application/vnd.vellum.content.hero+md";
 
             public const string ImageHero = "application/vnd.vellum.content.hero.with.image+md";
+
+            public const string Promotion = "application/vnd.vellum.content.promotion+md";
+
+            public const string Series = "application/vnd.vellum.content.series+md";
         }
     }
 }

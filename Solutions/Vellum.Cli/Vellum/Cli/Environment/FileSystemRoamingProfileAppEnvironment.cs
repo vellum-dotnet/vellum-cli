@@ -74,7 +74,7 @@ public class FileSystemRoamingProfileAppEnvironment : IAppEnvironment
 
                 IEnumerable<string> dirs = Directory.EnumerateDirectories(directory!, "*.*", SearchOption.AllDirectories);
 
-                dirs = dirs.Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net9.0"));
+                dirs = dirs.Where(f => !Directory.EnumerateDirectories(f, "*.*", SearchOption.TopDirectoryOnly).Any() && f.EndsWith(@"bin\Debug\net10.0"));
 
                 foreach (string dir in dirs)
                 {
@@ -83,6 +83,12 @@ public class FileSystemRoamingProfileAppEnvironment : IAppEnvironment
             }
             else
             {
+                if (!Directory.Exists(this.PluginPath.ToString()))
+                {
+                    // The environment hasn't been initialized yet ('vellum environment init'); no plugins to discover.
+                    yield break;
+                }
+
                 foreach (DirectoryPath path in this.PluginPath.ChildrenDirectoriesPath())
                 {
                     IEnumerable<DirectoryPath> leafPaths = Directory
