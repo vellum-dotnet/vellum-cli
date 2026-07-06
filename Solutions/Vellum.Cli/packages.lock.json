@@ -436,6 +436,7 @@
           "Microsoft.Extensions.Caching.Memory": "[10.0.9, )",
           "Microsoft.Extensions.DependencyInjection": "[10.0.9, )",
           "Microsoft.Extensions.FileSystemGlobbing": "[10.0.9, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[10.0.9, )",
           "Spectre.IO": "[0.23.0, )",
           "YamlDotNet": "[18.1.0, )"
         }

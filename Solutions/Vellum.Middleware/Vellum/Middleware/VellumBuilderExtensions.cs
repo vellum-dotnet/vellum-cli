@@ -41,6 +41,21 @@ public static class VellumBuilderExtensions
     }
 
     /// <summary>
+    /// Adds frontmatter validation middleware to the PostParsing stage. Every parsed content fragment is
+    /// checked against the interfaces its content type and extensions map to, and all coercion failures
+    /// are logged and published to stage data under
+    /// <see cref="ContentFragmentValidationMiddleware.ValidationFailuresKey"/>.
+    /// </summary>
+    /// <param name="builder">The Vellum builder.</param>
+    /// <param name="services">The service collection the middleware resolves its dependencies from.</param>
+    /// <returns>The builder for fluent configuration.</returns>
+    public static IVellumBuilder UseContentFragmentValidation(this IVellumBuilder builder, IServiceCollection services)
+    {
+        ContentFragmentValidationMiddleware middleware = new(services);
+        return builder.UseInStage(PipelineStage.PostParsing, middleware.InvokeAsync);
+    }
+
+    /// <summary>
     /// Adds all standard middleware components in the correct order.
     /// </summary>
     /// <param name="builder">The Vellum builder.</param>
@@ -54,6 +69,7 @@ public static class VellumBuilderExtensions
             .UseSiteDetailsLoader(siteTaxonomyDirectoryPath)
             .UseSiteTaxonomyLoader(services, siteTaxonomyDirectoryPath)
             .UseContentFragmentParsingLoader(services)
+            .UseContentFragmentValidation(services)
             .UseSiteContextLoader();
     }
 }

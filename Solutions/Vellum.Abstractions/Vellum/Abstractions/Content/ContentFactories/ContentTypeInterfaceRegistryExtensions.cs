@@ -2,6 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Vellum.Abstractions.Content.Extensions;
@@ -48,9 +49,14 @@ public static class ContentTypeInterfaceRegistryExtensions
     /// factory that duck-types extended content fragments onto their declared extension interfaces.
     /// </summary>
     /// <param name="serviceCollection">The service collection to register the pipeline with.</param>
+    /// <param name="configure">Optional configuration of <see cref="ContentExtensibilityOptions"/>.</param>
     /// <returns>The service collection, to enable chaining.</returns>
-    public static IServiceCollection AddVellumContentExtensibility(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddVellumContentExtensibility(this IServiceCollection serviceCollection, Action<ContentExtensibilityOptions>? configure = null)
     {
+        ContentExtensibilityOptions options = new();
+        configure?.Invoke(options);
+
+        serviceCollection.TryAddSingleton(options);
         serviceCollection.TryAddSingleton<IContentTypeInterfaceFactory, ContentTypeInterfaceRegistry>();
         serviceCollection.TryAddSingleton<IExtensionTypeFactory, ExtensionTypeFactory>();
         serviceCollection.AddWellKnownContentTypeInterfaces();
